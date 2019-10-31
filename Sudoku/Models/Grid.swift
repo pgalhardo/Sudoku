@@ -81,33 +81,29 @@ class Grid {
 	}
 
 	func numberInRow(number: Int, row: Int) -> Bool {
-		var found:Bool = false
-		
 		for i in (0 ..< 9) {
 			if _cells[row][i].getNumber() == number {
-				found = true
+				return true
 			}
 		}
-		return found
+		return false
 	}
 
 	func numberInCol(number: Int, col: Int) -> Bool {
-		var found: Bool = false
-		
 		for i in (0 ..< 9) {
 			if _cells[i][col].getNumber() == number {
-				found = true
+				return true
 			}
 		}
-		return found
+		return false
 	}
 
 	func numberInSquare(number: Int, row: Int, col: Int) -> Bool {
 		let square:[[Int]] = getSquare(row: row, col: col)
 		
-		return (!square[0].contains(number)
-			&& square[1].contains(number)
-			&& square[2].contains(number))
+		return (square[0].contains(number)
+			|| square[1].contains(number)
+			|| square[2].contains(number))
 	}
 
 	func getSquare(row: Int, col: Int) -> [[Int]] {
