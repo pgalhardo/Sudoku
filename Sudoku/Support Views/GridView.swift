@@ -9,11 +9,10 @@
 import SwiftUI
 import UIKit
 
-private var active: [Int] = [-1, -1]
-private var previous: [Int] = [-1, -1]
+
 
 struct GridView: View {
-	let _grid: Grid!
+	private var _grid: Grid!
 	
 	init(grid: Grid) {
 		_grid = grid
@@ -70,14 +69,15 @@ struct GridView: View {
 	}
 		
 	func update(row: Int, col: Int) {
-		previous = active
-		active = [row, col]
-
+		_grid.setActive(row: row, col: col)
+		
+		let previous = _grid.getPrevious()
+		let active = _grid.getActive()
+		
 		// double click, disable both
 		if previous == active {
 			self.toggleColor(cell: active)
-			previous = [-1, -1]
-			active = [-1, -1]
+			_grid.resetActive()
 		}
 		else {
 			self.toggleColor(cell: previous)
@@ -85,12 +85,13 @@ struct GridView: View {
 		}
 	}
 	
-	func toggleColor(cell: [Int]) {
-		let row = cell[0], col = cell[1]
+	func toggleColor(cell: [Int]?) {
 		
-		if row < 0 || col < 0 || row > 8 || col > 8 {
+		if (cell == nil) {
 			return
 		}
+		
+		let row = cell![0], col = cell![1]
 		
 		if colors[row][col] == Color.white {
 			self.toggleLineColor(cell: cell, rowMode: true)
@@ -106,8 +107,8 @@ struct GridView: View {
 		}
 	}
 		
-	func toggleLineColor(cell: [Int], rowMode: Bool) {
-		let row = cell[0], col = cell[1]
+	func toggleLineColor(cell: [Int]?, rowMode: Bool) {
+		let row = cell![0], col = cell![1]
 		
 		for i in (0 ..< 9) {
 			if (rowMode == false && i == row)

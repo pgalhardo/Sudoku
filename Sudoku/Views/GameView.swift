@@ -10,63 +10,60 @@ import Foundation
 import SwiftUI
 
 struct GameView: View {
-	let _grid: Grid!
-	
-	@State var _isPaused: Bool = false
+	@State private var _grid: Grid = Grid()
+	@State private var _isPaused: Bool = false
 	@EnvironmentObject var _viewRouter: ViewRouter
-	
-	init(grid: Grid) {
-		_grid = grid
-	}
-	
+		
 	var body: some View {
 		VStack {
-			HStack {
-				Button(
-					action: {
-						withAnimation(.easeIn) {
-							self._viewRouter.setCurrentPage(page: Pages.home)
-						}
-					},
-					label: {
-						Image(systemName: "stop.fill")
-							.resizable()
-							.frame(width: 30, height: 30)
-							.foregroundColor(Color(red: 31 / 255,
-												   green: 31 / 255,
-												   blue: 36 / 255))
-					}
-				)
-				Spacer()
-				
-				TimerView()
-				
-				Spacer()
-				Button(
-					action: {
-						/*
-						withAnimation(.easeIn) {
-							self._viewRouter.setCurrentPage(page: Pages.pause)
-						}
-						*/
-					},
-					label: {
-						Image(systemName: "pause.fill")
-							.resizable()
-							.frame(width: 30, height: 30)
-							.foregroundColor(Color(red: 31 / 255,
-												   green: 31 / 255,
-												   blue: 36 / 255))
-					}
-				)
-			}
-				.padding()
-				
-			Spacer()
+			TopBarView()
 			GridView(grid: _grid)
 			Spacer()
-			KeyboardView()
+			KeyboardView(grid: _grid)
 			Spacer()
 		}
+	}
+}
+
+struct TopBarView: View {
+	@EnvironmentObject var _viewRouter: ViewRouter
+	
+	var body: some View {
+		HStack {
+			Button(
+				action: {
+					withAnimation(.easeIn) {
+						self._viewRouter.setCurrentPage(page: Pages.home)
+					}
+				},
+				label: {
+					Image(systemName: "stop.fill")
+						.resizable()
+						.frame(width: Screen.cellWidth / 2,
+							   height: Screen.cellWidth / 2)
+						.foregroundColor(Colors.MatteBlack)
+				}
+			)
+			Spacer()
+			
+			TimerView()
+			
+			Spacer()
+			Button(
+				action: {
+					
+				},
+				label: {
+					Image(systemName: "pause.fill")
+						.resizable()
+						.frame(width: Screen.cellWidth / 2,
+							   height: Screen.cellWidth / 2)
+						.foregroundColor(Colors.MatteBlack)
+				}
+			)
+		}
+		.padding(.top)
+		.padding(.leading)
+		.padding(.trailing)
 	}
 }

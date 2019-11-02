@@ -29,23 +29,15 @@ class ViewRouter: ObservableObject {
 }
 
 struct RootView: View {
-	private var _gameView: GameView!
-	private var _grid: Grid!
-	
 	@EnvironmentObject var _viewRouter: ViewRouter
-	
-	init(gameView: GameView, grid: Grid) {
-		_gameView = gameView
-		_grid = grid
-	}
-	
+		
 	var body: some View {
 		VStack {
 			if _viewRouter.getCurrentPage() == Pages.home {
-				MenuView(gameView: _gameView)
+				MenuView()
 					.transition(.scale)
 			} else if _viewRouter.getCurrentPage() == Pages.game {
-				GameView(grid: _grid)
+				GameView()
 					.transition(.move(edge: .trailing))
 			}
 		}

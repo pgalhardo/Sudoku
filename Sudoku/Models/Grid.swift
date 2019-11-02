@@ -11,7 +11,8 @@ import SwiftUI
 
 class Grid {
 	private var _cells = [[Cell]]()
-	private var _view: GridView!
+	private var _active: [Int]?
+	private var _previous: [Int]?
 	
 	init() {
 		for i in (0 ..< 9) {
@@ -20,7 +21,18 @@ class Grid {
 				_cells[i].append(Cell(number: 0, userInput: false))
 			}
 		}
-		_view = GridView(grid: self)
+		
+		self.fill()
+	}
+	
+	func reset() {
+		_cells = [[Cell]]()
+		for i in (0 ..< 9) {
+			_cells.append([])
+			for _ in (0 ..< 9) {
+				_cells[i].append(Cell(number: 0, userInput: false))
+			}
+		}
 	}
 	
 	func cellAt(row: Int, col: Int) -> Cell {
@@ -38,6 +50,24 @@ class Grid {
 	
 	func getRow(row: Int) -> [Cell] {
 		return _cells[row]
+	}
+	
+	func getActive() -> [Int]? {
+		return _active
+	}
+	
+	func getPrevious() -> [Int]? {
+		return _previous
+	}
+	
+	func setActive(row: Int, col: Int) {
+		_previous = _active
+		_active = [row, col]
+	}
+	
+	func resetActive() {
+		_previous = nil
+		_active = nil
 	}
 	
 	/*

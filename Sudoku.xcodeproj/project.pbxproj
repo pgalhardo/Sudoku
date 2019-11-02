@@ -17,7 +17,6 @@
 		681A72CF23662961002B9053 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A72CE23662961002B9053 /* GridView.swift */; };
 		681A72D123669095002B9053 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A72D023669095002B9053 /* Cell.swift */; };
 		683A3D882368EC4000135D55 /* Shevana.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 683A3D872368EC4000135D55 /* Shevana.ttf */; };
-		683A3D8A2368F3A100135D55 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D892368F3A100135D55 /* Game.swift */; };
 		683A3D8C2368F77A00135D55 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8B2368F77A00135D55 /* Grid.swift */; };
 		683A3D8E2369012200135D55 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8D2369012200135D55 /* GameView.swift */; };
 		683A3D90236916CF00135D55 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8F236916CF00135D55 /* RootView.swift */; };
@@ -40,7 +39,6 @@
 		681A72CE23662961002B9053 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		681A72D023669095002B9053 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		683A3D872368EC4000135D55 /* Shevana.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Shevana.ttf; sourceTree = "<group>"; };
-		683A3D892368F3A100135D55 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		683A3D8B2368F77A00135D55 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		683A3D8D2369012200135D55 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		683A3D8F236916CF00135D55 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -118,7 +116,6 @@
 			isa = PBXGroup;
 			children = (
 				681A72D023669095002B9053 /* Cell.swift */,
-				683A3D892368F3A100135D55 /* Game.swift */,
 				683A3D8B2368F77A00135D55 /* Grid.swift */,
 			);
 			path = Models;
@@ -220,7 +217,6 @@
 			files = (
 				681A72BB23661BB7002B9053 /* AppDelegate.swift in Sources */,
 				681A72CF23662961002B9053 /* GridView.swift in Sources */,
-				683A3D8A2368F3A100135D55 /* Game.swift in Sources */,
 				681A72BD23661BB7002B9053 /* SceneDelegate.swift in Sources */,
 				684EC5F9236A5E89009EE48C /* TimerView.swift in Sources */,
 				683A3D8C2368F77A00135D55 /* Grid.swift in Sources */,

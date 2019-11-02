@@ -9,14 +9,8 @@
 import SwiftUI
 
 struct MenuView: View {
-	let _gameView: GameView!
-	
 	@EnvironmentObject var _viewRouter: ViewRouter
-	
-	init(gameView: GameView) {
-		_gameView = gameView
-	}
-	
+		
 	var body: some View {
 		VStack(alignment: .center) {
 			Text("Sudoku")
@@ -51,6 +45,6 @@ struct MenuView: View {
 
 struct Menu_Previews: PreviewProvider {
 	static var previews: some View {
-		MenuView(gameView: GameView(grid: Grid())).environmentObject(ViewRouter())
+		MenuView().environmentObject(ViewRouter())
 	}
 }

@@ -10,55 +10,103 @@ import Foundation
 import SwiftUI
 
 struct KeyboardView: View {
+	private var _grid: Grid!
+	
+	init(grid: Grid) {
+		_grid = grid
+	}
+	
 	var body: some View {
 		VStack {
-			KeyboardRowView(min: 1, max: 3)
-			KeyboardRowView(min: 4, max: 6)
-			KeyboardRowView(min: 7, max: 9)
+			OptionsRowView()
+			NumbersRowView(grid: _grid)
 		}
 	}
 }
 
-struct KeyboardRowView: View {
-	private var _min: Int!
-	private var _max: Int!
+struct OptionsRowView: View {
+	var body: some View {
+		HStack {
+			Spacer()
+			Button(
+				action: {
+
+				},
+				label: {
+					VStack {
+						Image(systemName: "gobackward")
+							.resizable()
+							.frame(width: Screen.cellWidth / 2,
+								   height: Screen.cellWidth / 2)
+						Text("Anular")
+							.font(.custom("CaviarDreams-Bold",
+										  size: Screen.cellWidth / 2))
+							
+					}
+						.foregroundColor(Colors.MatteBlack)
+				}
+			)
+			
+			Spacer()
+			
+			Button(
+				action: {
+					
+				},
+				label: {
+					VStack {
+						Image(systemName: "xmark.circle")
+							.resizable()
+							.frame(width: Screen.cellWidth / 2,
+								   height: Screen.cellWidth / 2)
+							.foregroundColor(Colors.EraserPink)
+						Text("Apagar")
+							.font(.custom("CaviarDreams-Bold",
+										  size: Screen.cellWidth / 2))
+							.foregroundColor(Colors.MatteBlack)
+					}
+				}
+			)
+			
+			Spacer()
+		}
+		.padding(.top)
+		.padding(.bottom)
+	}
+}
+
+struct NumbersRowView: View {
+	private var _grid: Grid!
 	
-	init(min: Int, max: Int) {
-		_min = min
-		_max = max
+	init(grid: Grid) {
+		_grid = grid
 	}
 	
 	var body: some View {
 		HStack {
-			ForEach(self._min ..< self._max + 1) { i in
+			ForEach(1 ..< 10) { i in
 				Spacer()
-				KeyboardButtonView(number: i)
+				Button(
+					action: {
+						print("clicked")
+						let active = self._grid.getActive()
+						print(active!)
+						self._grid.setNumber(row: active![0],
+											 col: active![1],
+											 number: i)
+					},
+					label: {
+						Text("\(i)")
+							.foregroundColor(Colors.MatteBlack)
+							.font(.custom("CaviarDreams-Bold",
+										  size: Screen.cellWidth))
+					}
+				)
 			}
 			Spacer()
 		}
-			.padding(.bottom)
-			.padding(.top)
-	}
-}
-
-struct KeyboardButtonView: View {
-	private var _number: Int!
-	
-	init(number: Int) {
-		_number = number
-	}
-	
-	var body: some View {
-		Button(
-			action: { print("clicked") },
-			label: {
-				Text("\(_number)")
-					.frame(width: Screen.cellWidth * 2, height: Screen.cellWidth)
-					.background(Color(red: 31 / 255, green: 31 / 255, blue: 36 / 255))
-					.foregroundColor(.white)
-					.cornerRadius(10)
-					.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
-			}
-		)
+		.padding(.top)
+		.padding(.bottom)
+		.padding(.leading, -5)
 	}
 }

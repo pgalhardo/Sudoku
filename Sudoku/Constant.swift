@@ -29,4 +29,10 @@ struct Colors {
 	static let LightBlue: Color = Color(red: 218 / 255,
 								green: 225 / 255,
 								blue: 231 / 255)
+	static let MatteBlack: Color = Color(red: 31 / 255,
+								green: 31 / 255,
+								blue: 36 / 255)
+	static let EraserPink: Color = Color(red: 180 / 255,
+								green: 110 / 255,
+								blue: 110 / 255)
 }
