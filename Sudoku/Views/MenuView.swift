@@ -11,11 +11,10 @@ import SwiftUI
 struct MenuView: View {
 	let _gameView: GameView!
 	
-	@ObservedObject var _viewRouter: ViewRouter
+	@EnvironmentObject var _viewRouter: ViewRouter
 	
-	init(gameView: GameView, viewRouter: ViewRouter) {
+	init(gameView: GameView) {
 		_gameView = gameView
-		_viewRouter = viewRouter
 	}
 	
 	var body: some View {
@@ -52,6 +51,6 @@ struct MenuView: View {
 
 struct Menu_Previews: PreviewProvider {
 	static var previews: some View {
-		MenuView(gameView: GameView(grid: Grid(), viewRouter: ViewRouter()), viewRouter: ViewRouter())
+		MenuView(gameView: GameView(grid: Grid())).environmentObject(ViewRouter())
 	}
 }

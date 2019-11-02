@@ -129,8 +129,6 @@
 			children = (
 				681A72BE23661BB7002B9053 /* MenuView.swift */,
 				683A3D8D2369012200135D55 /* GameView.swift */,
-				681A72CE23662961002B9053 /* GridView.swift */,
-				684EC5F3236A353A009EE48C /* PauseView.swift */,
 				683A3D8F236916CF00135D55 /* RootView.swift */,
 			);
 			path = Views;
@@ -139,7 +137,9 @@
 		684EC5F5236A4FE4009EE48C /* Support Views */ = {
 			isa = PBXGroup;
 			children = (
+				681A72CE23662961002B9053 /* GridView.swift */,
 				684EC5F6236A4FFF009EE48C /* KeyboardView.swift */,
+				684EC5F3236A353A009EE48C /* PauseView.swift */,
 				684EC5F8236A5E89009EE48C /* TimerView.swift */,
 			);
 			path = "Support Views";

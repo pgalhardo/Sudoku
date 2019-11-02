@@ -20,7 +20,6 @@ struct Screen {
 struct Pages {
 	static let home: Int = 0
 	static let game: Int = 1
-	static let pause: Int = 2
 }
 
 struct Colors {

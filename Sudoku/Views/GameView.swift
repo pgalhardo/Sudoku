@@ -13,11 +13,10 @@ struct GameView: View {
 	let _grid: Grid!
 	
 	@State var _isPaused: Bool = false
-	@ObservedObject var _viewRouter: ViewRouter
+	@EnvironmentObject var _viewRouter: ViewRouter
 	
-	init(grid: Grid, viewRouter: ViewRouter) {
+	init(grid: Grid) {
 		_grid = grid
-		_viewRouter = viewRouter
 	}
 	
 	var body: some View {
@@ -36,7 +35,6 @@ struct GameView: View {
 							.foregroundColor(Color(red: 31 / 255,
 												   green: 31 / 255,
 												   blue: 36 / 255))
-							
 					}
 				)
 				Spacer()

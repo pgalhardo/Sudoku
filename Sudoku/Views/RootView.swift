@@ -32,35 +32,22 @@ struct RootView: View {
 	private var _gameView: GameView!
 	private var _grid: Grid!
 	
-	@ObservedObject var _viewRouter: ViewRouter
+	@EnvironmentObject var _viewRouter: ViewRouter
 	
-	init(gameView: GameView, grid: Grid, viewRouter: ViewRouter) {
+	init(gameView: GameView, grid: Grid) {
 		_gameView = gameView
 		_grid = grid
-		_viewRouter = viewRouter
 	}
 	
 	var body: some View {
 		VStack {
 			if _viewRouter.getCurrentPage() == Pages.home {
-				MenuView(gameView: _gameView, viewRouter: _viewRouter)
+				MenuView(gameView: _gameView)
 					.transition(.scale)
 			} else if _viewRouter.getCurrentPage() == Pages.game {
-				GameView(grid: _grid, viewRouter: _viewRouter)
+				GameView(grid: _grid)
 					.transition(.move(edge: .trailing))
-			} else if _viewRouter.getCurrentPage() == Pages.pause {
-				PauseView(viewRouter: _viewRouter)
-					.transition(.scale)
 			}
 		}
-	}
-}
-
-struct RootView_Previews: PreviewProvider {
-	static var previews: some View {
-		RootView(gameView: GameView(grid: Grid(),
-									viewRouter: ViewRouter()),
-				 grid: Grid(),
-				 viewRouter: ViewRouter())
 	}
 }
