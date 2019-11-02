@@ -39,6 +39,7 @@ struct RootView: View {
 			} else if _viewRouter.getCurrentPage() == Pages.game {
 				GameView()
 					.transition(.move(edge: .trailing))
+					.environmentObject(Grid())
 			}
 		}
 	}

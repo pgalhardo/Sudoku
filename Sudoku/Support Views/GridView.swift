@@ -10,60 +10,54 @@ import SwiftUI
 import Combine
 
 struct GridView: View {
-	@ObservedObject var _grid: Grid = Grid()
+	@EnvironmentObject var _grid: Grid
 	
 	var body: some View {
-		VStack {
-			ZStack {
-				VStack(spacing: -1) {
-					ForEach(0 ..< 9) { row in
-						HStack(spacing: -1) {
-							ForEach(0 ..< 9) { col in
-								Button(
-									action: {
-										self.update(row: row, col: col)
-									},
-									label: {
-										self._grid.cellAt(row: row, col: col).toString()
-									}
-								)
-									.frame(width: Screen.cellWidth,
-										   height: Screen.cellWidth)
-									.border(Color.black, width: 1)
-									.padding(.all, 0)
-									.background(self._grid.colors[row][col])
-							}
+		ZStack {
+			VStack(spacing: -1) {
+				ForEach(0 ..< 9) { row in
+					HStack(spacing: -1) {
+						ForEach(0 ..< 9) { col in
+							Button(
+								action: {
+									self.update(row: row, col: col)
+								},
+								label: {
+									self._grid.cellAt(row: row, col: col).toString()
+								}
+							)
+								.frame(width: Screen.cellWidth,
+									   height: Screen.cellWidth)
+								.border(Color.black, width: 1)
+								.padding(.all, 0)
+								.background(self._grid.colors[row][col])
 						}
 					}
 				}
-				
-				GeometryReader { geometry in
-					Path { path in
-						let hlines = 2
-						let vlines = 2
-						for index in 1 ... vlines {
-							let vpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
-							path.move(to: CGPoint(x: vpos, y: 4))
-							path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
-						}
-						for index in 1 ... hlines {
-							let hpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
-							path.move(to: CGPoint(x: 4, y: hpos))
-							path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
-						}
-					}
-						.stroke(lineWidth: Screen.lineThickness)
-				}
-				
 			}
-				.frame(width: Screen.cellWidth * 9,
-					   height: Screen.cellWidth * 9,
-					   alignment: .center)
 			
-			Spacer()
-			KeyboardView(grid: _grid)
-			Spacer()
+			GeometryReader { geometry in
+				Path { path in
+					let hlines = 2
+					let vlines = 2
+					for index in 1 ... vlines {
+						let vpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+						path.move(to: CGPoint(x: vpos, y: 4))
+						path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
+					}
+					for index in 1 ... hlines {
+						let hpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+						path.move(to: CGPoint(x: 4, y: hpos))
+						path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
+					}
+				}
+					.stroke(lineWidth: Screen.lineThickness)
+			}
+			
 		}
+			.frame(width: Screen.cellWidth * 9,
+				   height: Screen.cellWidth * 9,
+				   alignment: .center)
 	}
 		
 	func update(row: Int, col: Int) {

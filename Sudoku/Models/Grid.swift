@@ -29,11 +29,10 @@ class Grid: ObservableObject {
 	}
 		
 	func reset() {
-		_cells = [[Cell]]()
 		for i in (0 ..< 9) {
-			_cells.append([])
-			for _ in (0 ..< 9) {
-				_cells[i].append(Cell(number: 0, userInput: false))
+			for j in (0 ..< 9) {
+				_cells[i][j].setNumber(number: 0)
+				_cells[i][j].setUserInput(userInput: false)
 			}
 		}
 	}

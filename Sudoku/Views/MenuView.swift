@@ -32,7 +32,7 @@ struct MenuView: View {
 							.font(.title)
 					}
 					.padding()
-					.background(Color(red: 31 / 255, green: 31 / 255, blue: 36 / 255))
+					.background(Colors.MatteBlack)
 					.cornerRadius(40)
 					.foregroundColor(.white)
 					.shadow(radius: 20)

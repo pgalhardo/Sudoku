@@ -11,27 +11,19 @@ import SwiftUI
 import Combine
 
 struct KeyboardView: View {
-	var _grid: Grid!
-	
-	init(grid: Grid) {
-		_grid = grid
-	}
+	@EnvironmentObject var _grid: Grid
 	
 	var body: some View {
 		VStack {
-			OptionsRowView(grid: _grid)
-			NumbersRowView(grid: _grid)
+			OptionsRowView()
+			NumbersRowView()
 		}
 	}
 }
 
 struct OptionsRowView: View {
-	var _grid: Grid!
-	
-	init(grid: Grid) {
-		_grid = grid
-	}
-	
+	@EnvironmentObject var _grid: Grid
+		
 	var body: some View {
 		HStack {
 			Spacer()
@@ -53,9 +45,7 @@ struct OptionsRowView: View {
 						.foregroundColor(Colors.MatteBlack)
 				}
 			)
-			
 			Spacer()
-			
 			Button(
 				action: {
 					guard let active = self._grid.getActive() else { return }
@@ -78,21 +68,16 @@ struct OptionsRowView: View {
 					}
 				}
 			)
-			
 			Spacer()
 		}
-		.padding(.top)
-		.padding(.bottom)
+			.padding(.top)
+			.padding(.bottom)
 	}
 }
 
 struct NumbersRowView: View {
-	var _grid: Grid!
-	
-	init(grid: Grid) {
-		_grid = grid
-	}
-		
+	@EnvironmentObject var _grid: Grid
+			
 	var body: some View {
 		HStack {
 			ForEach(1 ..< 10) { i in
@@ -115,8 +100,8 @@ struct NumbersRowView: View {
 			}
 			Spacer()
 		}
-		.padding(.top)
-		.padding(.bottom)
-		.padding(.leading, -5)
+			.padding(.top)
+			.padding(.bottom)
+			.padding(.leading, -5)
 	}
 }

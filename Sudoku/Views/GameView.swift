@@ -12,11 +12,15 @@ import SwiftUI
 struct GameView: View {
 	@State private var _isPaused: Bool = false
 	@EnvironmentObject var _viewRouter: ViewRouter
+	@EnvironmentObject var _grid: Grid
 		
 	var body: some View {
 		VStack {
 			TopBarView()
-			GridView()
+			GridView().environmentObject(_grid)
+			Spacer()
+			KeyboardView().environmentObject(_grid)
+			Spacer()
 		}
 	}
 }
