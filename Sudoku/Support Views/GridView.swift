@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct GridView: View {
 	@EnvironmentObject var _grid: Grid
@@ -23,9 +22,10 @@ struct GridView: View {
 									   height: Screen.cellWidth)
 								.border(Color.black, width: 1)
 								.padding(.all, 0)
-								.background(self._grid.colors[row][col])
+								.background(self._grid.cellAt(row: row, col: col).getColor())
 								.onTapGesture {
 									self.update(row: row, col: col)
+									self._grid.objectWillChange.send()
 								}
 						}
 					}
@@ -76,15 +76,15 @@ struct GridView: View {
 		if (cell == nil) { return }
 		let row = cell![0], col = cell![1]
 		
-		if _grid.colors[row][col] == Color.white {
+		if self._grid.cellAt(row: row, col: col).getColor() == Color.white {
 			self.toggleLineColor(cell: cell, rowMode: true)
 			self.toggleLineColor(cell: cell, rowMode: false)
-			_grid.colors[row][col] = Colors.ActiveBlue
+			_grid.cellAt(row: row, col: col).setColor(color: Colors.ActiveBlue)
 		}
 		else {
 			for i in (0 ..< 9) {
 				for j in (0 ..< 9) {
-					_grid.colors[i][j] = Color.white
+					_grid.cellAt(row: i, col: j).setColor(color: Color.white)
 				}
 			}
 		}
@@ -99,9 +99,9 @@ struct GridView: View {
 				continue
 			}
 			else if rowMode == true {
-				_grid.colors[row][i] = Colors.LightBlue
+				_grid.cellAt(row: row, col: i).setColor(color: Colors.LightBlue)
 			} else {
-				_grid.colors[i][col] = Colors.LightBlue
+				_grid.cellAt(row: i, col: col).setColor(color: Colors.LightBlue)
 			}
 		}
 	}

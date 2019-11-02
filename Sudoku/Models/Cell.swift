@@ -8,23 +8,26 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
 class Cell {
-	var _number: Int!
-	var _userInput:Bool!
-
-	init(number: Int, userInput: Bool) {
-		self._number = number
-		_userInput = userInput
-	}
+	var _value: Int = 0
+	var _userInput: Bool = false
+	var _color: Color = Color.white
 		
-	func getNumber() -> Int {
-		return _number
+	func getValue() -> Int {
+		return _value
 	}
 	
-	func setNumber(number: Int) {
-		_number = number
+	func getColor() -> Color {
+		return _color
+	}
+	
+	func setValue(value: Int) {
+		_value = value
+	}
+	
+	func setColor(color: Color) {
+		_color = color
 	}
 	
 	func setUserInput(userInput: Bool) {
@@ -32,12 +35,12 @@ class Cell {
 	}
 		
 	func toString() -> Text {
-		if (_number != 0 && _userInput) {
-			return Text("\(_number)")
+		if (_value != 0 && _userInput) {
+			return Text("\(_value)")
 				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
 				.foregroundColor(Colors.DeepBlue)
-		} else if (_number != 0) {
-			return Text("\(_number)")
+		} else if (_value != 0) {
+			return Text("\(_value)")
 				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
 				.foregroundColor(Colors.MatteBlack)
 		}

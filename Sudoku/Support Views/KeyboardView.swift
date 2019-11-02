@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
 struct KeyboardView: View {
 	@EnvironmentObject var _grid: Grid
@@ -49,9 +48,8 @@ struct OptionsRowView: View {
 			Button(
 				action: {
 					guard let active = self._grid.getActive() else { return }
-					self._grid.setNumber(row: active[0],
-										 col: active[1],
-										 number: 0)
+					self._grid.cellAt(row: active[0],
+									  col: active[1]).setValue(value: 0)
 					self._grid.objectWillChange.send()
 				},
 				label: {
@@ -85,9 +83,8 @@ struct NumbersRowView: View {
 				Button(
 					action: {
 						guard let active = self._grid.getActive() else { return }
-						self._grid.setNumber(row: active[0],
-											 col: active[1],
-											 number: i)
+						self._grid.cellAt(row: active[0],
+										  col: active[1]).setValue(value: i)
 						self._grid.objectWillChange.send()
 					},
 					label: {

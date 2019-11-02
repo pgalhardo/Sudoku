@@ -17,9 +17,9 @@ struct GameView: View {
 	var body: some View {
 		VStack {
 			TopBarView()
-			GridView().environmentObject(_grid)
+			GridView()
 			Spacer()
-			KeyboardView().environmentObject(_grid)
+			KeyboardView()
 			Spacer()
 		}
 	}
