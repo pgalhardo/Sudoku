@@ -7,65 +7,63 @@
 //
 
 import SwiftUI
-import UIKit
-
-
+import Combine
 
 struct GridView: View {
-	private var _grid: Grid!
-	
-	init(grid: Grid) {
-		_grid = grid
-	}
-	
-	@State private var colors: [[Color]] = Array(repeating:
-		Array(repeating: Color.white, count: 9), count: 9)
+	@ObservedObject var _grid: Grid = Grid()
 	
 	var body: some View {
-		ZStack {
-			VStack(spacing: -1) {
-				ForEach(0 ..< 9) { row in
-					HStack(spacing: -1) {
-						ForEach(0 ..< 9) { col in
-							Button(
-								action: {
-									self.update(row: row, col: col)
-								},
-								label: {
-									self._grid.cellAt(row: row, col: col).toString()
-								}
-							)
-							.frame(width: Screen.cellWidth, height: Screen.cellWidth)
-							.border(Color.black, width: 1)
-							.padding(.all, 0)
-							.foregroundColor(.black)
-							.background(self.colors[row][col])
+		VStack {
+			ZStack {
+				VStack(spacing: -1) {
+					ForEach(0 ..< 9) { row in
+						HStack(spacing: -1) {
+							ForEach(0 ..< 9) { col in
+								Button(
+									action: {
+										self.update(row: row, col: col)
+									},
+									label: {
+										self._grid.cellAt(row: row, col: col).toString()
+									}
+								)
+									.frame(width: Screen.cellWidth,
+										   height: Screen.cellWidth)
+									.border(Color.black, width: 1)
+									.padding(.all, 0)
+									.background(self._grid.colors[row][col])
+							}
 						}
 					}
 				}
-			}
-			
-			GeometryReader { geometry in
-				Path { path in
-					let hlines = 2
-					let vlines = 2
-					for index in 1 ... vlines {
-						let vpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
-						path.move(to: CGPoint(x: vpos, y: 4))
-						path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
+				
+				GeometryReader { geometry in
+					Path { path in
+						let hlines = 2
+						let vlines = 2
+						for index in 1 ... vlines {
+							let vpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+							path.move(to: CGPoint(x: vpos, y: 4))
+							path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
+						}
+						for index in 1 ... hlines {
+							let hpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+							path.move(to: CGPoint(x: 4, y: hpos))
+							path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
+						}
 					}
-					for index in 1 ... hlines {
-						let hpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
-						path.move(to: CGPoint(x: 4, y: hpos))
-						path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
-					}
+						.stroke(lineWidth: Screen.lineThickness)
 				}
-				.stroke(lineWidth: Screen.lineThickness)
+				
 			}
+				.frame(width: Screen.cellWidth * 9,
+					   height: Screen.cellWidth * 9,
+					   alignment: .center)
 			
-		}.frame(width: Screen.cellWidth * 9,
-				height: Screen.cellWidth * 9,
-				alignment: .center)
+			Spacer()
+			KeyboardView(grid: _grid)
+			Spacer()
+		}
 	}
 		
 	func update(row: Int, col: Int) {
@@ -86,22 +84,18 @@ struct GridView: View {
 	}
 	
 	func toggleColor(cell: [Int]?) {
-		
-		if (cell == nil) {
-			return
-		}
-		
+		if (cell == nil) { return }
 		let row = cell![0], col = cell![1]
 		
-		if colors[row][col] == Color.white {
+		if _grid.colors[row][col] == Color.white {
 			self.toggleLineColor(cell: cell, rowMode: true)
 			self.toggleLineColor(cell: cell, rowMode: false)
-			colors[row][col] = Colors.ActiveBlue
+			_grid.colors[row][col] = Colors.ActiveBlue
 		}
 		else {
 			for i in (0 ..< 9) {
 				for j in (0 ..< 9) {
-					colors[i][j] = Color.white
+					_grid.colors[i][j] = Color.white
 				}
 			}
 		}
@@ -116,9 +110,9 @@ struct GridView: View {
 				continue
 			}
 			else if rowMode == true {
-				colors[row][i] = Colors.LightBlue
+				_grid.colors[row][i] = Colors.LightBlue
 			} else {
-				colors[i][col] = Colors.LightBlue
+				_grid.colors[i][col] = Colors.LightBlue
 			}
 		}
 	}
@@ -126,6 +120,6 @@ struct GridView: View {
 
 struct GridView_Previews: PreviewProvider {
 	static var previews: some View {
-		GridView(grid: Grid())
+		GridView()
 	}
 }

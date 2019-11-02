@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 struct TimerView : View {
-    
 	@State private var _hour: Int = 0
 	@State private var _min: Int = 0
 	@State private var _sec: Int = 0

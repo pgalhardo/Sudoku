@@ -10,17 +10,13 @@ import Foundation
 import SwiftUI
 
 struct GameView: View {
-	@State private var _grid: Grid = Grid()
 	@State private var _isPaused: Bool = false
 	@EnvironmentObject var _viewRouter: ViewRouter
 		
 	var body: some View {
 		VStack {
 			TopBarView()
-			GridView(grid: _grid)
-			Spacer()
-			KeyboardView(grid: _grid)
-			Spacer()
+			GridView()
 		}
 	}
 }
@@ -44,11 +40,11 @@ struct TopBarView: View {
 						.foregroundColor(Colors.MatteBlack)
 				}
 			)
-			Spacer()
 			
+			Spacer()
 			TimerView()
-			
 			Spacer()
+			
 			Button(
 				action: {
 					

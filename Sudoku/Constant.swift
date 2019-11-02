@@ -35,4 +35,7 @@ struct Colors {
 	static let EraserPink: Color = Color(red: 180 / 255,
 								green: 110 / 255,
 								blue: 110 / 255)
+	static let DeepBlue: Color = Color(red: 45 / 255,
+								green: 75 / 255,
+								blue: 142 / 255)
 }

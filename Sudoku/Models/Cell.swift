@@ -8,16 +8,17 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class Cell {
-	private var _number: Int!
-	private var _userInput:Bool!
+	var _number: Int!
+	var _userInput:Bool!
 
 	init(number: Int, userInput: Bool) {
 		self._number = number
 		_userInput = userInput
 	}
-	
+		
 	func getNumber() -> Int {
 		return _number
 	}
@@ -26,10 +27,19 @@ class Cell {
 		_number = number
 	}
 	
+	func setUserInput(userInput: Bool) {
+		_userInput = userInput
+	}
+		
 	func toString() -> Text {
-		if (_number != 0) {
+		if (_number != 0 && _userInput) {
 			return Text("\(_number)")
 				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
+				.foregroundColor(Colors.DeepBlue)
+		} else if (_number != 0) {
+			return Text("\(_number)")
+				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
+				.foregroundColor(Colors.MatteBlack)
 		}
 		return Text(" ")
 	}

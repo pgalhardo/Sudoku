@@ -8,11 +8,15 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
-class Grid {
-	private var _cells = [[Cell]]()
+class Grid: ObservableObject {
 	private var _active: [Int]?
 	private var _previous: [Int]?
+	
+	@Published var _cells: [[Cell]] = [[Cell]]()
+	@Published var colors: [[Color]] = Array(repeating:
+		Array(repeating: Color.white, count: 9), count: 9)
 	
 	init() {
 		for i in (0 ..< 9) {
@@ -21,10 +25,9 @@ class Grid {
 				_cells[i].append(Cell(number: 0, userInput: false))
 			}
 		}
-		
 		self.fill()
 	}
-	
+		
 	func reset() {
 		_cells = [[Cell]]()
 		for i in (0 ..< 9) {
@@ -44,8 +47,8 @@ class Grid {
 	}
 	
 	func setNumber(row: Int, col: Int, number: Int) {
-		let cell = cellAt(row: row, col: col)
-		cell.setNumber(number: number)
+		_cells[row][col].setNumber(number: number)
+		_cells[row][col].setUserInput(userInput: true)
 	}
 	
 	func getRow(row: Int) -> [Cell] {

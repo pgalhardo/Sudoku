@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 struct PauseView: View {
-	
 	@ObservedObject var _viewRouter: ViewRouter
 	
 	init(viewRouter: ViewRouter) {

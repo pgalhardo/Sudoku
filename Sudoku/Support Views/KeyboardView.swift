@@ -8,9 +8,10 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 struct KeyboardView: View {
-	private var _grid: Grid!
+	var _grid: Grid!
 	
 	init(grid: Grid) {
 		_grid = grid
@@ -18,13 +19,19 @@ struct KeyboardView: View {
 	
 	var body: some View {
 		VStack {
-			OptionsRowView()
+			OptionsRowView(grid: _grid)
 			NumbersRowView(grid: _grid)
 		}
 	}
 }
 
 struct OptionsRowView: View {
+	var _grid: Grid!
+	
+	init(grid: Grid) {
+		_grid = grid
+	}
+	
 	var body: some View {
 		HStack {
 			Spacer()
@@ -51,7 +58,11 @@ struct OptionsRowView: View {
 			
 			Button(
 				action: {
-					
+					guard let active = self._grid.getActive() else { return }
+					self._grid.setNumber(row: active[0],
+										 col: active[1],
+										 number: 0)
+					self._grid.objectWillChange.send()
 				},
 				label: {
 					VStack {
@@ -76,24 +87,23 @@ struct OptionsRowView: View {
 }
 
 struct NumbersRowView: View {
-	private var _grid: Grid!
+	var _grid: Grid!
 	
 	init(grid: Grid) {
 		_grid = grid
 	}
-	
+		
 	var body: some View {
 		HStack {
 			ForEach(1 ..< 10) { i in
 				Spacer()
 				Button(
 					action: {
-						print("clicked")
-						let active = self._grid.getActive()
-						print(active!)
-						self._grid.setNumber(row: active![0],
-											 col: active![1],
+						guard let active = self._grid.getActive() else { return }
+						self._grid.setNumber(row: active[0],
+											 col: active[1],
 											 number: i)
+						self._grid.objectWillChange.send()
 					},
 					label: {
 						Text("\(i)")
