@@ -18,19 +18,15 @@ struct GridView: View {
 				ForEach(0 ..< 9) { row in
 					HStack(spacing: -1) {
 						ForEach(0 ..< 9) { col in
-							Button(
-								action: {
-									self.update(row: row, col: col)
-								},
-								label: {
-									self._grid.cellAt(row: row, col: col).toString()
-								}
-							)
+							self._grid.cellAt(row: row, col: col).toString()
 								.frame(width: Screen.cellWidth,
 									   height: Screen.cellWidth)
 								.border(Color.black, width: 1)
 								.padding(.all, 0)
 								.background(self._grid.colors[row][col])
+								.onTapGesture {
+									self.update(row: row, col: col)
+								}
 						}
 					}
 				}
@@ -53,7 +49,6 @@ struct GridView: View {
 				}
 					.stroke(lineWidth: Screen.lineThickness)
 			}
-			
 		}
 			.frame(width: Screen.cellWidth * 9,
 				   height: Screen.cellWidth * 9,
