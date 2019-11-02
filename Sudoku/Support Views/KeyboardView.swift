@@ -85,6 +85,8 @@ struct NumbersRowView: View {
 						guard let active = self._grid.getActive() else { return }
 						self._grid.cellAt(row: active[0],
 										  col: active[1]).setValue(value: i)
+						self._grid.cellAt(row: active[0],
+										  col: active[1]).setUserInput(userInput: true)
 						self._grid.objectWillChange.send()
 					},
 					label: {
