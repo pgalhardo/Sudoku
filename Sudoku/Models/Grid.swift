@@ -110,7 +110,7 @@ class Grid {
 		// aim to the upper left corner of the desired square
 		let row: Int = (row / 3) * 3
 		let col: Int = (col / 3) * 3
-		var square:[[Int]] = []
+		var square: [[Int]] = []
 		
 		for i in (row ..< row + 3) {
 			square.append([_cells[i][col].getNumber(),

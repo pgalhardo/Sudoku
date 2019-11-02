@@ -25,4 +25,12 @@ class Cell {
 	func setNumber(number: Int) {
 		_number = number
 	}
+	
+	func toString() -> Text {
+		if (_number != 0) {
+			return Text("\(_number)")
+				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
+		}
+		return Text(" ")
+	}
 }

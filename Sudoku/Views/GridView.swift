@@ -33,7 +33,7 @@ struct GridView: View {
 									self.update(row: row, col: col)
 								},
 								label: {
-									self.buttonLabel(row: row, col: col)
+									self._grid.cellAt(row: row, col: col).toString()
 								}
 							)
 							.frame(width: Screen.cellWidth, height: Screen.cellWidth)
@@ -68,18 +68,7 @@ struct GridView: View {
 				height: Screen.cellWidth * 9,
 				alignment: .center)
 	}
-	
-	func buttonLabel(row: Int, col: Int) -> Text {
 		
-		let cell = _grid.cellAt(row: row, col: col)
-		let number = cell.getNumber()
-		if (number != 0) {
-			return Text("\(number)")
-				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
-		}
-		return Text(" ")
-	}
-	
 	func update(row: Int, col: Int) {
 		previous = active
 		active = [row, col]
@@ -104,8 +93,8 @@ struct GridView: View {
 		}
 		
 		if colors[row][col] == Color.white {
-			self.toggleLine(cell: cell, rowMode: true)
-			self.toggleLine(cell: cell, rowMode: false)
+			self.toggleLineColor(cell: cell, rowMode: true)
+			self.toggleLineColor(cell: cell, rowMode: false)
 			colors[row][col] = Colors.ActiveBlue
 		}
 		else {
@@ -117,7 +106,7 @@ struct GridView: View {
 		}
 	}
 		
-	func toggleLine(cell: [Int], rowMode: Bool) {
+	func toggleLineColor(cell: [Int], rowMode: Bool) {
 		let row = cell[0], col = cell[1]
 		
 		for i in (0 ..< 9) {
