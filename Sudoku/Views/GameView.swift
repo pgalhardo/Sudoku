@@ -10,14 +10,14 @@ import Foundation
 import SwiftUI
 
 struct GameView: View {
-	@State private var _isPaused: Bool = false
+	@State var _isPaused: Bool = false
 	@EnvironmentObject var _viewRouter: ViewRouter
 	@EnvironmentObject var _grid: Grid
 	@EnvironmentObject var _settings: Settings
 		
 	var body: some View {
 		VStack {
-			GameTopBarView()
+			GameTopBarView(_isPaused: $_isPaused)
 			GridView()
 			Spacer()
 			KeyboardView()
@@ -29,6 +29,8 @@ struct GameView: View {
 struct GameTopBarView: View {
 	@EnvironmentObject var _viewRouter: ViewRouter
 	@EnvironmentObject var _settings: Settings
+	@Binding var _isPaused: Bool
+	var _timerView = TimerView()
 	
 	var body: some View {
 		HStack {
@@ -49,22 +51,25 @@ struct GameTopBarView: View {
 			
 			Spacer()
 			if (_settings._timer == true) {
-				TimerView()
+				_timerView
 				Spacer()
+				
+				Button(
+					action: {
+						self._isPaused.toggle()
+						self._timerView.toggleTimer()
+					},
+					label: {
+						Image(systemName: self._isPaused ? "play.fill" : "pause.fill")
+							.resizable()
+							.frame(width: Screen.cellWidth / 2,
+								   height: Screen.cellWidth / 2)
+							.foregroundColor(Colors.MatteBlack)
+					}
+				)
 			}
 		
-			Button(
-				action: {
-					
-				},
-				label: {
-					Image(systemName: "pause.fill")
-						.resizable()
-						.frame(width: Screen.cellWidth / 2,
-							   height: Screen.cellWidth / 2)
-						.foregroundColor(Colors.MatteBlack)
-				}
-			)
+			
 		}
 		.padding(.top)
 		.padding(.leading)

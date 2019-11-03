@@ -9,10 +9,17 @@
 import Foundation
 import SwiftUI
 
+private var _isPaused: Bool = false
+
 struct TimerView : View {
 	@State private var _hour: Int = 0
 	@State private var _min: Int = 0
 	@State private var _sec: Int = 0
+	
+	init() {
+		_isPaused = false
+	}
+	
     let _timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
@@ -21,15 +28,17 @@ struct TimerView : View {
 													   self._sec]))
 			.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
             .onReceive(_timer) { _ in
-                self._sec += 1
-				if self._sec == 60 {
-					self._min += 1
-					self._sec = 0
-				}
-				
-				if self._min == 60 {
-					self._hour += 1
-					self._min = 0
+				if (!_isPaused) {
+					self._sec += 1
+					if self._sec == 60 {
+						self._min += 1
+						self._sec = 0
+					}
+					
+					if self._min == 60 {
+						self._hour += 1
+						self._min = 0
+					}
 				}
             }
     }
@@ -39,6 +48,10 @@ struct TimerView : View {
 			return String(format: "%02d:", arguments: [self._hour])
 		}
 		return String("")
+	}
+	
+	func toggleTimer() {
+		_isPaused.toggle()
 	}
 }
 
