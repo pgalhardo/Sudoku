@@ -93,7 +93,6 @@ struct MenuView: View {
 			)
 		}
 			.shadow(radius: 5)
-			.animation(Animation.easeOut(duration: 0.6).delay(0.1))
 	}
 }
 
