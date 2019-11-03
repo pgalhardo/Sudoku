@@ -17,22 +17,22 @@ struct GridView: View {
 		ZStack {
 			Group {
 				VStack(spacing: -1) {
-						ForEach(0 ..< 9) { row in
-							HStack(spacing: -1) {
-								ForEach(0 ..< 9) { col in
-									self._grid.cellAt(row: row, col: col).toString()
-										.frame(width: Screen.cellWidth,
-											   height: Screen.cellWidth)
-										.border(Color.black, width: 1)
-										.padding(.all, 0)
-										.background(self._grid.cellAt(row: row, col: col).getColor())
-										.onTapGesture {
-											self.update(row: row, col: col)
-											self._grid.objectWillChange.send()
-										}
-								}
+					ForEach(0 ..< 9) { row in
+						HStack(spacing: -1) {
+							ForEach(0 ..< 9) { col in
+								self._grid.cellAt(row: row, col: col).toString()
+									.frame(width: Screen.cellWidth,
+										   height: Screen.cellWidth)
+									.border(Color.black, width: 1)
+									.padding(.all, 0)
+									.background(self._grid.cellAt(row: row, col: col).getColor())
+									.onTapGesture {
+										self.update(row: row, col: col)
+										self._grid.objectWillChange.send()
+									}
 							}
 						}
+					}
 				}
 					
 				GeometryReader { geometry in
@@ -59,7 +59,7 @@ struct GridView: View {
 			
 			if (_isPaused) {
 				VStack {
-					Text("Em Pausa")
+					Text("Em pausa ☕")
 						.font(.custom("CaviarDreams-Bold", size: 50))
 						.foregroundColor(.black)
 						.shadow(radius: 10)
@@ -68,7 +68,6 @@ struct GridView: View {
 						.foregroundColor(.black)
 						.shadow(radius: 10)
 				}
-				
 			}
 		}
 			.frame(width: Screen.cellWidth * 9,

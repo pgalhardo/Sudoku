@@ -98,7 +98,7 @@ struct KeyboardView: View {
 				.padding(.leading, -5)
 		}
 			.blur(radius: _isPaused ? 5 : 0)
-			.opacity(_isPaused ? 0.5 : 1)
+			.opacity(_isPaused ? 0.7 : 1)
 			.disabled(_isPaused)
 	}
 }

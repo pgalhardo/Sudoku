@@ -39,6 +39,17 @@ struct SettingsView: View {
 							.font(.custom("CaviarDreams-Bold", size: 12))
 							.foregroundColor(Color.gray)
 					}
+					
+					VStack(alignment: .leading) {
+						Toggle(isOn: $_settings._hideUsed) {
+							Text("Ocultar números usados")
+								.font(.custom("CaviarDreams-Bold", size: 20))
+						}.disabled(true)
+					
+						Text("Oculta os números que já não estão disponíveis para serem colocados")
+							.font(.custom("CaviarDreams-Bold", size: 12))
+							.foregroundColor(Color.gray)
+					}
 				}
 					.padding(.top)
 					.padding(.leading)
@@ -52,7 +63,7 @@ struct SettingsView: View {
 						}
 					}
 				}
-					.padding(.top, 50)
+					.padding(.top, 60)
 					.padding(.leading)
 					.padding(.trailing)
 				

@@ -11,6 +11,7 @@ import Foundation
 class Settings: ObservableObject {
 	@Published var _highlightAreas: Bool = true
 	@Published var _highlightSimilar: Bool = false
+	@Published var _hideUsed: Bool = false
 	@Published var _timer: Bool = true
 	
 	func setHighlightAreas(value: Bool) {

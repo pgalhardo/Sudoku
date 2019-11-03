@@ -40,4 +40,7 @@ struct Colors {
 	static let DeepBlue: Color = Color(red: 45 / 255,
 								green: 75 / 255,
 								blue: 142 / 255)
+	static let Orange: Color = Color(red: 249 / 255,
+								green: 128 / 255,
+								blue: 44 / 255)
 }
