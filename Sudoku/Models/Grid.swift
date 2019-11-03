@@ -87,7 +87,7 @@ class Grid: ObservableObject {
 	}
 	
 	func completion() -> Int {
-		var filledCells = 0
+		var filledCells: Double = 0
 		
 		for row in (0 ..< 9) {
 			for col in (0 ..< 9) {
@@ -96,7 +96,7 @@ class Grid: ObservableObject {
 				}
 			}
 		}
-		return filledCells / 81 * 100
+		return Int(filledCells / 81 * 100)
 	}
 	
 	// Single cell actions
