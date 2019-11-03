@@ -40,7 +40,7 @@ struct RootView: View {
 			} else if _viewRouter.getCurrentPage() == Pages.game {
 				GameView()
 					.transition(AnyTransition.opacity.combined(with: .slide))
-					.environmentObject(Grid())
+					.environmentObject(Grid(puzzle: Puzzles.hard))
 					.environmentObject(_settings)
 			} else if _viewRouter.getCurrentPage() == Pages.settings {
 				SettingsView()

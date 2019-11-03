@@ -25,7 +25,14 @@ class Grid: ObservableObject {
 		self.fill()
 	}
 	
-	// Grid's core functions
+	init(puzzle: String) {
+		self.load(puzzle: puzzle)
+	}
+	
+	/*==========================================================================
+		Grid's core functions
+	==========================================================================*/
+	
 	func reset() {
 		for i in (0 ..< 9) {
 			for j in (0 ..< 9) {
@@ -44,6 +51,40 @@ class Grid: ObservableObject {
 			}
 		}
 		return true
+	}
+	
+	func load(puzzle: String) {
+		var str = puzzle
+		
+		for i in (0 ..< 9) {
+			let row = str.prefix(9)
+			_cells.append([])
+			
+			for j in row {
+				guard let value = Int(String(j)) else { return }
+				_cells[i].append(Cell(value: value))
+			}
+			str = String(str.dropFirst(9))
+		}
+	}
+	
+	func store() -> String {
+		var str = ""
+		
+		for row in (0 ..< 9) {
+			for col in (0 ..< 9) {
+				str.append(String(_cells[row][col].getValue()))
+			}
+		}
+		return str
+	}
+	
+	func toString() {
+		for row in (0 ..< 9) {
+			for col in (0 ..< 9) {
+				print(_cells[row][col].getValue())
+			}
+		}
 	}
 	
 	/*
@@ -99,7 +140,10 @@ class Grid: ObservableObject {
 		return Int(filledCells / 81 * 100)
 	}
 	
-	// Single cell actions
+	/*==========================================================================
+		Single cell actions
+	==========================================================================*/
+	
 	func cellAt(row: Int, col: Int) -> Cell {
 		return _cells[row][col]
 	}
@@ -122,7 +166,22 @@ class Grid: ObservableObject {
 		_active = nil
 	}
 	
-	// Groups of cells
+	func deleteValue(row: Int, col: Int) -> Bool {
+		let cell = _cells[row][col]
+		
+		if cell.getUserInput() == true {
+			cell.setValue(value: 0)
+			return true
+		} else {
+			// grid does not allow default values
+			return false
+		}
+	}
+	
+	/*==========================================================================
+		Groups of cells
+	==========================================================================*/
+	
 	func getRow(row: Int) -> [Cell] {
 		return _cells[row]
 	}

@@ -37,15 +37,17 @@ struct KeyboardView: View {
 				Spacer()
 				Button(
 					action: {
-						guard
-							let active = self._grid.getActive()
-						else {
-							return
-						}
+						guard let active = self._grid.getActive()
+						else { return }
 						
-						self._grid.cellAt(row: active[0],
-										  col: active[1]).setValue(value: 0)
-						self._grid.objectWillChange.send()
+						if self._grid.deleteValue(row: active[0],
+												  col: active[1]) == false {
+							// failed to delete default value
+							
+							
+						} else {
+							self._grid.objectWillChange.send()
+						}
 					},
 					label: {
 						VStack {

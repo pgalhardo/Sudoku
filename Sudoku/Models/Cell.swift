@@ -10,12 +10,24 @@ import Foundation
 import SwiftUI
 
 class Cell {
-	var _value: Int = 0
+	var _value: Int!
 	var _userInput: Bool = false
 	var _color: Color = Color.white
 		
+	init() {
+		_value = 0
+	}
+	
+	init(value: Int) {
+		_value = value
+	}
+	
 	func getValue() -> Int {
 		return _value
+	}
+	
+	func getUserInput() -> Bool {
+		return _userInput
 	}
 	
 	func getColor() -> Color {
