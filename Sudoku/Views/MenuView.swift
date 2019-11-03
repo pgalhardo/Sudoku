@@ -14,7 +14,7 @@ struct MenuView: View {
 	var body: some View {
 		VStack(alignment: .center) {
 			Text("Sudoku")
-				.font(.custom("Shevana", size: 120))
+				.font(.custom("CaviarDreams-Bold", size: 80))
 				.foregroundColor(.black)
 				.shadow(radius: 10)
 
@@ -27,19 +27,73 @@ struct MenuView: View {
 				label: {
 					HStack {
 						Image(systemName: "gamecontroller.fill")
-						Text("Jogar")
+							.padding(.leading, -6)
+							.padding(.trailing, 7)
+						Text("Novo jogo")
 							.fontWeight(.bold)
-							.font(.title)
+							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
-					.padding()
-					.background(Colors.MatteBlack)
-					.cornerRadius(40)
-					.foregroundColor(.white)
-					.shadow(radius: 20)
+						.frame(width: Screen.width * 0.6,
+							   height: 50)
+						.background(Colors.MatteBlack)
+						.cornerRadius(40)
+						.foregroundColor(.white)
+						.shadow(radius: 20)
+				}
+			)
+			
+			Button(
+				action: {
+					withAnimation(.easeIn) {
+						self._viewRouter.setCurrentPage(page: Pages.statistics)
+					}
+				},
+				label: {
+					HStack {
+						Image(systemName: "chart.bar.fill")
+							.padding(.leading, 4)
+						Text("Estatísticas")
+							.fontWeight(.bold)
+							.font(.custom("CaviarDreams-Bold", size: 20))
+							.padding(.leading, 5)
+					}
+						.frame(width: Screen.width * 0.6,
+							   height: 50)
+						.background(Colors.MatteBlack)
+						.cornerRadius(40)
+						.foregroundColor(.white)
+						.shadow(radius: 20)
+				}
+			)
+			
+			Button(
+				action: {
+					withAnimation {
+						self._viewRouter.setCurrentPage(page: Pages.settings)
+					}
+				},
+				label: {
+					HStack {
+						Image(systemName: "gear")
+							.padding(.leading, -1)
+						Text("Definições")
+							.fontWeight(.bold)
+							.font(.custom("CaviarDreams-Bold", size: 20))
+							.padding(.leading, 5)
+							.padding(.trailing, 5)
+					}
+						.frame(width: Screen.width * 0.6,
+							   height: 50)
+						.background(Colors.MatteBlack)
+						.cornerRadius(40)
+						.foregroundColor(.white)
+						.shadow(radius: 20)
+					
 				}
 			)
 		}
-		.shadow(radius: 5)
+			.shadow(radius: 5)
+			.animation(Animation.easeOut(duration: 0.6).delay(0.1))
 	}
 }
 

@@ -16,7 +16,7 @@ struct GameView: View {
 		
 	var body: some View {
 		VStack {
-			TopBarView()
+			GameTopBarView()
 			GridView()
 			Spacer()
 			KeyboardView()
@@ -25,7 +25,7 @@ struct GameView: View {
 	}
 }
 
-struct TopBarView: View {
+struct GameTopBarView: View {
 	@EnvironmentObject var _viewRouter: ViewRouter
 	
 	var body: some View {

@@ -35,11 +35,17 @@ struct RootView: View {
 		VStack {
 			if _viewRouter.getCurrentPage() == Pages.home {
 				MenuView()
-					.transition(.scale)
+					.transition(AnyTransition.opacity.combined(with: .slide))
 			} else if _viewRouter.getCurrentPage() == Pages.game {
 				GameView()
-					.transition(.move(edge: .trailing))
+					.transition(AnyTransition.opacity.combined(with: .slide))
 					.environmentObject(Grid())
+			} else if _viewRouter.getCurrentPage() == Pages.settings {
+				SettingsView()
+					.transition(AnyTransition.opacity.combined(with: .slide))
+			} else if _viewRouter.getCurrentPage() == Pages.statistics {
+				StatisticsView()
+					.transition(AnyTransition.opacity.combined(with: .slide))
 			}
 		}
 	}

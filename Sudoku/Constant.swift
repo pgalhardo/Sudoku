@@ -20,6 +20,8 @@ struct Screen {
 struct Pages {
 	static let home: Int = 0
 	static let game: Int = 1
+	static let settings: Int = 2
+	static let statistics: Int = 3
 }
 
 struct Colors {
