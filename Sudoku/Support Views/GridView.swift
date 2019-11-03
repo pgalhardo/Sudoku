@@ -11,44 +11,64 @@ import SwiftUI
 struct GridView: View {
 	@EnvironmentObject var _grid: Grid
 	@EnvironmentObject var _settings: Settings
+	@Binding var _isPaused: Bool
 	
 	var body: some View {
 		ZStack {
-			VStack(spacing: -1) {
-				ForEach(0 ..< 9) { row in
-					HStack(spacing: -1) {
-						ForEach(0 ..< 9) { col in
-							self._grid.cellAt(row: row, col: col).toString()
-								.frame(width: Screen.cellWidth,
-									   height: Screen.cellWidth)
-								.border(Color.black, width: 1)
-								.padding(.all, 0)
-								.background(self._grid.cellAt(row: row, col: col).getColor())
-								.onTapGesture {
-									self.update(row: row, col: col)
-									self._grid.objectWillChange.send()
+			Group {
+				VStack(spacing: -1) {
+						ForEach(0 ..< 9) { row in
+							HStack(spacing: -1) {
+								ForEach(0 ..< 9) { col in
+									self._grid.cellAt(row: row, col: col).toString()
+										.frame(width: Screen.cellWidth,
+											   height: Screen.cellWidth)
+										.border(Color.black, width: 1)
+										.padding(.all, 0)
+										.background(self._grid.cellAt(row: row, col: col).getColor())
+										.onTapGesture {
+											self.update(row: row, col: col)
+											self._grid.objectWillChange.send()
+										}
 								}
+							}
+						}
+				}
+					
+				GeometryReader { geometry in
+					Path { path in
+						let hlines = 2
+						let vlines = 2
+						for index in 1 ... vlines {
+							let vpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+							path.move(to: CGPoint(x: vpos, y: 4))
+							path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
+						}
+						for index in 1 ... hlines {
+							let hpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+							path.move(to: CGPoint(x: 4, y: hpos))
+							path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
 						}
 					}
+						.stroke(lineWidth: Screen.lineThickness)
 				}
 			}
+				.blur(radius: _isPaused ? 5 : 0)
+				.opacity(_isPaused ? 0.5 : 1)
+				.disabled(_isPaused)
 			
-			GeometryReader { geometry in
-				Path { path in
-					let hlines = 2
-					let vlines = 2
-					for index in 1 ... vlines {
-						let vpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
-						path.move(to: CGPoint(x: vpos, y: 4))
-						path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
-					}
-					for index in 1 ... hlines {
-						let hpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
-						path.move(to: CGPoint(x: 4, y: hpos))
-						path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
-					}
+			if (_isPaused) {
+				VStack {
+					Text("Em Pausa")
+						.font(.custom("CaviarDreams-Bold", size: 50))
+						.foregroundColor(.black)
+						.shadow(radius: 10)
+					Text(String(format: "%02d%% completo", arguments: [_grid.completion()]))
+						.font(.custom("CaviarDreams-Bold", size: 20))
+						.foregroundColor(.black)
+						.shadow(radius: 10)
 				}
-					.stroke(lineWidth: Screen.lineThickness)
+				
 			}
 		}
 			.frame(width: Screen.cellWidth * 9,
@@ -107,11 +127,5 @@ struct GridView: View {
 				_grid.cellAt(row: i, col: col).setColor(color: Colors.LightBlue)
 			}
 		}
-	}
-}
-
-struct GridView_Previews: PreviewProvider {
-	static var previews: some View {
-		GridView()
 	}
 }

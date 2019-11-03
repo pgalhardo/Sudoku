@@ -86,6 +86,19 @@ class Grid: ObservableObject {
 		return false
 	}
 	
+	func completion() -> Int {
+		var filledCells = 0
+		
+		for row in (0 ..< 9) {
+			for col in (0 ..< 9) {
+				if _cells[row][col].getValue() != 0 {
+					filledCells += 1
+				}
+			}
+		}
+		return filledCells / 81 * 100
+	}
+	
 	// Single cell actions
 	func cellAt(row: Int, col: Int) -> Cell {
 		return _cells[row][col]

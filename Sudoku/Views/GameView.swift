@@ -18,9 +18,9 @@ struct GameView: View {
 	var body: some View {
 		VStack {
 			GameTopBarView(_isPaused: $_isPaused)
-			GridView()
+			GridView(_isPaused: $_isPaused)
 			Spacer()
-			KeyboardView()
+			KeyboardView(_isPaused: $_isPaused)
 			Spacer()
 		}
 	}
@@ -60,7 +60,9 @@ struct GameTopBarView: View {
 						self._timerView.toggleTimer()
 					},
 					label: {
-						Image(systemName: self._isPaused ? "play.fill" : "pause.fill")
+						Image(systemName: self._isPaused
+							? "play.fill"
+							: "pause.fill")
 							.resizable()
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
