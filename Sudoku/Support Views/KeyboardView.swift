@@ -39,7 +39,6 @@ struct OptionsRowView: View {
 						Text("Anular")
 							.font(.custom("CaviarDreams-Bold",
 										  size: Screen.cellWidth / 2))
-							
 					}
 						.foregroundColor(Colors.MatteBlack)
 				}

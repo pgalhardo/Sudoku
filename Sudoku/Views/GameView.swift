@@ -13,6 +13,7 @@ struct GameView: View {
 	@State private var _isPaused: Bool = false
 	@EnvironmentObject var _viewRouter: ViewRouter
 	@EnvironmentObject var _grid: Grid
+	@EnvironmentObject var _settings: Settings
 		
 	var body: some View {
 		VStack {
@@ -27,6 +28,7 @@ struct GameView: View {
 
 struct GameTopBarView: View {
 	@EnvironmentObject var _viewRouter: ViewRouter
+	@EnvironmentObject var _settings: Settings
 	
 	var body: some View {
 		HStack {
@@ -46,9 +48,11 @@ struct GameTopBarView: View {
 			)
 			
 			Spacer()
-			TimerView()
-			Spacer()
-			
+			if (_settings._timer == true) {
+				TimerView()
+				Spacer()
+			}
+		
 			Button(
 				action: {
 					

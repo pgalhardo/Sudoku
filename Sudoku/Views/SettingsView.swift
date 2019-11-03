@@ -9,45 +9,54 @@
 import SwiftUI
 
 struct SettingsView: View {
-	@State private var _highlightAreas = true // change to EnvironmentObject
-	@State private var _highlightSimilar = true // change to EnvironmentObject
+	@EnvironmentObject var _settings: Settings
 	@EnvironmentObject var _viewRouter: ViewRouter
 	
     var body: some View {
 		VStack {
-			ScrollView {
-				VStack(spacing: 0) {
-					GenericTopBarView(title: "Definições", destination: Pages.home)
-				
-					Section {
-						VStack(alignment: .leading) {
-							Toggle(isOn: $_highlightAreas) {
-								Text("Destacar áreas")
-									.font(.custom("CaviarDreams-Bold", size: 20))
-							}
-							
-							Text("Destacar a coluna e fila da célula selecionada")
-								.font(.custom("CaviarDreams-Bold", size: 12))
-								.foregroundColor(Color.gray)
+			VStack(spacing: 0) {
+				GenericTopBarView(title: "Definições", destination: Pages.home)
+			
+				Section {
+					VStack(alignment: .leading) {
+						Toggle(isOn: $_settings._highlightAreas) {
+							Text("Destacar áreas")
+								.font(.custom("CaviarDreams-Bold", size: 20))
 						}
 						
-						VStack(alignment: .leading) {
-							Toggle(isOn: $_highlightSimilar) {
-								Text("Destacar números idênticos")
-									.font(.custom("CaviarDreams-Bold", size: 20))
-							}
-						
-							Text("Destacar os números iguais aos da célula selecionada")
-								.font(.custom("CaviarDreams-Bold", size: 12))
-								.foregroundColor(Color.gray)
+						Text("Destacar a coluna e fila da célula selecionada")
+							.font(.custom("CaviarDreams-Bold", size: 12))
+							.foregroundColor(Color.gray)
+					}
+					
+					VStack(alignment: .leading) {
+						Toggle(isOn: $_settings._highlightSimilar) {
+							Text("Destacar números idênticos")
+								.font(.custom("CaviarDreams-Bold", size: 20))
+						}.disabled(true)
+					
+						Text("Destacar os números iguais aos da célula selecionada")
+							.font(.custom("CaviarDreams-Bold", size: 12))
+							.foregroundColor(Color.gray)
+					}
+				}
+					.padding(.top)
+					.padding(.leading)
+					.padding(.trailing)
+				
+				Section {
+					VStack(alignment: .leading) {
+						Toggle(isOn: $_settings._timer) {
+							Text("Temporizador")
+								.font(.custom("CaviarDreams-Bold", size: 20))
 						}
 					}
-						.padding(.top)
-						.padding(.leading)
-						.padding(.trailing)
-					
-					Spacer()
 				}
+					.padding(.top, 50)
+					.padding(.leading)
+					.padding(.trailing)
+				
+				Spacer()
 			}
 			
 			Text("Made with ❤️ by Pedro Galhardo")

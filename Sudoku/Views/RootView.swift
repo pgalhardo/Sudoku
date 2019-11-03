@@ -30,6 +30,7 @@ class ViewRouter: ObservableObject {
 
 struct RootView: View {
 	@EnvironmentObject var _viewRouter: ViewRouter
+	var _settings: Settings = Settings()
 		
 	var body: some View {
 		VStack {
@@ -40,9 +41,11 @@ struct RootView: View {
 				GameView()
 					.transition(AnyTransition.opacity.combined(with: .slide))
 					.environmentObject(Grid())
+					.environmentObject(_settings)
 			} else if _viewRouter.getCurrentPage() == Pages.settings {
 				SettingsView()
 					.transition(AnyTransition.opacity.combined(with: .slide))
+					.environmentObject(_settings)
 			} else if _viewRouter.getCurrentPage() == Pages.statistics {
 				StatisticsView()
 					.transition(AnyTransition.opacity.combined(with: .slide))

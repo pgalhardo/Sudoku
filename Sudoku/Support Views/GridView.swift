@@ -10,6 +10,7 @@ import SwiftUI
 
 struct GridView: View {
 	@EnvironmentObject var _grid: Grid
+	@EnvironmentObject var _settings: Settings
 	
 	var body: some View {
 		ZStack {
@@ -77,8 +78,10 @@ struct GridView: View {
 		let row = cell![0], col = cell![1]
 		
 		if self._grid.cellAt(row: row, col: col).getColor() == Color.white {
-			self.toggleLineColor(cell: cell, rowMode: true)
-			self.toggleLineColor(cell: cell, rowMode: false)
+			if (_settings._highlightAreas == true) {
+				self.toggleLineColor(cell: cell, rowMode: true)
+				self.toggleLineColor(cell: cell, rowMode: false)
+			}
 			_grid.cellAt(row: row, col: col).setColor(color: Colors.ActiveBlue)
 		}
 		else {
