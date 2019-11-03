@@ -57,7 +57,7 @@ struct SettingsView: View {
 				
 				Section {
 					VStack(alignment: .leading) {
-						Toggle(isOn: $_settings._timer) {
+						Toggle(isOn: $_settings._enableTimer) {
 							Text("Temporizador")
 								.font(.custom("CaviarDreams-Bold", size: 20))
 						}
@@ -76,6 +76,8 @@ struct SettingsView: View {
 				.padding(.bottom, 5)
 		}
     }
+	
+	
 }
 
 struct SettingsView_Previews: PreviewProvider {

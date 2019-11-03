@@ -53,13 +53,13 @@ struct GridView: View {
 						.stroke(lineWidth: Screen.lineThickness)
 				}
 			}
-				.blur(radius: _isPaused ? 5 : 0)
 				.opacity(_isPaused ? 0.5 : 1)
 				.disabled(_isPaused)
+				.blur(radius: _isPaused ? 5 : 0)
 			
 			if (_isPaused) {
 				VStack {
-					Text("Em pausa ☕")
+					Text("Em pausa")
 						.font(.custom("CaviarDreams-Bold", size: 50))
 						.foregroundColor(.black)
 						.shadow(radius: 10)

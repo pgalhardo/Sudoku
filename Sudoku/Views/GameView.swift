@@ -50,7 +50,7 @@ struct GameTopBarView: View {
 			)
 			
 			Spacer()
-			if (_settings._timer == true) {
+			if (_settings._enableTimer == true) {
 				_timerView
 				Spacer()
 				
@@ -70,8 +70,6 @@ struct GameTopBarView: View {
 					}
 				)
 			}
-		
-			
 		}
 		.padding(.top)
 		.padding(.leading)
