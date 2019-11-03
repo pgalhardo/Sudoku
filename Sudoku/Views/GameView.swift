@@ -56,8 +56,10 @@ struct GameTopBarView: View {
 				
 				Button(
 					action: {
-						self._isPaused.toggle()
-						self._timerView.toggleTimer()
+						withAnimation {
+							self._isPaused.toggle()
+							self._timerView.toggleTimer()
+						}
 					},
 					label: {
 						Image(systemName: self._isPaused

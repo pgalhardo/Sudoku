@@ -20,12 +20,14 @@ struct GridView: View {
 					ForEach(0 ..< 9) { row in
 						HStack(spacing: -1) {
 							ForEach(0 ..< 9) { col in
-								self._grid.cellAt(row: row, col: col).toString()
+								self._grid.cellAt(row: row, col: col)
+									.toString()
 									.frame(width: Screen.cellWidth,
 										   height: Screen.cellWidth)
 									.border(Color.black, width: 1)
 									.padding(.all, 0)
-									.background(self._grid.cellAt(row: row, col: col).getColor())
+									.background(self._grid.cellAt(row: row, col: col)
+										.getColor())
 									.onTapGesture {
 										self.update(row: row, col: col)
 										self._grid.objectWillChange.send()
@@ -34,7 +36,7 @@ struct GridView: View {
 						}
 					}
 				}
-					
+				
 				GeometryReader { geometry in
 					Path { path in
 						let hlines = 2
@@ -53,22 +55,21 @@ struct GridView: View {
 						.stroke(lineWidth: Screen.lineThickness)
 				}
 			}
-				.opacity(_isPaused ? 0.5 : 1)
+				.opacity(_isPaused ? 0 : 1)
 				.disabled(_isPaused)
-				.blur(radius: _isPaused ? 5 : 0)
 			
-			if (_isPaused) {
-				VStack {
-					Text("Em pausa")
-						.font(.custom("CaviarDreams-Bold", size: 50))
-						.foregroundColor(.black)
-						.shadow(radius: 10)
-					Text(String(format: "%02d%% completo", arguments: [_grid.completion()]))
-						.font(.custom("CaviarDreams-Bold", size: 20))
-						.foregroundColor(.black)
-						.shadow(radius: 10)
-				}
+			VStack {
+				Text("Em pausa")
+					.font(.custom("CaviarDreams-Bold", size: 50))
+					.foregroundColor(.black)
+					.shadow(radius: 10)
+				Text(String(format: "%02d%% completo", arguments: [_grid.completion()]))
+					.font(.custom("CaviarDreams-Bold", size: 20))
+					.foregroundColor(.black)
+					.shadow(radius: 10)
 			}
+				.opacity(_isPaused ? 1 : 0)
+				.animation(.spring())
 		}
 			.frame(width: Screen.cellWidth * 9,
 				   height: Screen.cellWidth * 9,
