@@ -53,7 +53,7 @@
 	<string>Light</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Shevana.ttf</string>
+		<string>CaviarDreams.ttf</string>
 		<string>CaviarDreams_Bold.ttf</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>

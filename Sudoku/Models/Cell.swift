@@ -58,18 +58,17 @@ class Cell: CustomStringConvertible {
 		if _inputType == InputType.system {
 			return Text("\(_value)")
 						.font(.custom("CaviarDreams-Bold",
-									  size: Screen.cellWidth / 2))
+									  size: Screen.cellWidth * 0.70))
 						.foregroundColor(Colors.MatteBlack)
 		} else if _inputType == InputType.user {
-			
 			return Text("\(_value)")
 						.font(.custom("CaviarDreams-Bold",
-									  size: Screen.cellWidth / 2))
+									  size: Screen.cellWidth * 0.70))
 						.foregroundColor(Colors.DeepBlue)
 		}
 		return Text("\(_value)")
 					.font(.custom("CaviarDreams-Bold",
-								  size: Screen.cellWidth / 2))
+								  size: Screen.cellWidth * 0.70))
 					.foregroundColor(Color.red)
 	}
 }

@@ -16,7 +16,6 @@
 		681A72C723661BB8002B9053 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681A72C523661BB8002B9053 /* LaunchScreen.storyboard */; };
 		681A72CF23662961002B9053 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A72CE23662961002B9053 /* GridView.swift */; };
 		681A72D123669095002B9053 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A72D023669095002B9053 /* Cell.swift */; };
-		683A3D882368EC4000135D55 /* Shevana.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 683A3D872368EC4000135D55 /* Shevana.ttf */; };
 		683A3D8C2368F77A00135D55 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8B2368F77A00135D55 /* Grid.swift */; };
 		683A3D8E2369012200135D55 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8D2369012200135D55 /* GameView.swift */; };
 		683A3D90236916CF00135D55 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8F236916CF00135D55 /* RootView.swift */; };
@@ -28,6 +27,7 @@
 		68AED1AA236FCF3F00490E6D /* StrategiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AED1A9236FCF3F00490E6D /* StrategiesView.swift */; };
 		68EA2F21236A1ABB000FBCFC /* CaviarDreams_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68EA2F20236A1ABB000FBCFC /* CaviarDreams_Bold.ttf */; };
 		68FDA2B7236E30D1003F954C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FDA2B6236E30D1003F954C /* SettingsView.swift */; };
+		68FF20542370AA5C00B433F2 /* CaviarDreams.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68FF20532370AA5C00B433F2 /* CaviarDreams.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +42,6 @@
 		681A72C823661BB8002B9053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		681A72CE23662961002B9053 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		681A72D023669095002B9053 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
-		683A3D872368EC4000135D55 /* Shevana.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Shevana.ttf; sourceTree = "<group>"; };
 		683A3D8B2368F77A00135D55 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		683A3D8D2369012200135D55 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		683A3D8F236916CF00135D55 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -55,6 +54,7 @@
 		68AED1A9236FCF3F00490E6D /* StrategiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrategiesView.swift; sourceTree = "<group>"; };
 		68EA2F20236A1ABB000FBCFC /* CaviarDreams_Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CaviarDreams_Bold.ttf; sourceTree = "<group>"; };
 		68FDA2B6236E30D1003F954C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		68FF20532370AA5C00B433F2 /* CaviarDreams.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CaviarDreams.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				68EA2F20236A1ABB000FBCFC /* CaviarDreams_Bold.ttf */,
-				683A3D872368EC4000135D55 /* Shevana.ttf */,
+				68FF20532370AA5C00B433F2 /* CaviarDreams.ttf */,
 			);
 			path = fonts;
 			sourceTree = "<group>";
@@ -212,8 +212,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				683A3D882368EC4000135D55 /* Shevana.ttf in Resources */,
 				681A72C723661BB8002B9053 /* LaunchScreen.storyboard in Resources */,
+				68FF20542370AA5C00B433F2 /* CaviarDreams.ttf in Resources */,
 				68EA2F21236A1ABB000FBCFC /* CaviarDreams_Bold.ttf in Resources */,
 				681A72C423661BB8002B9053 /* Preview Assets.xcassets in Resources */,
 				681A72C123661BB8002B9053 /* Assets.xcassets in Resources */,
