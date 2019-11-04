@@ -158,6 +158,5 @@ struct KeyboardNumbersView: View {
 		}
 			.padding(.top)
 			.padding(.bottom)
-			.padding(.leading, -5)
 	}
 }
