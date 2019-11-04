@@ -22,7 +22,7 @@ struct Pages {
 	static let game: Int = 1
 	static let settings: Int = 2
 	static let statistics: Int = 3
-	static let strategies: Int = 3
+	static let strategies: Int = 4
 }
 
 struct Colors {
