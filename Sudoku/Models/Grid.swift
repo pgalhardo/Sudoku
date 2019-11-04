@@ -38,7 +38,7 @@ class Grid: ObservableObject {
 		for i in (0 ..< 9) {
 			for j in (0 ..< 9) {
 				_cells[i][j].setValue(value: 0)
-				_cells[i][j].setUserInput(userInput: false)
+				_cells[i][j].setInputType(inputType: InputType.system)
 			}
 		}
 	}
@@ -164,7 +164,7 @@ class Grid: ObservableObject {
 	func setValue(row: Int, col: Int, value: Int) -> Bool {
 		let cell = _cells[row][col]
 		
-		if cell.getValue() != 0 && cell.getUserInput() == false {
+		if cell.getInputType() == InputType.system {
 			return false
 		}
 		else if cell.getValue() != 0 {

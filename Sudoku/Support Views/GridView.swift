@@ -103,12 +103,12 @@ struct GridView: View {
 				self.toggleLineColor(cell: cell, rowMode: true)
 				self.toggleLineColor(cell: cell, rowMode: false)
 			}
-			_grid.cellAt(row: row, col: col).setCellColor(cellColor: Colors.ActiveBlue)
+			_grid.cellAt(row: row, col: col).setColor(color: Colors.ActiveBlue)
 		}
 		else {
 			for i in (0 ..< 9) {
 				for j in (0 ..< 9) {
-					_grid.cellAt(row: i, col: j).setCellColor(cellColor: Color.white)
+					_grid.cellAt(row: i, col: j).setColor(color: Color.white)
 				}
 			}
 		}
@@ -123,9 +123,9 @@ struct GridView: View {
 				continue
 			}
 			else if rowMode == true {
-				_grid.cellAt(row: row, col: i).setCellColor(cellColor: Colors.LightBlue)
+				_grid.cellAt(row: row, col: i).setColor(color: Colors.LightBlue)
 			} else {
-				_grid.cellAt(row: i, col: col).setCellColor(cellColor: Colors.LightBlue)
+				_grid.cellAt(row: i, col: col).setColor(color: Colors.LightBlue)
 			}
 		}
 	}

@@ -25,6 +25,12 @@ struct Pages {
 	static let strategies: Int = 4
 }
 
+struct InputType {
+	static let system: Int = 0
+	static let user: Int = 1
+	static let wrong: Int = 2
+}
+
 struct Colors {
 	static let ActiveBlue: Color = Color(red: 178 / 255,
 								green: 210 / 255,
@@ -41,21 +47,6 @@ struct Colors {
 	static let DeepBlue: Color = Color(red: 45 / 255,
 								green: 75 / 255,
 								blue: 142 / 255)
-	static let MaastrichtBlue: Color = Color(red: 11 / 255,
-								green: 19 / 255,
-								blue: 43 / 255)
-	static let YankeesBlue: Color = Color(red: 28 / 255,
-								green: 37 / 255,
-								blue: 65 / 255)
-	static let PoliceBlue: Color = Color(red: 58 / 255,
-								green: 80 / 255,
-								blue: 107 / 255)
-	static let SeaSerpent: Color = Color(red: 91 / 255,
-								green: 192 / 255,
-								blue: 190 / 255)
-	static let Aquamarine: Color = Color(red: 111 / 255,
-								green: 255 / 255,
-								blue: 233 / 255)
 }
 
 struct Puzzles {

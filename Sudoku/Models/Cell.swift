@@ -11,19 +11,16 @@ import SwiftUI
 
 class Cell {
 	private var _value: Int!
-	private var _userInput: Bool!
-	private var _cellColor: Color = Color.white
-	private var _labelColor: Color!
+	private var _inputType: Int!
+	private var _color: Color = Color.white
 			
 	init(value: Int) {
 		_value = value
 		
 		if _value == 0 {
-			_userInput = true
-			_labelColor = Colors.DeepBlue
+			_inputType = InputType.user
 		} else {
-			_userInput = false
-			_labelColor = Colors.MatteBlack
+			_inputType = InputType.system
 		}
 	}
 	
@@ -31,32 +28,44 @@ class Cell {
 		return _value
 	}
 	
-	func getUserInput() -> Bool {
-		return _userInput
+	func getInputType() -> Int {
+		return _inputType
 	}
 	
 	func getColor() -> Color {
-		return _cellColor
+		return _color
 	}
 	
 	func setValue(value: Int) {
 		_value = value
 	}
 	
-	func setCellColor(cellColor: Color) {
-		_cellColor = cellColor
+	func setInputType(inputType: Int) {
+		_inputType = inputType
 	}
 	
-	func setUserInput(userInput: Bool) {
-		_userInput = userInput
+	func setColor(color: Color) {
+		_color = color
 	}
-		
+			
 	func toString() -> Text {
-		if (_value != 0) {
+		if _value == 0 { return Text(" ") }
+		
+		if _inputType == InputType.system {
 			return Text("\(_value)")
-				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
-				.foregroundColor(_labelColor)
+						.font(.custom("CaviarDreams-Bold",
+									  size: Screen.cellWidth / 2))
+						.foregroundColor(Colors.MatteBlack)
+		} else if _inputType == InputType.user {
+			
+			return Text("\(_value)")
+						.font(.custom("CaviarDreams-Bold",
+									  size: Screen.cellWidth / 2))
+						.foregroundColor(Colors.DeepBlue)
 		}
-		return Text(" ")
+		return Text("\(_value)")
+					.font(.custom("CaviarDreams-Bold",
+								  size: Screen.cellWidth / 2))
+					.foregroundColor(Color.red)
 	}
 }
