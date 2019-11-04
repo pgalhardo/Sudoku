@@ -44,7 +44,7 @@ struct SettingsView: View {
 						Toggle(isOn: $_settings._hideUsed) {
 							Text("Ocultar números usados")
 								.font(.custom("CaviarDreams-Bold", size: 20))
-						}.disabled(true)
+						}
 					
 						Text("Oculta os números que já não estão disponíveis para serem colocados")
 							.font(.custom("CaviarDreams-Bold", size: 12))

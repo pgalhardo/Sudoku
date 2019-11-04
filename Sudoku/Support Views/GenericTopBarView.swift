@@ -20,7 +20,7 @@ struct GenericTopBarView: View {
 	
 	var body: some View {
 		ZStack {
-			Text("\(_title)")
+			Text(_title)
 				.font(.custom("CaviarDreams-Bold", size: 20))
 			
 			HStack {

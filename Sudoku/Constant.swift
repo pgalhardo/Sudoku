@@ -22,6 +22,7 @@ struct Pages {
 	static let game: Int = 1
 	static let settings: Int = 2
 	static let statistics: Int = 3
+	static let strategies: Int = 3
 }
 
 struct Colors {
@@ -31,18 +32,30 @@ struct Colors {
 	static let LightBlue: Color = Color(red: 218 / 255,
 								green: 225 / 255,
 								blue: 231 / 255)
-	static let MatteBlack: Color = Color(red: 31 / 255,
-								green: 31 / 255,
-								blue: 36 / 255)
+	static let MatteBlack: Color = Color(red: 27 / 255,
+								green: 27 / 255,
+								blue: 27 / 255)
 	static let EraserPink: Color = Color(red: 180 / 255,
 								green: 110 / 255,
 								blue: 110 / 255)
 	static let DeepBlue: Color = Color(red: 45 / 255,
 								green: 75 / 255,
 								blue: 142 / 255)
-	static let Orange: Color = Color(red: 249 / 255,
-								green: 128 / 255,
-								blue: 44 / 255)
+	static let MaastrichtBlue: Color = Color(red: 11 / 255,
+								green: 19 / 255,
+								blue: 43 / 255)
+	static let YankeesBlue: Color = Color(red: 28 / 255,
+								green: 37 / 255,
+								blue: 65 / 255)
+	static let PoliceBlue: Color = Color(red: 58 / 255,
+								green: 80 / 255,
+								blue: 107 / 255)
+	static let SeaSerpent: Color = Color(red: 91 / 255,
+								green: 192 / 255,
+								blue: 190 / 255)
+	static let Aquamarine: Color = Color(red: 111 / 255,
+								green: 255 / 255,
+								blue: 233 / 255)
 }
 
 struct Puzzles {

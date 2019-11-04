@@ -49,6 +49,9 @@ struct RootView: View {
 			} else if _viewRouter.getCurrentPage() == Pages.statistics {
 				StatisticsView()
 					.transition(AnyTransition.opacity.combined(with: .slide))
+			} else if _viewRouter.getCurrentPage() == Pages.strategies {
+				StrategiesView()
+					.transition(AnyTransition.opacity.combined(with: .slide))
 			}
 		}
 	}

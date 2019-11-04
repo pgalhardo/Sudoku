@@ -13,13 +13,14 @@ class Grid: ObservableObject {
 	private var _active: [Int]?
 	private var _previous: [Int]?
 	
+	@Published private var _numberFrequency: [Int] = Array(repeating: 0, count: 9)
 	@Published private var _cells: [[Cell]] = [[Cell]]()
 	
 	init() {
 		for i in (0 ..< 9) {
 			_cells.append([])
 			for _ in (0 ..< 9) {
-				_cells[i].append(Cell())
+				_cells[i].append(Cell(value: 0))
 			}
 		}
 		self.fill()
@@ -63,6 +64,10 @@ class Grid: ObservableObject {
 			for j in row {
 				guard let value = Int(String(j)) else { return }
 				_cells[i].append(Cell(value: value))
+				
+				if (value > 0) {
+					_numberFrequency[value - 1] += 1
+				}
 			}
 			str = String(str.dropFirst(9))
 		}
@@ -109,6 +114,7 @@ class Grid: ObservableObject {
 						&& !numberInSquare(number: number, row: row, col: col) {
 					
 						_cells[row][col].setValue(value: number)
+						_numberFrequency[number] += 1
 						if isFull() {
 							return true
 						}
@@ -140,12 +146,25 @@ class Grid: ObservableObject {
 		return Int(filledCells / 81 * 100)
 	}
 	
+	func getNumberFrequency() -> [Int] {
+		return _numberFrequency
+	}
+	
 	/*==========================================================================
 		Single cell actions
 	==========================================================================*/
 	
 	func cellAt(row: Int, col: Int) -> Cell {
 		return _cells[row][col]
+	}
+	
+	//TODO check for overwrite, return status
+	func setValue(row: Int, col: Int, value: Int) {
+		let cell = _cells[row][col]
+		
+		cell.setValue(value: value)
+		_numberFrequency[value - 1] += 1
+		print(_numberFrequency[value - 1])
 	}
 	
 	func getActive() -> [Int]? {

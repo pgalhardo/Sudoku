@@ -11,15 +11,17 @@ import SwiftUI
 
 class Cell {
 	var _value: Int!
-	var _userInput: Bool = false
+	var _userInput: Bool!
 	var _color: Color = Color.white
-		
-	init() {
-		_value = 0
-	}
-	
+			
 	init(value: Int) {
 		_value = value
+		
+		if _value == 0 {
+			_userInput = true
+		} else {
+			_userInput = false
+		}
 	}
 	
 	func getValue() -> Int {

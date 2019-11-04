@@ -11,6 +11,8 @@ import SwiftUI
 
 struct KeyboardView: View {
 	@EnvironmentObject var _grid: Grid
+	@EnvironmentObject var _settings: Settings
+	
 	@Binding var _isPaused: Bool
 	
 	@State private var deleteAlert = false
@@ -89,28 +91,31 @@ struct KeyboardView: View {
 			
 			HStack {
 				ForEach(1 ..< 10) { i in
-					Spacer()
-					Button(
-						action: {
-							guard
-								let active = self._grid.getActive()
-							else {
-								return
+					if (self._grid.getNumberFrequency()[i - 1] < 9
+						&& self._settings._hideUsed) {
+						Spacer()
+						Button(
+							action: {
+								guard
+									let active = self._grid.getActive()
+								else {
+									return
+								}
+								
+								self._grid.setValue(row: active[0],
+													col: active[1],
+													value: i)
+								self._grid.objectWillChange.send()
+							},
+							label: {
+								Text("\(i)")
+									.foregroundColor(Colors.MatteBlack)
+									.font(.custom("CaviarDreams-Bold",
+												  size: Screen.cellWidth))
 							}
-							
-							self._grid.cellAt(row: active[0],
-											  col: active[1]).setValue(value: i)
-							self._grid.cellAt(row: active[0],
-											  col: active[1]).setUserInput(userInput: true)
-							self._grid.objectWillChange.send()
-						},
-						label: {
-							Text("\(i)")
-								.foregroundColor(Colors.MatteBlack)
-								.font(.custom("CaviarDreams-Bold",
-											  size: Screen.cellWidth))
-						}
-					)
+						)
+					}
+					
 				}
 				Spacer()
 			}

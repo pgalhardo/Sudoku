@@ -17,8 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UserDefaults.standard.register(defaults: [
 			"highlightAreas": true,
 			"highlightSimilar": false,
-			"hideUsed": false,
-			"enableTimer": false
+			"hideUsed": true,
+			"enableTimer": true
 		])
 		return true
 	}
