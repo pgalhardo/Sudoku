@@ -11,6 +11,7 @@ import SwiftUI
 
 struct GameView: View {
 	@State var _isPaused: Bool = false
+	
 	@EnvironmentObject var _viewRouter: ViewRouter
 	@EnvironmentObject var _grid: Grid
 	@EnvironmentObject var _settings: Settings
@@ -27,11 +28,13 @@ struct GameView: View {
 }
 
 struct GameTopBarView: View {
-	@EnvironmentObject var _viewRouter: ViewRouter
-	@EnvironmentObject var _settings: Settings
-	@Binding var _isPaused: Bool
 	var _timerView = TimerView()
 	
+	@Binding var _isPaused: Bool
+	
+	@EnvironmentObject var _viewRouter: ViewRouter
+	@EnvironmentObject var _settings: Settings
+		
 	var body: some View {
 		ZStack {
 			HStack {

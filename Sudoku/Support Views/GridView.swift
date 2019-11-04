@@ -9,9 +9,10 @@
 import SwiftUI
 
 struct GridView: View {
+	@Binding var _isPaused: Bool
+	
 	@EnvironmentObject var _grid: Grid
 	@EnvironmentObject var _settings: Settings
-	@Binding var _isPaused: Bool
 	
 	var body: some View {
 		ZStack {

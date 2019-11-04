@@ -29,9 +29,9 @@ class ViewRouter: ObservableObject {
 }
 
 struct RootView: View {
+	private var _settings: Settings = Settings()
 	@EnvironmentObject var _viewRouter: ViewRouter
-	var _settings: Settings = Settings()
-		
+	
 	var body: some View {
 		VStack {
 			if _viewRouter.getCurrentPage() == Pages.home {

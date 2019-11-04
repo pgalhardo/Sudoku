@@ -11,6 +11,7 @@ import SwiftUI
 struct GenericTopBarView: View {
 	private var _title: String!
 	private var _destination: Int!
+	
 	@EnvironmentObject var _viewRouter: ViewRouter
 	
 	init(title: String, destination: Int) {

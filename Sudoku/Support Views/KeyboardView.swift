@@ -10,13 +10,13 @@ import Foundation
 import SwiftUI
 
 struct KeyboardView: View {
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _settings: Settings
+	@State private var _deleteAlert = false
+	@State private var _overwriteAlert = false
 	
 	@Binding var _isPaused: Bool
 	
-	@State private var _deleteAlert = false
-	@State private var _overwriteAlert = false
+	@EnvironmentObject var _grid: Grid
+	@EnvironmentObject var _settings: Settings
 	
 	var body: some View {
 		VStack {
@@ -75,11 +75,16 @@ struct KeyboardOptionsView: View {
 					if self._grid.setValue(row: active[0],
 										   col: active[1],
 										   value: 0) == false {
-						// failed to delete default value
+						
+						// display error message
 						self._deleteAlert = true
 						DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 							self._deleteAlert = false
 						}
+						
+						// haptic feedback
+						let generator = UINotificationFeedbackGenerator()
+						generator.notificationOccurred(.error)
 						
 					} else {
 						self._grid.objectWillChange.send()
@@ -125,11 +130,16 @@ struct KeyboardNumbersView: View {
 							if self._grid.setValue(row: active[0],
 												   col: active[1],
 												   value: i) == false {
-								// failed to overwrite default value
+								
+								// display error message
 								self._overwriteAlert = true
 								DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 									self._overwriteAlert = false
 								}
+								
+								// haptic feedback
+								let generator = UINotificationFeedbackGenerator()
+								generator.notificationOccurred(.error)
 								
 							} else {
 								self._grid.objectWillChange.send()
