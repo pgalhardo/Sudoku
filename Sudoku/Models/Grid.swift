@@ -62,6 +62,8 @@ class Grid: ObservableObject {
 			_cells.append([])
 			
 			for j in row {
+				// Substring -> String -> Int
+				//TODO throw custom load exception
 				guard let value = Int(String(j)) else { return }
 				_cells[i].append(Cell(value: value))
 				
@@ -158,13 +160,22 @@ class Grid: ObservableObject {
 		return _cells[row][col]
 	}
 	
-	//TODO check for overwrite, return status
-	func setValue(row: Int, col: Int, value: Int) {
+	//TODO throw custom set exception; base this on active
+	func setValue(row: Int, col: Int, value: Int) -> Bool {
 		let cell = _cells[row][col]
 		
+		if cell.getValue() != 0 && cell.getUserInput() == false {
+			return false
+		}
+		else if cell.getValue() != 0 {
+			_numberFrequency[cell.getValue() - 1] -= 1
+		}
+		
+		if value > 0 {
+			_numberFrequency[value - 1] += 1
+		}
 		cell.setValue(value: value)
-		_numberFrequency[value - 1] += 1
-		print(_numberFrequency[value - 1])
+		return true
 	}
 	
 	func getActive() -> [Int]? {
@@ -184,19 +195,7 @@ class Grid: ObservableObject {
 		_previous = nil
 		_active = nil
 	}
-	
-	func deleteValue(row: Int, col: Int) -> Bool {
-		let cell = _cells[row][col]
 		
-		if cell.getUserInput() == true {
-			cell.setValue(value: 0)
-			return true
-		} else {
-			// grid does not allow default values
-			return false
-		}
-	}
-	
 	/*==========================================================================
 		Groups of cells
 	==========================================================================*/

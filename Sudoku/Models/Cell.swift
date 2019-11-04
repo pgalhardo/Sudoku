@@ -12,15 +12,18 @@ import SwiftUI
 class Cell {
 	var _value: Int!
 	var _userInput: Bool!
-	var _color: Color = Color.white
+	var _cellColor: Color = Color.white
+	var _labelColor: Color!
 			
 	init(value: Int) {
 		_value = value
 		
 		if _value == 0 {
 			_userInput = true
+			_labelColor = Colors.DeepBlue
 		} else {
 			_userInput = false
+			_labelColor = Colors.MatteBlack
 		}
 	}
 	
@@ -33,15 +36,15 @@ class Cell {
 	}
 	
 	func getColor() -> Color {
-		return _color
+		return _cellColor
 	}
 	
 	func setValue(value: Int) {
 		_value = value
 	}
 	
-	func setColor(color: Color) {
-		_color = color
+	func setCellColor(cellColor: Color) {
+		_cellColor = cellColor
 	}
 	
 	func setUserInput(userInput: Bool) {
@@ -49,14 +52,10 @@ class Cell {
 	}
 		
 	func toString() -> Text {
-		if (_value != 0 && _userInput) {
+		if (_value != 0) {
 			return Text("\(_value)")
 				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
-				.foregroundColor(Colors.DeepBlue)
-		} else if (_value != 0) {
-			return Text("\(_value)")
-				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
-				.foregroundColor(Colors.MatteBlack)
+				.foregroundColor(_labelColor)
 		}
 		return Text(" ")
 	}
