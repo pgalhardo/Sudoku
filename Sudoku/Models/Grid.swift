@@ -11,10 +11,15 @@ import SwiftUI
 
 class Grid: ObservableObject {
 	private var _active: [Int]?
-	private var _previous: [Int]?
+	private var _colored: [[Int]] = [[Int]]()
 	
-	@Published private var _numberFrequency: [Int] = Array(repeating: 0, count: 9)
-	@Published private var _cells: [[Cell]] = [[Cell]]()
+	@Published private var _cells: [[Cell]] = [[Cell]]() {
+		didSet {
+			objectWillChange.send()
+		}
+	}
+	@Published private var _numberFrequency: [Int] = Array(repeating: 0,
+														   count: 9)
 	
 	init() {
 		for i in (0 ..< 9) {
@@ -85,15 +90,7 @@ class Grid: ObservableObject {
 		}
 		return str
 	}
-	
-	func toString() {
-		for row in (0 ..< 9) {
-			for col in (0 ..< 9) {
-				print(_cells[row][col].getValue())
-			}
-		}
-	}
-	
+		
 	/*
 		Approach: in order to place a given number in a given cell of the grid
 		without breaking any of the Sudoku rules, we must first check
@@ -152,6 +149,27 @@ class Grid: ObservableObject {
 		return _numberFrequency
 	}
 	
+	func highlightSimilar(row: Int, col: Int) {
+		let value = _cells[row][col].getValue()
+		var found = 0
+		
+		for i in (0 ..< 9) {
+			if i == row { continue }
+			
+			for j in (0 ..< 9) {
+				if j == col { continue }
+				
+				if _cells[i][j].getValue() == value {
+					_cells[i][j].setColor(color: Colors.LightBlue)
+					_colored.append([i, j])
+					found += 1
+				}
+				
+				if found == _numberFrequency[value - 1] { return }
+			}
+		}
+	}
+	
 	/*==========================================================================
 		Single cell actions
 	==========================================================================*/
@@ -181,21 +199,42 @@ class Grid: ObservableObject {
 	func getActive() -> [Int]? {
 		return _active
 	}
-	
-	func getPrevious() -> [Int]? {
-		return _previous
-	}
-	
-	func setActive(row: Int, col: Int) {
-		_previous = _active
-		_active = [row, col]
-	}
-	
-	func resetActive() {
-		_previous = nil
-		_active = nil
-	}
 		
+	func setActive(row: Int, col: Int, areas: Bool, similar: Bool) {
+		let previous = _active
+		_active = [row, col]
+		
+		for i in (0 ..< _colored.count) {
+			toggleColor(cell: _colored[i])
+		}
+		_colored.removeAll()
+		
+		if previous == _active {
+			_active = nil
+		}
+		else {
+			toggleColor(cell: _active)
+			toggleLineColor(cell: _active, rowMode: true)
+			toggleLineColor(cell: _active, rowMode: false)
+			if _cells[row][col].getValue() != 0 && similar {
+				highlightSimilar(row: row, col: col)
+			}
+		}
+	}
+	
+	func toggleColor(cell: [Int]?) {
+		if (cell == nil) { return }
+		let row = cell![0], col = cell![1]
+		
+		if _cells[row][col].getColor() == Color.white {
+			_cells[row][col].setColor(color: Colors.ActiveBlue)
+			_colored.append([row, col])
+		}
+		else {
+			_cells[row][col].setColor(color: Color.white)
+		}
+	}
+				
 	/*==========================================================================
 		Groups of cells
 	==========================================================================*/
@@ -241,5 +280,23 @@ class Grid: ObservableObject {
 		return (square[0].contains(number)
 			|| square[1].contains(number)
 			|| square[2].contains(number))
+	}
+	
+	func toggleLineColor(cell: [Int]?, rowMode: Bool) {
+		let row = cell![0], col = cell![1]
+		
+		for i in (0 ..< 9) {
+			if (rowMode == false && i == row)
+			|| (rowMode == true && i == col) {
+				continue
+			}
+			else if rowMode == true {
+				_cells[row][i].setColor(color: Colors.LightBlue)
+				_colored.append([row, i])
+			} else {
+				_cells[i][col].setColor(color: Colors.LightBlue)
+				_colored.append([i, col])
+			}
+		}
 	}
 }

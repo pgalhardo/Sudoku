@@ -32,6 +32,9 @@ struct InputType {
 }
 
 struct Colors {
+	static let DeepBlue: Color = Color(red: 45 / 255,
+								green: 75 / 255,
+								blue: 142 / 255)
 	static let ActiveBlue: Color = Color(red: 178 / 255,
 								green: 210 / 255,
 								blue: 256 / 255)
@@ -44,9 +47,6 @@ struct Colors {
 	static let EraserPink: Color = Color(red: 180 / 255,
 								green: 110 / 255,
 								blue: 110 / 255)
-	static let DeepBlue: Color = Color(red: 45 / 255,
-								green: 75 / 255,
-								blue: 142 / 255)
 }
 
 struct Puzzles {

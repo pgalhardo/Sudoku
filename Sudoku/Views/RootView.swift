@@ -29,7 +29,7 @@ class ViewRouter: ObservableObject {
 }
 
 struct RootView: View {
-	private var _settings: Settings = Settings()
+	var _settings: Settings = Settings()
 	@EnvironmentObject var _viewRouter: ViewRouter
 	
 	var body: some View {

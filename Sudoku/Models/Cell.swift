@@ -9,10 +9,14 @@
 import Foundation
 import SwiftUI
 
-class Cell {
+class Cell: CustomStringConvertible {
 	private var _value: Int!
 	private var _inputType: Int!
 	private var _color: Color = Color.white
+	
+	var description: String {
+		return String(_value)
+	}
 			
 	init(value: Int) {
 		_value = value

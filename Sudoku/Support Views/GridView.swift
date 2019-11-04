@@ -30,7 +30,11 @@ struct GridView: View {
 									.background(self._grid.cellAt(row: row, col: col)
 										.getColor())
 									.onTapGesture {
-										self.update(row: row, col: col)
+										self._grid.setActive(row: row,
+															 col: col,
+															 areas: self._settings._highlightAreas,
+															 similar: self._settings._highlightSimilar
+										)
 										self._grid.objectWillChange.send()
 									}
 							}
@@ -75,58 +79,5 @@ struct GridView: View {
 			.frame(width: Screen.cellWidth * 9,
 				   height: Screen.cellWidth * 9,
 				   alignment: .center)
-	}
-		
-	func update(row: Int, col: Int) {
-		_grid.setActive(row: row, col: col)
-		
-		let previous = _grid.getPrevious()
-		let active = _grid.getActive()
-		
-		// double click, disable both
-		if previous == active {
-			self.toggleColor(cell: active)
-			_grid.resetActive()
-		}
-		else {
-			self.toggleColor(cell: previous)
-			self.toggleColor(cell: active)
-		}
-	}
-	
-	func toggleColor(cell: [Int]?) {
-		if (cell == nil) { return }
-		let row = cell![0], col = cell![1]
-		
-		if self._grid.cellAt(row: row, col: col).getColor() == Color.white {
-			if (_settings._highlightAreas == true) {
-				self.toggleLineColor(cell: cell, rowMode: true)
-				self.toggleLineColor(cell: cell, rowMode: false)
-			}
-			_grid.cellAt(row: row, col: col).setColor(color: Colors.ActiveBlue)
-		}
-		else {
-			for i in (0 ..< 9) {
-				for j in (0 ..< 9) {
-					_grid.cellAt(row: i, col: j).setColor(color: Color.white)
-				}
-			}
-		}
-	}
-		
-	func toggleLineColor(cell: [Int]?, rowMode: Bool) {
-		let row = cell![0], col = cell![1]
-		
-		for i in (0 ..< 9) {
-			if (rowMode == false && i == row)
-			|| (rowMode == true && i == col) {
-				continue
-			}
-			else if rowMode == true {
-				_grid.cellAt(row: row, col: i).setColor(color: Colors.LightBlue)
-			} else {
-				_grid.cellAt(row: i, col: col).setColor(color: Colors.LightBlue)
-			}
-		}
 	}
 }

@@ -33,7 +33,7 @@ struct SettingsView: View {
 						Toggle(isOn: $_settings._highlightSimilar) {
 							Text("Destacar números idênticos")
 								.font(.custom("CaviarDreams-Bold", size: 20))
-						}.disabled(true)
+						}
 					
 						Text("Destacar os números iguais aos da célula selecionada")
 							.font(.custom("CaviarDreams-Bold", size: 12))
@@ -69,7 +69,6 @@ struct SettingsView: View {
 				
 				Spacer()
 			}
-			
 			Text("Made with ❤️ by Pedro Galhardo")
 				.font(.custom("CaviarDreams-Bold", size: 8))
 				.foregroundColor(Color.gray)
