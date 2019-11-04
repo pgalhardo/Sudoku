@@ -13,8 +13,24 @@ struct KeyboardView: View {
 	@EnvironmentObject var _grid: Grid
 	@Binding var _isPaused: Bool
 	
+	@State private var deleteAlert = false
+	@State private var overwriteAlert = false
+	
 	var body: some View {
 		VStack {
+			
+			if (deleteAlert) {
+				Spacer()
+				Text("Impossível remover valor pré-definido")
+					.font(.custom("CaviarDreams-Bold", size: 15))
+				Spacer()
+			} else if (overwriteAlert) {
+				Spacer()
+				Text("Impossível sobrescrever valor pré-definido")
+					.font(.custom("CaviarDreams-Bold", size: 15))
+				Spacer()
+			}
+			
 			HStack {
 				Spacer()
 				Button(
@@ -43,7 +59,10 @@ struct KeyboardView: View {
 						if self._grid.deleteValue(row: active[0],
 												  col: active[1]) == false {
 							// failed to delete default value
-							
+							self.deleteAlert = true
+							DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+								self.deleteAlert = false
+							}
 							
 						} else {
 							self._grid.objectWillChange.send()
@@ -102,5 +121,6 @@ struct KeyboardView: View {
 			.blur(radius: _isPaused ? 5 : 0)
 			.opacity(_isPaused ? 0.7 : 1)
 			.disabled(_isPaused)
+			.animation(.spring())
 	}
 }

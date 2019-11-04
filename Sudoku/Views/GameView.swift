@@ -33,48 +33,56 @@ struct GameTopBarView: View {
 	var _timerView = TimerView()
 	
 	var body: some View {
-		HStack {
-			Button(
-				action: {
-					withAnimation(.easeIn) {
-						self._viewRouter.setCurrentPage(page: Pages.home)
-					}
-				},
-				label: {
-					Image(systemName: "stop.fill")
-						.resizable()
-						.frame(width: Screen.cellWidth / 2,
-							   height: Screen.cellWidth / 2)
-						.foregroundColor(Colors.MatteBlack)
-				}
-			)
-			
-			Spacer()
-			if (_settings._enableTimer == true) {
-				_timerView
-				Spacer()
-				
+		ZStack {
+			HStack {
 				Button(
 					action: {
-						withAnimation {
-							self._isPaused.toggle()
-							self._timerView.toggleTimer()
+						withAnimation(.easeIn) {
+							self._viewRouter.setCurrentPage(page: Pages.home)
 						}
 					},
 					label: {
-						Image(systemName: self._isPaused
-							? "play.fill"
-							: "pause.fill")
+						Image(systemName: "return")
 							.resizable()
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
-							.foregroundColor(Colors.MatteBlack)
+						Text("Voltar")
+							.font(.custom("CaviarDreams-Bold", size: 15))
 					}
 				)
+					.foregroundColor(Colors.MatteBlack)
+				Spacer()
 			}
+			
+			HStack {
+				Spacer()
+				if (_settings._enableTimer == true) {
+					_timerView
+					Spacer()
+					
+					Button(
+						action: {
+							withAnimation {
+								self._isPaused.toggle()
+								self._timerView.toggleTimer()
+							}
+						},
+						label: {
+							Image(systemName: self._isPaused
+								? "play.fill"
+								: "pause")
+								.resizable()
+								.frame(width: Screen.cellWidth / 2,
+									   height: Screen.cellWidth / 2)
+								.foregroundColor(Colors.MatteBlack)
+						}
+					)
+				}
+			}
+				.padding(.leading, Screen.cellWidth / 2)
 		}
-		.padding(.top)
-		.padding(.leading)
-		.padding(.trailing)
+			.padding(.top)
+			.padding(.leading)
+			.padding(.trailing)
 	}
 }
