@@ -69,6 +69,25 @@ struct KeyboardView: View {
 				}
 			)
 			Spacer()
+			Button(
+				action: {
+					self._grid.solve()
+				},
+				label: {
+					VStack {
+						Image(systemName: "checkmark.circle.fill")
+							.resizable()
+							.frame(width: Screen.cellWidth / 2,
+								   height: Screen.cellWidth / 2)
+							.foregroundColor(Color.green)
+						Text("Solve")
+							.foregroundColor(Colors.MatteBlack)
+							.font(.custom("CaviarDreams-Bold",
+										  size: Screen.cellWidth / 2))
+					}
+				}
+			)
+			Spacer()
 		}
 			.padding(.top)
 			.padding(.bottom)

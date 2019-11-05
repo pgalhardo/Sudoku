@@ -45,18 +45,18 @@ struct RootView: View {
 					)
 			} else if _viewRouter.getCurrentPage() == Pages.game {
 				GameView()
-					.transition(.moveAndFadeIn)
-					.environmentObject(Grid(puzzle: Puzzles.hard))
+					.transition(.slideAndFadeIn)
+					.environmentObject(Grid(puzzle: Puzzles.simple))
 					.environmentObject(_settings)
 			} else if _viewRouter.getCurrentPage() == Pages.statistics {
 				StatisticsView()
-					.transition(.moveAndFadeIn)
+					.transition(.slideAndFadeIn)
 			} else if _viewRouter.getCurrentPage() == Pages.strategies {
 				StrategiesView()
-					.transition(.moveAndFadeIn)
+					.transition(.slideAndFadeIn)
 			} else if _viewRouter.getCurrentPage() == Pages.settings {
 				SettingsView()
-					.transition(.moveAndFadeIn)
+					.transition(.slideAndFadeIn)
 					.environmentObject(_settings)
 			}
 		}
@@ -64,10 +64,13 @@ struct RootView: View {
 }
 
 extension AnyTransition {
-    static var moveAndFadeIn: AnyTransition {
+    static var slideAndFadeIn: AnyTransition {
         AnyTransition.asymmetric(
-			insertion: AnyTransition.opacity.combined(with: .move(edge: .trailing)),
-			removal: AnyTransition.opacity.combined(with: .move(edge: .leading))
+			insertion: AnyTransition.opacity.combined(
+				with: .move(edge: .trailing)),
+			removal: AnyTransition.opacity.combined(
+				with: .move(edge: .leading)
+			)
 		)
     }
 }

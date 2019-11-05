@@ -52,7 +52,7 @@ class Cell: CustomStringConvertible {
 		_color = color
 	}
 			
-	func toString(fontSize: Int) -> Text {
+	func render(fontSize: Int) -> Text {
 		if _value == 0 { return Text(" ") }
 		
 		if _inputType == InputType.system {

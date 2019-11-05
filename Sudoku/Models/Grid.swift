@@ -13,11 +13,7 @@ class Grid: ObservableObject {
 	private var _active: [Int]?
 	private var _colored: [[Int]] = [[Int]]()
 	
-	@Published private var _cells: [[Cell]] = [[Cell]]() {
-		didSet {
-			objectWillChange.send()
-		}
-	}
+	@Published private var _cells: [[Cell]] = [[Cell]]()
 	@Published private var _numberFrequency: [Int] = Array(repeating: 0,
 														   count: 9)
 	
@@ -113,7 +109,7 @@ class Grid: ObservableObject {
 						&& !numberInSquare(number: number, row: row, col: col) {
 					
 						_cells[row][col].setValue(value: number)
-						_numberFrequency[number] += 1
+						_numberFrequency[number - 1] += 1
 						if isFull() {
 							return true
 						}
@@ -130,6 +126,10 @@ class Grid: ObservableObject {
 		
 		_cells[row][col].setValue(value: 0)
 		return false
+	}
+	
+	func solve() {
+
 	}
 	
 	func completion() -> Int {
@@ -168,6 +168,20 @@ class Grid: ObservableObject {
 				if found == _numberFrequency[value - 1] { return }
 			}
 		}
+	}
+	
+	func possibilities(row: Int, col: Int) -> [Int] {
+		var numbers = [Int]()
+		
+		for number in (0 ..< 9) {
+			if !numberInRow(number: number, row: row)
+				&& !numberInCol(number: number, col: col)
+				&& !numberInSquare(number: number, row: row, col: col) {
+			
+				numbers.append(number)
+			}
+		}
+		return numbers
 	}
 	
 	/*==========================================================================
