@@ -10,7 +10,7 @@ import SwiftUI
 
 struct GridView: View {
 	@Binding var _isPaused: Bool
-	
+
 	@EnvironmentObject var _grid: Grid
 	@EnvironmentObject var _settings: Settings
 	
@@ -68,7 +68,7 @@ struct GridView: View {
 					.font(.custom("CaviarDreams-Bold", size: 50))
 					.foregroundColor(.black)
 					.shadow(radius: 10)
-				Text(String(format: "%02d%% completo", arguments: [_grid.completion()]))
+				Text(String(format: "%02d%% completo", _grid.completion()))
 					.font(.custom("CaviarDreams-Bold", size: 20))
 					.foregroundColor(.black)
 					.shadow(radius: 10)

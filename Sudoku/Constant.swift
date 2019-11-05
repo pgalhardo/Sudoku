@@ -31,6 +31,11 @@ struct InputType {
 	static let wrong: Int = 2
 }
 
+struct Alerts {
+	static let remove: String = "Impossível remover valor pré-definido"
+	static let overwrite: String = "Impossível sobrescrever valor pré-definido"
+}
+
 struct Colors {
 	static let DeepBlue: Color = Color(red: 45 / 255,
 								green: 75 / 255,

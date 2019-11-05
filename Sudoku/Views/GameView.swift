@@ -11,6 +11,8 @@ import SwiftUI
 
 struct GameView: View {
 	@State var _isPaused: Bool = false
+	@State var _displayAlert: Bool = false
+	@State var _alertText: String = ""
 	
 	@EnvironmentObject var _viewRouter: ViewRouter
 	@EnvironmentObject var _grid: Grid
@@ -19,9 +21,29 @@ struct GameView: View {
 	var body: some View {
 		VStack {
 			GameTopBarView(_isPaused: $_isPaused)
-			GridView(_isPaused: $_isPaused)
+			
+			ZStack {
+				GridView(_isPaused: $_isPaused)
+				Text(_alertText)
+					.font(.custom("CaviarDreams-Bold", size: 15))
+					.padding()
+					.background(Colors.LightBlue)
+					.cornerRadius(20)
+					.overlay(RoundedRectangle(cornerRadius: 20)
+					.stroke(Colors.MatteBlack, lineWidth: 2))
+					.shadow(radius: 10)
+					.blur(radius: _displayAlert ? 0 : 50)
+					.opacity(_displayAlert ? 1 : 0)
+					.animation(.spring())
+					.onTapGesture {
+						self._displayAlert = false
+					}
+			}
+			
 			Spacer()
-			KeyboardView(_isPaused: $_isPaused)
+			KeyboardView(_isPaused: $_isPaused,
+						 _displayAlert: $_displayAlert,
+						 _alertText: $_alertText)
 			Spacer()
 		}
 	}

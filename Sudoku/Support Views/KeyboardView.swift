@@ -10,48 +10,31 @@ import Foundation
 import SwiftUI
 
 struct KeyboardView: View {
-	@State private var _deleteAlert = false
-	@State private var _overwriteAlert = false
+	@State var _task = DispatchWorkItem { }
 	
 	@Binding var _isPaused: Bool
+	@Binding var _displayAlert: Bool
+	@Binding var _alertText: String
 	
 	@EnvironmentObject var _grid: Grid
 	@EnvironmentObject var _settings: Settings
 	
 	var body: some View {
 		VStack {
-			if (_deleteAlert) {
-				Spacer()
-				Text("Impossível remover valor pré-definido")
-					.font(.custom("CaviarDreams-Bold", size: 15))
-				Spacer()
-			} else if (_overwriteAlert) {
-				Spacer()
-				Text("Impossível sobrescrever valor pré-definido")
-					.font(.custom("CaviarDreams-Bold", size: 15))
-				Spacer()
-			}
-			
-			KeyboardOptionsView(_deleteAlert: $_deleteAlert)
-			KeyboardNumbersView(_overwriteAlert: $_overwriteAlert)
+			self.optionsRow
+			self.numbersRow
 		}
 			.blur(radius: _isPaused ? 5 : 0)
 			.opacity(_isPaused ? 0.7 : 1)
 			.disabled(_isPaused)
 			.animation(.spring())
 	}
-}
-
-struct KeyboardOptionsView: View {
-	@EnvironmentObject var _grid: Grid
-	@Binding var _deleteAlert: Bool
 	
-	var body: some View {
+	var optionsRow: some View {
 		HStack {
 			Spacer()
 			Button(
 				action: {
-
 				},
 				label: {
 					VStack {
@@ -69,26 +52,7 @@ struct KeyboardOptionsView: View {
 			Spacer()
 			Button(
 				action: {
-					guard let active = self._grid.getActive()
-					else { return }
-					
-					if self._grid.setValue(row: active[0],
-										   col: active[1],
-										   value: 0) == false {
-						
-						// display error message
-						self._deleteAlert = true
-						DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-							self._deleteAlert = false
-						}
-						
-						// haptic feedback
-						let generator = UINotificationFeedbackGenerator()
-						generator.notificationOccurred(.error)
-						
-					} else {
-						self._grid.objectWillChange.send()
-					}
+					self.execute(value: 0, alertText: Alerts.remove)
 				},
 				label: {
 					VStack {
@@ -109,14 +73,8 @@ struct KeyboardOptionsView: View {
 			.padding(.top)
 			.padding(.bottom)
 	}
-}
-
-struct KeyboardNumbersView: View {
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _settings: Settings
-	@Binding var _overwriteAlert: Bool
 	
-	var body: some View {
+	var numbersRow: some View {
 		HStack {
 			ForEach(1 ..< 10) { i in
 				if (self._grid.getNumberFrequency()[i - 1] < 9
@@ -124,26 +82,7 @@ struct KeyboardNumbersView: View {
 					Spacer()
 					Button(
 						action: {
-							guard let active = self._grid.getActive()
-							else { return }
-							
-							if self._grid.setValue(row: active[0],
-												   col: active[1],
-												   value: i) == false {
-								
-								// display error message
-								self._overwriteAlert = true
-								DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-									self._overwriteAlert = false
-								}
-								
-								// haptic feedback
-								let generator = UINotificationFeedbackGenerator()
-								generator.notificationOccurred(.error)
-								
-							} else {
-								self._grid.objectWillChange.send()
-							}
+							self.execute(value: i, alertText: Alerts.overwrite)
 						},
 						label: {
 							Text("\(i)")
@@ -158,5 +97,36 @@ struct KeyboardNumbersView: View {
 		}
 			.padding(.top)
 			.padding(.bottom)
+	}
+	
+	func execute(value: Int, alertText: String) {
+		guard let active = self._grid.getActive()
+		else { return }
+		
+		if self._grid.setValue(row: active[0],
+							   col: active[1],
+							   value: value) == false {
+			
+			// setup delayed action
+			self._task.cancel()
+			self._task = DispatchWorkItem {
+				self._displayAlert = false
+			}
+			
+			// display error message
+			self._alertText = alertText
+			self._displayAlert = true
+			DispatchQueue.main.asyncAfter(
+				deadline: DispatchTime.now() + 2,
+				execute: self._task
+			)
+			
+			// haptic feedback
+			let generator = UINotificationFeedbackGenerator()
+			generator.notificationOccurred(.error)
+			
+		} else {
+			self._grid.objectWillChange.send()
+		}
 	}
 }
