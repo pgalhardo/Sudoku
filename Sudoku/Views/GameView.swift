@@ -79,12 +79,17 @@ struct GameTopBarView: View {
 				Spacer()
 			}
 			
-			HStack {
-				Spacer()
-				if (_settings._enableTimer == true) {
+			if (_settings._enableTimer == true) {
+				HStack {
+					Spacer()
 					_timerView
 					Spacer()
-					
+				}
+			}
+			
+			if (_settings._enableTimer == true) {
+				HStack {
+					Spacer()
 					Button(
 						action: {
 							withAnimation {
@@ -97,14 +102,13 @@ struct GameTopBarView: View {
 								? "play.fill"
 								: "pause")
 								.resizable()
-								.frame(width: Screen.cellWidth / 2,
-									   height: Screen.cellWidth / 2)
-								.foregroundColor(Colors.MatteBlack)
+								.frame(width: Screen.cellWidth / 3,
+									   height: Screen.cellWidth / 3)
 						}
 					)
+						.foregroundColor(Colors.MatteBlack)
 				}
 			}
-				.padding(.leading, Screen.cellWidth / 2)
 		}
 			.padding(.top)
 			.padding(.leading)

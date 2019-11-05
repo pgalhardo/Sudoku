@@ -62,9 +62,9 @@ struct KeyboardView: View {
 								   height: Screen.cellWidth / 2)
 							.foregroundColor(Colors.EraserPink)
 						Text("Apagar")
+							.foregroundColor(Colors.MatteBlack)
 							.font(.custom("CaviarDreams-Bold",
 										  size: Screen.cellWidth / 2))
-							.foregroundColor(Colors.MatteBlack)
 					}
 				}
 			)
