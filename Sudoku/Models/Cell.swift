@@ -13,7 +13,7 @@ class Cell: CustomStringConvertible {
 	private var _value: Int!
 	private var _inputType: Int!
 	private var _color: Color = Color.white
-	
+
 	var description: String {
 		return String(_value)
 	}
@@ -52,23 +52,23 @@ class Cell: CustomStringConvertible {
 		_color = color
 	}
 			
-	func toString() -> Text {
+	func toString(fontSize: Int) -> Text {
 		if _value == 0 { return Text(" ") }
 		
 		if _inputType == InputType.system {
 			return Text("\(_value)")
 						.font(.custom("CaviarDreams-Bold",
-									  size: Screen.cellWidth * 0.70))
+									  size: CGFloat(fontSize)))
 						.foregroundColor(Colors.MatteBlack)
 		} else if _inputType == InputType.user {
 			return Text("\(_value)")
 						.font(.custom("CaviarDreams-Bold",
-									  size: Screen.cellWidth * 0.70))
+									  size: CGFloat(fontSize)))
 						.foregroundColor(Colors.DeepBlue)
 		}
 		return Text("\(_value)")
 					.font(.custom("CaviarDreams-Bold",
-								  size: Screen.cellWidth * 0.70))
+								  size: CGFloat(fontSize)))
 					.foregroundColor(Color.red)
 	}
 }

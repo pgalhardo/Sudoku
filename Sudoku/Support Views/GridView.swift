@@ -22,7 +22,7 @@ struct GridView: View {
 						HStack(spacing: -1) {
 							ForEach(0 ..< 9) { col in
 								self._grid.cellAt(row: row, col: col)
-									.toString()
+									.toString(fontSize: self._settings._fontSize)
 									.frame(width: Screen.cellWidth,
 										   height: Screen.cellWidth)
 									.border(Color.black, width: 1)

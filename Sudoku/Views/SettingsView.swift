@@ -55,13 +55,57 @@ struct SettingsView: View {
 					.padding(.leading)
 					.padding(.trailing)
 				
-				Section {
-					VStack(alignment: .leading) {
-						Toggle(isOn: $_settings._enableTimer) {
-							Text("Temporizador")
-								.font(.custom("CaviarDreams-Bold", size: 20))
-						}
+				VStack(alignment: .leading) {
+					Toggle(isOn: $_settings._enableTimer) {
+						Text("Temporizador")
+							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
+				}
+					.padding(.top, 60)
+					.padding(.leading)
+					.padding(.trailing)
+				
+				HStack {
+					Text("Tamanho do texto:")
+						.font(.custom("CaviarDreams-Bold", size: 20))
+					
+					Spacer()
+					Button(
+						action: {
+							if self._settings._fontSize > Int(Screen.cellWidth * 0.5) {
+								self._settings._fontSize -= 1
+							}
+						},
+						label: {
+							Text("-")
+								.font(.custom("CaviarDreams-Bold", size: 20))
+								.frame(width: Screen.cellWidth,
+									   height: Screen.cellWidth / 2)
+								.background(Colors.MatteBlack)
+								.foregroundColor(.white)
+								.cornerRadius(5)
+						}
+					)
+					Spacer()
+					Text(String(format: "%02d", Int(_settings._fontSize)))
+						.font(.custom("CaviarDreams-Bold", size: 20))
+					Spacer()
+					Button(
+						action: {
+							if self._settings._fontSize < Int(Screen.cellWidth * 0.9) {
+								self._settings._fontSize += 1
+							}
+						},
+						label: {
+							Text("+")
+								.font(.custom("CaviarDreams-Bold", size: 20))
+								.frame(width: Screen.cellWidth,
+									   height: Screen.cellWidth / 2)
+								.background(Colors.MatteBlack)
+								.foregroundColor(.white)
+								.cornerRadius(5)
+						}
+					)
 				}
 					.padding(.top, 60)
 					.padding(.leading)

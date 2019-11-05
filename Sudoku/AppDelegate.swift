@@ -18,7 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			"highlightAreas": true,
 			"highlightSimilar": false,
 			"hideUsed": true,
-			"enableTimer": true
+			"enableTimer": true,
+			"fontSize": 28
 		])
 		return true
 	}

@@ -33,11 +33,18 @@ class Settings: ObservableObject {
 									  forKey: "enableTimer")
 		}
 	}
+	@Published var _fontSize: Int! {
+		didSet {
+			UserDefaults.standard.set(_fontSize,
+									  forKey: "fontSize")
+		}
+	}
 
 	init() {
 		_highlightAreas = UserDefaults.standard.bool(forKey: "highlightAreas")
 		_highlightSimilar = UserDefaults.standard.bool(forKey: "highlightSimilar")
 		_hideUsed = UserDefaults.standard.bool(forKey: "highlightUsed")
 		_enableTimer = UserDefaults.standard.bool(forKey: "enableTimer")
+		_fontSize = UserDefaults.standard.integer(forKey: "fontSize")
 	}
 }
