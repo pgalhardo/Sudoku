@@ -119,8 +119,6 @@ struct SettingsView: View {
 				.padding(.bottom, 5)
 		}
     }
-	
-	
 }
 
 struct SettingsView_Previews: PreviewProvider {

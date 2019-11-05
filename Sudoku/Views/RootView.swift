@@ -36,23 +36,38 @@ struct RootView: View {
 		VStack {
 			if _viewRouter.getCurrentPage() == Pages.home {
 				MenuView()
-					.transition(AnyTransition.opacity.combined(with: .slide))
+					.transition(AnyTransition.asymmetric(
+						insertion: AnyTransition.opacity.combined(
+							with: .move(edge: .leading)),
+						removal: AnyTransition.opacity.combined(
+							with: .move(edge: .trailing))
+						)
+					)
 			} else if _viewRouter.getCurrentPage() == Pages.game {
 				GameView()
-					.transition(AnyTransition.opacity.combined(with: .slide))
+					.transition(.moveAndFadeIn)
 					.environmentObject(Grid(puzzle: Puzzles.hard))
-					.environmentObject(_settings)
-			} else if _viewRouter.getCurrentPage() == Pages.settings {
-				SettingsView()
-					.transition(AnyTransition.opacity.combined(with: .slide))
 					.environmentObject(_settings)
 			} else if _viewRouter.getCurrentPage() == Pages.statistics {
 				StatisticsView()
-					.transition(AnyTransition.opacity.combined(with: .slide))
+					.transition(.moveAndFadeIn)
 			} else if _viewRouter.getCurrentPage() == Pages.strategies {
 				StrategiesView()
-					.transition(AnyTransition.opacity.combined(with: .slide))
+					.transition(.moveAndFadeIn)
+			} else if _viewRouter.getCurrentPage() == Pages.settings {
+				SettingsView()
+					.transition(.moveAndFadeIn)
+					.environmentObject(_settings)
 			}
 		}
 	}
+}
+
+extension AnyTransition {
+    static var moveAndFadeIn: AnyTransition {
+        AnyTransition.asymmetric(
+			insertion: AnyTransition.opacity.combined(with: .move(edge: .trailing)),
+			removal: AnyTransition.opacity.combined(with: .move(edge: .leading))
+		)
+    }
 }
