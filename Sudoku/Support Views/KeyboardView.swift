@@ -96,8 +96,8 @@ struct KeyboardView: View {
 	var numbersRow: some View {
 		HStack {
 			ForEach(1 ..< 10) { i in
-				if (self._grid.getNumberFrequency()[i - 1] < 9
-					&& self._settings._hideUsed) {
+				if (!self._settings._hideUsed || (self._grid.getNumberFrequency()[i - 1] < 9
+					&& self._settings._hideUsed)) {
 					Spacer()
 					Button(
 						action: {

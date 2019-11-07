@@ -269,8 +269,11 @@ class Grid: ObservableObject {
 		}
 		else {
 			toggleColor(cell: _active)
-			toggleLineColor(cell: _active, rowMode: true)
-			toggleLineColor(cell: _active, rowMode: false)
+			
+			if areas {
+				toggleLineColor(cell: _active, rowMode: true)
+				toggleLineColor(cell: _active, rowMode: false)
+			}
 			if _cells[row][col].getValue() != 0 && similar {
 				highlightSimilar(row: row, col: col)
 			}
