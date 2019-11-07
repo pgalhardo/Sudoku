@@ -71,7 +71,7 @@ struct KeyboardView: View {
 			Spacer()
 			Button(
 				action: {
-					self._grid.solve()
+					self._grid.hiddenSingles()
 				},
 				label: {
 					VStack {

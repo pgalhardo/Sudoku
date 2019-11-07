@@ -35,15 +35,6 @@ class Grid: ObservableObject {
 		Grid's core functions
 	==========================================================================*/
 	
-	func reset() {
-		for i in (0 ..< 9) {
-			for j in (0 ..< 9) {
-				_cells[i][j].setValue(value: 0)
-				_cells[i][j].setInputType(inputType: InputType.system)
-			}
-		}
-	}
-	
 	func isFull() -> Bool {
 		for row in (0 ..< 9) {
 			for col in (0 ..< 9) {
@@ -64,7 +55,7 @@ class Grid: ObservableObject {
 			
 			for j in row {
 				// Substring -> String -> Int
-				//TODO throw custom load exception
+				// TODO throw custom load exception
 				guard let value = Int(String(j)) else { return }
 				_cells[i].append(Cell(value: value))
 				
@@ -127,11 +118,7 @@ class Grid: ObservableObject {
 		_cells[row][col].setValue(value: 0)
 		return false
 	}
-	
-	func solve() {
-
-	}
-	
+		
 	func completion() -> Int {
 		var filledCells: Double = 0
 		
@@ -170,10 +157,30 @@ class Grid: ObservableObject {
 		}
 	}
 	
-	func possibilities(row: Int, col: Int) -> [Int] {
+	func possibilities() -> [[[Int]]] {
+		var possibilities = [[[Int]]]()
+		
+		for i in (0 ..< 9) {
+			possibilities.append([])
+			
+			for j in (0 ..< 9) {
+				possibilities[i].append([])
+				let value = _cells[i][j].getValue()
+
+				if value != 0 {
+					possibilities[i][j] = [value]
+				} else {
+					possibilities[i][j] = cellPossibilities(row: i, col: j)
+				}
+			}
+		}
+		return possibilities
+	}
+			
+	func cellPossibilities(row: Int, col: Int) -> [Int] {
 		var numbers = [Int]()
 		
-		for number in (0 ..< 9) {
+		for number in (1 ..< 10) {
 			if !numberInRow(number: number, row: row)
 				&& !numberInCol(number: number, col: col)
 				&& !numberInSquare(number: number, row: row, col: col) {
@@ -182,6 +189,40 @@ class Grid: ObservableObject {
 			}
 		}
 		return numbers
+	}
+	
+	func unique(value: Int, list: [[Int]]) -> Int {
+		var count = 0, index = 0
+		
+		for i in (0 ..< 9) {
+			for j in (0 ..< list[i].count) {
+				if list[i][j] == value { count += 1; index = i }
+				if count > 1 { return 0 }
+			}
+		}
+		return count == 1 ? index : 0
+	}
+	
+	func hiddenSingles() {
+		let poss = possibilities()
+		var singles = [[Int]]()
+				
+		print("detecting hidden singles in rows")
+		for i in (0 ..< 9) {
+			for j in (0 ..< 9) {
+				let index = unique(value: j, list:  poss[i])
+				if index != 0 && _cells[i][index].getValue() == 0 {
+					print(j, " @ ", i, ":", index)
+					singles.append([i, index])
+				}
+			}
+		}
+				
+		print("detecting hidden singles in columns")
+		// TODO
+		
+		print("detecting hidden singles in boxes")
+		// TODO
 	}
 	
 	/*==========================================================================

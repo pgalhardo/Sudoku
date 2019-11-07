@@ -46,7 +46,7 @@ struct RootView: View {
 			} else if _viewRouter.getCurrentPage() == Pages.game {
 				GameView()
 					.transition(.slideAndFadeIn)
-					.environmentObject(Grid(puzzle: Puzzles.simple))
+					.environmentObject(Grid(puzzle: Puzzles.hard))
 					.environmentObject(_settings)
 			} else if _viewRouter.getCurrentPage() == Pages.statistics {
 				StatisticsView()
