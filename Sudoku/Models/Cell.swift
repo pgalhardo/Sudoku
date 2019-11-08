@@ -9,15 +9,12 @@
 import Foundation
 import SwiftUI
 
-class Cell: CustomStringConvertible {
+class Cell {
 	private var _value: Int!
 	private var _inputType: Int!
 	private var _color: Color = Color.white
-
-	var description: String {
-		return String(_value)
-	}
-			
+	private var _possibles: [Int] = [Int]()
+				
 	init(value: Int) {
 		_value = value
 		
@@ -40,8 +37,13 @@ class Cell: CustomStringConvertible {
 		return _color
 	}
 	
+	func getPossibles() -> [Int] {
+		return _possibles
+	}
+	
 	func setValue(value: Int) {
 		_value = value
+		_possibles = []
 	}
 	
 	func setInputType(inputType: Int) {
@@ -51,7 +53,11 @@ class Cell: CustomStringConvertible {
 	func setColor(color: Color) {
 		_color = color
 	}
-			
+	
+	func setPossibles(possibles: [Int]) {
+		_possibles = possibles
+	}
+				
 	func render(fontSize: Int) -> Text {
 		if _value == 0 { return Text(" ") }
 		
