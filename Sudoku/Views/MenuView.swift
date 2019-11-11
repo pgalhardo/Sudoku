@@ -22,7 +22,7 @@ struct MenuView: View {
 			
 			if (enableContinue()) {
 				ContinueButtonView()
-					.modifier(DefaultButton())
+					.modifier(ContinueButton())
 			}
 			PlayButtonView()
 				.modifier(DefaultButton())
@@ -151,6 +151,20 @@ struct DefaultButton: ViewModifier {
 			.cornerRadius(40)
 			.padding(.all, 7)
 			.foregroundColor(.white)
+			.shadow(radius: 20)
+    }
+}
+
+struct ContinueButton: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: Screen.width * 0.55,
+				   height: 50,
+				   alignment: .leading)
+			.background(Colors.LightBlue)
+			.cornerRadius(40)
+			.padding(.all, 7)
+			.foregroundColor(Colors.MatteBlack)
 			.shadow(radius: 20)
     }
 }
