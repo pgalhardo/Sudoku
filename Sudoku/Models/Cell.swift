@@ -25,6 +25,11 @@ class Cell {
 		}
 	}
 	
+	init(value: Int, inputType: Int) {
+		_value = value
+		_inputType = inputType
+	}
+	
 	func getValue() -> Int {
 		return _value
 	}

@@ -43,36 +43,49 @@ class Grid: ObservableObject {
 		_cells = [[Cell]]()
 		_numberFrequency = Array(repeating: 0, count: 9)
 		_filled = 0
+		
+		for _ in (0 ..< 9) { _cells.append([]) }
 	}
-	
+		
 	func load(puzzle: String) {
-		var str = puzzle
+		var str = puzzle, user = false, count = 0
 		
 		reset()
-		for i in (0 ..< 9) {
-			let row = str.prefix(9)
-			_cells.append([])
+		while str != "" {
+			let row = count / 9
+			let char = str[0]
+			str.remove(at: str.startIndex)
 			
-			for j in row {
-				// Substring -> String -> Int
-				// consider throwing custom load exception
-				guard let value = Int(String(j)) else { return }
-				_cells[i].append(Cell(value: value))
+			if "0" <= char && char <= "9" {
+				guard let value = Int(char)
+				else { self.reset(); return }
 				
+				user == true
+				? _cells[row].append(Cell(value: value,
+										inputType: InputType.user))
+				: _cells[row].append(Cell(value: value))
+				
+				user = false
+				count += 1
 				if (value > 0) {
 					_numberFrequency[value - 1] += 1
 					_filled += 1
 				}
 			}
-			str = String(str.dropFirst(9))
+			else if char == "u" {
+				user = true
+			}
 		}
 	}
-	
+		
 	func store() -> String {
 		var str = ""
 		
 		for row in (0 ..< 9) {
 			for col in (0 ..< 9) {
+				if (_cells[row][col].getInputType() == InputType.user) {
+					str.append("u")
+				}
 				str.append(String(_cells[row][col].getValue()))
 			}
 		}
@@ -464,4 +477,21 @@ class Grid: ObservableObject {
 		#2 - Naked Pairs / Triples
 	==========================================================================*/
 	
+}
+
+/*
+	Extension to allow usage of: str[i]
+*/
+extension String {
+	subscript (i: Int) -> String {
+		return self[i ..< i + 1]
+	}
+
+	subscript (r: Range<Int>) -> String {
+		let range = Range(uncheckedBounds: (lower: max(0, min(count, r.lowerBound)),
+											upper: min(count, max(0, r.upperBound))))
+		let start = index(startIndex, offsetBy: range.lowerBound)
+		let end = index(start, offsetBy: range.upperBound - range.lowerBound)
+		return String(self[start ..< end])
+	}
 }
