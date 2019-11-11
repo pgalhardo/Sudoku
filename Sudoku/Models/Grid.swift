@@ -12,10 +12,12 @@ import SwiftUI
 class Grid: ObservableObject {
 	private var _active: [Int]?
 	private var _colored: [[Int]] = [[Int]]()
+	private var _errorCount: Int = 0
 	
 	@Published private var _cells: [[Cell]] = [[Cell]]()
 	@Published private var _numberFrequency: [Int] = Array(repeating: 0,
 														   count: 9)
+	@Published private var _filled: Double = 0
 	
 	init() {
 		for i in (0 ..< 9) {
@@ -35,9 +37,18 @@ class Grid: ObservableObject {
 		Core functions
 	==========================================================================*/
 	
+	func reset() {
+		_active = nil
+		_colored = [[Int]]()
+		_cells = [[Cell]]()
+		_numberFrequency = Array(repeating: 0, count: 9)
+		_filled = 0
+	}
+	
 	func load(puzzle: String) {
 		var str = puzzle
 		
+		reset()
 		for i in (0 ..< 9) {
 			let row = str.prefix(9)
 			_cells.append([])
@@ -50,6 +61,7 @@ class Grid: ObservableObject {
 				
 				if (value > 0) {
 					_numberFrequency[value - 1] += 1
+					_filled += 1
 				}
 			}
 			str = String(str.dropFirst(9))
@@ -83,16 +95,11 @@ class Grid: ObservableObject {
 	}
 	
 	func completion() -> Int {
-		var filledCells: Double = 0
-		
-		for row in (0 ..< 9) {
-			for col in (0 ..< 9) {
-				if _cells[row][col].getValue() != 0 {
-					filledCells += 1
-				}
-			}
-		}
-		return Int(filledCells / 81 * 100)
+		return Int(_filled / 81 * 100)
+	}
+	
+	func getErrorCount() -> Int {
+		return _errorCount
 	}
 			
 	/*==========================================================================
@@ -112,10 +119,12 @@ class Grid: ObservableObject {
 		}
 		else if cell.getValue() != 0 {
 			_numberFrequency[cell.getValue() - 1] -= 1
+			_filled -= 1
 		}
 		
 		if value > 0 {
 			_numberFrequency[value - 1] += 1
+			_filled += 1
 		}
 		cell.setValue(value: value)
 		return true
@@ -293,13 +302,17 @@ class Grid: ObservableObject {
 		Solver
 	==========================================================================*/
 	
-	func solve() {
+	func solve() -> Bool {
 		while !isFull() {
 			objectWillChange.send()
 			let possibles = updatePossibles()
 			if checkSolved() > 0 { continue }
-			hiddenSingles(possibles: possibles)
+			if hiddenSingles(possibles: possibles) == 0 {
+				print("Unsolvable with current techniques.")
+				return false
+			}
 		}
+		return true
 	}
 	
 	func checkSolved() -> Int {
@@ -352,24 +365,29 @@ class Grid: ObservableObject {
 		#1 - Hidden Singles
 	==========================================================================*/
 	
-	func hiddenSingles(possibles: [[[Int]]]) {
+	func hiddenSingles(possibles: [[[Int]]]) -> Int {
 		let possibles = possibles
+		var found = 0
 		
 		// detect hidden singles in rows
 		for row in (0 ..< 9) {
 			for value in (1 ... 9) {
-				uniqueRow(row: row,
+				if uniqueRow(row: row,
 						  value: value,
-						  possibles: possibles[row])
+						  possibles: possibles[row]) {
+					found += 1
+				}
 			}
 		}
 				
 		// detect hidden singles in columns
 		for col in (0 ..< 9) {
 			for value in (1 ... 9) {
-				uniqueCol(col: col,
+				if uniqueCol(col: col,
 						  value: value,
-						  possibles: possibles.map { $0[col] })
+						  possibles: possibles.map { $0[col] }) {
+					found += 1
+				}
 			}
 		}
 
@@ -378,16 +396,19 @@ class Grid: ObservableObject {
 		for row in delim {
 			for col in delim {
 				for value in (1 ... 9) {
-					uniqueSquare(row: row,
+					if uniqueSquare(row: row,
 								 col: col,
 								 value: value,
-								 possibles: possibles)
+								 possibles: possibles) {
+						found += 1
+					}
 				}
 			}
 		}
+		return found
 	}
 	
-	func uniqueRow(row: Int, value: Int, possibles: [[Int]]) {
+	func uniqueRow(row: Int, value: Int, possibles: [[Int]]) -> Bool {
 		var count = 0, index = 0
 		
 		for col in (0 ..< 9) {
@@ -399,9 +420,10 @@ class Grid: ObservableObject {
 		if count == 1 {
 			setValue(row: row, col: index, value: value)
 		}
+		return count == 1
 	}
 	
-	func uniqueCol(col: Int, value: Int, possibles: [[Int]]) {
+	func uniqueCol(col: Int, value: Int, possibles: [[Int]]) -> Bool {
 		var count = 0, index = 0
 		
 		for row in (0 ..< 9) {
@@ -413,9 +435,10 @@ class Grid: ObservableObject {
 		if count == 1 {
 			setValue(row: index, col: col, value: value)
 		}
+		return count == 1
 	}
 	
-	func uniqueSquare(row: Int, col: Int, value: Int, possibles: [[[Int]]]) {
+	func uniqueSquare(row: Int, col: Int, value: Int, possibles: [[[Int]]]) -> Bool {
 		var square = [[Int]]()
 		for i in (row ..< row + 3) {
 			for j in (col ..< col + 3) {
@@ -434,6 +457,7 @@ class Grid: ObservableObject {
 			let rowOffset = index / 3; let colOffset = index % 3
 			setValue(row: row + rowOffset, col: col + colOffset, value: value)
 		}
+		return count == 1
 	}
 	
 	/*==========================================================================

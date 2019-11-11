@@ -71,7 +71,9 @@ struct KeyboardView: View {
 			Spacer()
 			Button(
 				action: {
-					self._grid.solve()
+					if !self._grid.solve() {
+						self.displayError(alertText: "Puzzle sem solução")
+					}
 				},
 				label: {
 					VStack {
@@ -126,27 +128,29 @@ struct KeyboardView: View {
 		if self._grid.setValue(row: active[0],
 							   col: active[1],
 							   value: value) == false {
-			
-			// setup delayed action
-			self._task.cancel()
-			self._task = DispatchWorkItem {
-				self._displayAlert = false
-			}
-			
-			// display error message
-			self._alertText = alertText
-			self._displayAlert = true
-			DispatchQueue.main.asyncAfter(
-				deadline: DispatchTime.now() + 2,
-				execute: self._task
-			)
-			
-			// haptic feedback
-			let generator = UINotificationFeedbackGenerator()
-			generator.notificationOccurred(.error)
-			
+			displayError(alertText: alertText)
 		} else {
 			self._grid.objectWillChange.send()
 		}
+	}
+	
+	func displayError(alertText: String) {
+		// setup delayed action
+		self._task.cancel()
+		self._task = DispatchWorkItem {
+			self._displayAlert = false
+		}
+		
+		// display error message
+		self._alertText = alertText
+		self._displayAlert = true
+		DispatchQueue.main.asyncAfter(
+			deadline: DispatchTime.now() + 2,
+			execute: self._task
+		)
+		
+		// haptic feedback
+		let generator = UINotificationFeedbackGenerator()
+		generator.notificationOccurred(.error)
 	}
 }

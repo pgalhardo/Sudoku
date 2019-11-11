@@ -19,7 +19,7 @@ struct StatisticsView: View {
     }
 }
 
-struct StatisticsViewView_Previews: PreviewProvider {
+struct StatisticsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
     }

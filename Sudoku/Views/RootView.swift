@@ -30,12 +30,14 @@ class ViewRouter: ObservableObject {
 
 struct RootView: View {
 	var _settings: Settings = Settings()
+	var _grid: Grid = Grid(puzzle: Puzzles.hard)
 	@EnvironmentObject var _viewRouter: ViewRouter
 	
 	var body: some View {
 		VStack {
 			if _viewRouter.getCurrentPage() == Pages.home {
 				MenuView()
+					.environmentObject(_grid)
 					.transition(AnyTransition.asymmetric(
 						insertion: AnyTransition.opacity.combined(
 							with: .move(edge: .leading)),
@@ -46,7 +48,7 @@ struct RootView: View {
 			} else if _viewRouter.getCurrentPage() == Pages.game {
 				GameView()
 					.transition(.slideAndFadeIn)
-					.environmentObject(Grid(puzzle: Puzzles.hard))
+					.environmentObject(_grid)
 					.environmentObject(_settings)
 			} else if _viewRouter.getCurrentPage() == Pages.statistics {
 				StatisticsView()

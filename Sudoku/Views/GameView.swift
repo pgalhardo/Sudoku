@@ -56,6 +56,7 @@ struct GameTopBarView: View {
 	
 	@EnvironmentObject var _viewRouter: ViewRouter
 	@EnvironmentObject var _settings: Settings
+	@EnvironmentObject var _grid: Grid
 		
 	var body: some View {
 		ZStack {
@@ -63,6 +64,8 @@ struct GameTopBarView: View {
 				Button(
 					action: {
 						withAnimation(.easeIn) {
+							UserDefaults.standard.set(self._grid.store(),
+													  forKey: "savedBoard")
 							self._viewRouter.setCurrentPage(page: Pages.home)
 						}
 					},
@@ -78,6 +81,8 @@ struct GameTopBarView: View {
 					.foregroundColor(Colors.MatteBlack)
 				Spacer()
 			}
+				.disabled(exit())
+				.opacity(exit() ? 0 : 1)
 			
 			if (_settings._enableTimer == true) {
 				HStack {
@@ -114,4 +119,20 @@ struct GameTopBarView: View {
 			.padding(.leading)
 			.padding(.trailing)
 	}
+	
+	func exit() -> Bool {
+		return _grid.completion() == 100
+	}
+}
+
+struct ExitView: View {
+	var body: some View {
+		Text("TESTE")
+	}
+}
+
+struct ExitView_Previews: PreviewProvider {
+    static var previews: some View {
+        ExitView()
+    }
 }

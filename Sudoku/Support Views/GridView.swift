@@ -26,13 +26,22 @@ struct GridView: View {
 			VStack {
 				Text("Em pausa")
 					.font(.custom("CaviarDreams-Bold", size: 50))
-					.foregroundColor(.black)
-					.shadow(radius: 10)
 				Text(String(format: "%02d%% completo", _grid.completion()))
 					.font(.custom("CaviarDreams-Bold", size: 20))
-					.foregroundColor(.black)
-					.shadow(radius: 10)
 			}
+				.foregroundColor(.black)
+				.shadow(radius: 10)
+				.opacity(_isPaused ? 1 : 0)
+				.animation(.spring())
+			
+			VStack {
+				Text("Parabéns!")
+					.font(.custom("CaviarDreams-Bold", size: 50))
+				Text(String(format: "Terminado com %d erros", _grid.getErrorCount()))
+					.font(.custom("CaviarDreams-Bold", size: 20))
+			}
+				.foregroundColor(.black)
+				.shadow(radius: 10)
 				.opacity(_isPaused ? 1 : 0)
 				.animation(.spring())
 		}
