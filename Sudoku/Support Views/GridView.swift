@@ -50,8 +50,12 @@ struct GridView: View {
 						}
 					},
 					label: {
-						Text("Sair")
-							.font(.custom("CaviarDreams-Bold", size: 20))
+						HStack {
+							Spacer()
+							Text("Sair")
+								.font(.custom("CaviarDreams-Bold", size: 20))
+							Spacer()
+						}
 					}
 				)
 					.frame(width: Screen.width * 0.55,
@@ -63,7 +67,6 @@ struct GridView: View {
 					.shadow(radius: 20)
 					.padding(.top, 20)
 			}
-				.foregroundColor(.black)
 				.shadow(radius: 10)
 				.opacity(exit() ? 1 : 0)
 				.animation(.spring())
