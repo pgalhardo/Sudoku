@@ -15,6 +15,8 @@ struct TimerView : View {
 	@State private var _hour: Int = 0
 	@State private var _min: Int = 0
 	@State private var _sec: Int = 0
+
+	@EnvironmentObject var _grid: Grid
 	
 	init() {
 		_isPaused = false
@@ -28,7 +30,7 @@ struct TimerView : View {
 													   self._sec]))
 			.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
             .onReceive(_timer) { _ in
-				if (!_isPaused) {
+				if (!_isPaused && !self.exit()) {
 					self._sec += 1
 					if self._sec == 60 {
 						self._min += 1
@@ -52,6 +54,10 @@ struct TimerView : View {
 	
 	func toggleTimer() {
 		_isPaused.toggle()
+	}
+	
+	func exit() -> Bool {
+		return _grid.completion() == 100
 	}
 }
 

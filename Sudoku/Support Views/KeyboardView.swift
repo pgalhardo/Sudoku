@@ -24,9 +24,9 @@ struct KeyboardView: View {
 			self.optionsRow
 			self.numbersRow
 		}
-			.blur(radius: _isPaused ? 5 : 0)
-			.opacity(_isPaused ? 0.7 : 1)
-			.disabled(_isPaused)
+			.blur(radius: _isPaused || exit() ? 5 : 0)
+			.opacity(_isPaused || exit() ? 0.7 : 1)
+			.disabled(_isPaused || exit())
 			.animation(.spring())
 	}
 	
@@ -152,5 +152,9 @@ struct KeyboardView: View {
 		// haptic feedback
 		let generator = UINotificationFeedbackGenerator()
 		generator.notificationOccurred(.error)
+	}
+	
+	func exit() -> Bool {
+		return _grid.completion() == 100
 	}
 }

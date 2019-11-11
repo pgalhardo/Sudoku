@@ -13,6 +13,7 @@ struct GridView: View {
 
 	@EnvironmentObject var _grid: Grid
 	@EnvironmentObject var _settings: Settings
+	@EnvironmentObject var _viewRouter: ViewRouter
 	
 	var body: some View {
 		ZStack {
@@ -20,8 +21,8 @@ struct GridView: View {
 				_structure
 				_overlayLines
 			}
-				.opacity(_isPaused ? 0 : 1)
-				.disabled(_isPaused)
+				.opacity(_isPaused || exit() ? 0 : 1)
+				.disabled(_isPaused || exit())
 			
 			VStack {
 				Text("Em pausa")
@@ -39,10 +40,32 @@ struct GridView: View {
 					.font(.custom("CaviarDreams-Bold", size: 50))
 				Text(String(format: "Terminado com %d erros", _grid.getErrorCount()))
 					.font(.custom("CaviarDreams-Bold", size: 20))
+				
+				Button(
+					action: {
+						withAnimation(.easeIn) {
+							UserDefaults.standard.set(nil,
+													  forKey: "savedBoard")
+							self._viewRouter.setCurrentPage(page: Pages.home)
+						}
+					},
+					label: {
+						Text("Sair")
+							.font(.custom("CaviarDreams-Bold", size: 20))
+					}
+				)
+					.frame(width: Screen.width * 0.55,
+						   height: 50)
+					.background(Colors.MatteBlack)
+					.cornerRadius(40)
+					.padding(.all, 7)
+					.foregroundColor(.white)
+					.shadow(radius: 20)
+					.padding(.top, 20)
 			}
 				.foregroundColor(.black)
 				.shadow(radius: 10)
-				.opacity(_isPaused ? 1 : 0)
+				.opacity(exit() ? 1 : 0)
 				.animation(.spring())
 		}
 			.frame(width: Screen.cellWidth * 9,
@@ -106,5 +129,9 @@ struct GridView: View {
 			}
 				.stroke(lineWidth: Screen.lineThickness)
 		}
+	}
+	
+	func exit() -> Bool {
+		return _grid.completion() == 100
 	}
 }

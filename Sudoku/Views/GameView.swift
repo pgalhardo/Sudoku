@@ -113,6 +113,8 @@ struct GameTopBarView: View {
 					)
 						.foregroundColor(Colors.MatteBlack)
 				}
+					.disabled(exit())
+					.opacity(exit() ? 0 : 1)
 			}
 		}
 			.padding(.top)
@@ -123,16 +125,4 @@ struct GameTopBarView: View {
 	func exit() -> Bool {
 		return _grid.completion() == 100
 	}
-}
-
-struct ExitView: View {
-	var body: some View {
-		Text("TESTE")
-	}
-}
-
-struct ExitView_Previews: PreviewProvider {
-    static var previews: some View {
-        ExitView()
-    }
 }

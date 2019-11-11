@@ -43,14 +43,14 @@ class Grid: ObservableObject {
 		_cells = [[Cell]]()
 		_numberFrequency = Array(repeating: 0, count: 9)
 		_filled = 0
-		
-		for _ in (0 ..< 9) { _cells.append([]) }
 	}
 		
 	func load(puzzle: String) {
 		var str = puzzle, user = false, count = 0
 		
 		reset()
+		for _ in (0 ..< 9) { _cells.append([]) }
+		
 		while str != "" {
 			let row = count / 9
 			let char = str[0]
