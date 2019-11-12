@@ -24,6 +24,56 @@ struct GameView: View {
 			
 			ZStack {
 				GridView(_isPaused: $_isPaused)
+				
+				VStack {
+					Text("Em pausa")
+						.font(.custom("CaviarDreams-Bold", size: 50))
+					Text(String(format: "%02d%% completo", _grid.completion()))
+						.font(.custom("CaviarDreams-Bold", size: 20))
+				}
+					.foregroundColor(.black)
+					.shadow(radius: 10)
+					.opacity(_isPaused ? 1 : 0)
+					.animation(.spring())
+							
+				VStack {
+					Text("Parabéns!")
+						.font(.custom("CaviarDreams-Bold", size: 50))
+					Text(String(format: "Terminado com %d erros", _grid.getErrorCount()))
+						.font(.custom("CaviarDreams-Bold", size: 20))
+					
+					Button(
+						action: {
+							withAnimation(.easeIn) {
+								UserDefaults.standard.set(nil,
+														  forKey: "savedBoard")
+								UserDefaults.standard.set(nil,
+														  forKey: "time")
+								self._viewRouter.setCurrentPage(page: Pages.home)
+							}
+						},
+						label: {
+							HStack {
+								Spacer()
+								Text("Sair")
+									.font(.custom("CaviarDreams-Bold", size: 20))
+								Spacer()
+							}
+						}
+					)
+						.frame(width: Screen.width * 0.55,
+							   height: 50)
+						.background(Colors.MatteBlack)
+						.cornerRadius(40)
+						.padding(.all, 7)
+						.foregroundColor(.white)
+						.shadow(radius: 20)
+						.padding(.top, 20)
+				}
+					.shadow(radius: 10)
+					.opacity(exit() ? 1 : 0)
+					.animation(.spring())
+				
 				Text(_alertText)
 					.font(.custom("CaviarDreams-Bold", size: 15))
 					.padding()
@@ -41,11 +91,21 @@ struct GameView: View {
 			}
 			
 			Spacer()
+			Text(String(format: "Erros: %d / 3", _grid.getErrorCount()))
+				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
+				.blur(radius: _isPaused || exit() ? 5 : 0)
+				.animation(.spring())
+			
+			Spacer()
 			KeyboardView(_isPaused: $_isPaused,
 						 _displayAlert: $_displayAlert,
 						 _alertText: $_alertText)
 			Spacer()
 		}
+	}
+	
+	func exit() -> Bool {
+		return _grid.completion() == 100
 	}
 }
 

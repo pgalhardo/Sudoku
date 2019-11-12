@@ -124,6 +124,10 @@ struct PlayButtonView: View {
 		Button(
 			action: {
 				withAnimation {
+					UserDefaults.standard.set(nil,
+											  forKey: "savedBoard")
+					UserDefaults.standard.set(nil,
+											  forKey: "time")
 					self._grid.load(puzzle: Puzzles.hard)
 					self._viewRouter.setCurrentPage(page: Pages.game)
 				}
