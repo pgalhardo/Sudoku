@@ -20,7 +20,7 @@ struct GameView: View {
 		
 	var body: some View {
 		VStack {
-			GameTopBarView(_isPaused: $_isPaused)
+			GameTopBarView(isPaused: $_isPaused)
 			
 			ZStack {
 				GridView(_isPaused: $_isPaused)
@@ -50,14 +50,19 @@ struct GameView: View {
 }
 
 struct GameTopBarView: View {
-	var _timerView = TimerView()
+	private var _timerView: TimerView!
 	
-	@Binding var _isPaused: Bool
+	@Binding var isPaused: Bool
 	
 	@EnvironmentObject var _viewRouter: ViewRouter
 	@EnvironmentObject var _settings: Settings
 	@EnvironmentObject var _grid: Grid
 		
+	init(isPaused: Binding<Bool>) {
+		_isPaused = isPaused
+		_timerView = TimerView(isPaused: isPaused)
+	}
+	
 	var body: some View {
 		ZStack {
 			HStack {
@@ -98,12 +103,11 @@ struct GameTopBarView: View {
 					Button(
 						action: {
 							withAnimation {
-								self._isPaused.toggle()
-								self._timerView.toggleTimer()
+								self.isPaused.toggle()
 							}
 						},
 						label: {
-							Image(systemName: self._isPaused
+							Image(systemName: self.isPaused
 								? "play.fill"
 								: "pause")
 								.resizable()

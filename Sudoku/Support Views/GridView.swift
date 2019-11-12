@@ -46,6 +46,8 @@ struct GridView: View {
 						withAnimation(.easeIn) {
 							UserDefaults.standard.set(nil,
 													  forKey: "savedBoard")
+							UserDefaults.standard.set(nil,
+													  forKey: "time")
 							self._viewRouter.setCurrentPage(page: Pages.home)
 						}
 					},
