@@ -18,8 +18,8 @@ struct GridView: View {
 	var body: some View {
 		ZStack {
 			Group {
-				_structure
-				_overlayLines
+				structure
+				overlayLines
 			}
 				.disabled(_isPaused || exit())
 				.opacity(_isPaused || exit() ? 0 : 1)
@@ -29,7 +29,7 @@ struct GridView: View {
 				   alignment: .center)
 	}
 	
-	private var _structure: some View {
+	private var structure: some View {
 		VStack(spacing: -1) {
 			ForEach(0 ..< 9) { row in
 				HStack(spacing: -1) {
@@ -67,7 +67,7 @@ struct GridView: View {
 		}
 	}
 	
-	private var _overlayLines: some View {
+	private var overlayLines: some View {
 		GeometryReader { geometry in
 			Path { path in
 				let hlines = 2

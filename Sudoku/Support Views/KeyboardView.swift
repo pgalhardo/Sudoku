@@ -21,8 +21,8 @@ struct KeyboardView: View {
 	
 	var body: some View {
 		VStack {
-			self.optionsRow
-			self.numbersRow
+			optionsRow
+			numbersRow
 		}
 			.blur(radius: _isPaused || exit() ? 5 : 0)
 			.opacity(_isPaused || exit() ? 0.7 : 1)
