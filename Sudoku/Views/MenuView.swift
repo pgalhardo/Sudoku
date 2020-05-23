@@ -76,6 +76,21 @@ struct MenuView: View {
 						Button(
 							action: {
 								withAnimation {
+									self._displayWarning = false
+								}
+							},
+							label: {
+								Image(systemName: "xmark.circle.fill")
+									.foregroundColor(Color.red)
+								Text("Não")
+									.font(.custom("CaviarDreams-Bold", size: 20))
+							}
+						)
+						
+						Spacer()
+						Button(
+							action: {
+								withAnimation {
 									UserDefaults.standard.set(nil,
 															  forKey: "savedBoard")
 									UserDefaults.standard.set(nil,
@@ -88,21 +103,6 @@ struct MenuView: View {
 								Image(systemName: "checkmark.circle.fill")
 									.foregroundColor(Color.green)
 								Text("Sim")
-									.font(.custom("CaviarDreams-Bold", size: 20))
-							}
-						)
-						
-						Spacer()
-						Button(
-							action: {
-								withAnimation {
-									self._displayWarning = false
-								}
-							},
-							label: {
-								Image(systemName: "xmark.circle.fill")
-									.foregroundColor(Color.red)
-								Text("Não")
 									.font(.custom("CaviarDreams-Bold", size: 20))
 							}
 						)
