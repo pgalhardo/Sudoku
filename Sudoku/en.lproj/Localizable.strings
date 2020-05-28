@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  Sudoku
+
+  Created by Pedro Galhardo on 28/05/2020.
+  Copyright © 2020 Pedro Galhardo. All rights reserved.
+*/
+
+"main.new" = "New game";
+"main.resume" = "Resume";
+"main.stats" = "Statistics";
+"main.strategies" = "Strategies";
+"main.settings" = "Settings";
+"main.back" = "Back";
+
+"settings.areas" = "Highlight areas";
+"settings.areas.descript" = "Highlight the selected cell column and row";
+"settings.twins" = "Highlight identical numbers";
+"settings.twins.descript" = "Highlight numbers identical to those in the selected cell";
+"settings.used" = "Hide used numbers";
+"settings.used.descript" = "Hide numbers that are no longer available to be placed";
+"settings.timer" = "Timer";
+"settings.text.size" = "Text size";

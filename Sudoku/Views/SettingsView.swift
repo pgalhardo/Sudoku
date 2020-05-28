@@ -14,38 +14,39 @@ struct SettingsView: View {
 	
     var body: some View {
 		VStack(spacing: 0) {
-			GenericTopBarView(title: "Definições", destination: Pages.home)
+			GenericTopBarView(title: NSLocalizedString("main.settings", comment: ""),
+							  destination: Pages.home)
 		
 			Section {
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._highlightAreas) {
-						Text("Destacar áreas")
+						Text(NSLocalizedString("settings.areas", comment: ""))
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 					
-					Text("Destacar a coluna e fila da célula selecionada")
+					Text(NSLocalizedString("settings.areas.descript", comment: ""))
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
 				
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._highlightSimilar) {
-						Text("Destacar números idênticos")
+						Text(NSLocalizedString("settings.twins", comment: ""))
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 				
-					Text("Destacar os números iguais aos da célula selecionada")
+					Text(NSLocalizedString("settings.twins.descript", comment: ""))
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
 				
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._hideUsed) {
-						Text("Ocultar números usados")
+						Text(NSLocalizedString("settings.used", comment: ""))
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 				
-					Text("Oculta os números que já não estão disponíveis para serem colocados")
+					Text(NSLocalizedString("settings.used.descript", comment: ""))
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
@@ -56,7 +57,7 @@ struct SettingsView: View {
 			
 			VStack(alignment: .leading) {
 				Toggle(isOn: $_settings._enableTimer) {
-					Text("Temporizador")
+					Text(NSLocalizedString("settings.timer", comment: ""))
 						.font(.custom("CaviarDreams-Bold", size: 20))
 				}
 			}
@@ -65,7 +66,7 @@ struct SettingsView: View {
 				.padding(.trailing)
 			
 			HStack {
-				Text("Tamanho do texto:")
+				Text(NSLocalizedString("settings.text.size", comment: ""))
 					.font(.custom("CaviarDreams-Bold", size: 20))
 				
 				Spacer()

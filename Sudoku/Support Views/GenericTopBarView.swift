@@ -36,7 +36,7 @@ struct GenericTopBarView: View {
 							.resizable()
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
-						Text("Voltar")
+						Text(NSLocalizedString("main.back", comment: ""))
 							.font(.custom("CaviarDreams-Bold", size: 15))
 
 					}

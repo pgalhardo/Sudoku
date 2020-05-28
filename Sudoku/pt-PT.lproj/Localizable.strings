@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  Sudoku
+
+  Created by Pedro Galhardo on 28/05/2020.
+  Copyright © 2020 Pedro Galhardo. All rights reserved.
+*/
+
+"main.new" = "Novo jogo";
+"main.resume" = "Continuar";
+"main.stats" = "Estatísticas";
+"main.strategies" = "Estratégias";
+"main.settings" = "Definições";
+"main.back" = "Voltar";
+
+"settings.areas" = "Destacar áreas";
+"settings.areas.descript" = "Destacar a coluna e fila da célula selecionada";
+"settings.twins" = "Destacar números idênticos";
+"settings.twins.descript" = "Destacar números idênticos aos da célula selecionada";
+"settings.used" = "Ocultar números usados";
+"settings.used.descript" = "Ocultar números que já não estão disponíveis para serem colocados";
+"settings.timer" = "Temporizador";
+"settings.text.size" = "Tamanho do texto";

@@ -30,17 +30,17 @@ struct MenuView: View {
 					}
 					PlayButtonView(_displayWarning: $_displayWarning)
 						.modifier(DefaultButton())
-					HomeButtonView(label: "Estatísticas",
+					HomeButtonView(label: NSLocalizedString("main.stats", comment: ""),
 								   imageName: "chart.bar.fill",
 								   imageColor: Color.white,
 								   page: Pages.statistics)
 						.modifier(DefaultButton())
-					HomeButtonView(label: "Estratégias",
+					HomeButtonView(label: NSLocalizedString("main.strategies", comment: ""),
 								   imageName: "lightbulb.fill",
 								   imageColor: Color.white,
 								   page: Pages.strategies)
 						.modifier(DefaultButton())
-					HomeButtonView(label: "Definições",
+					HomeButtonView(label: NSLocalizedString("main.settings", comment: ""),
 								   imageName: "gear",
 								   imageColor: Color.white,
 								   page: Pages.settings)
@@ -190,7 +190,7 @@ struct ContinueButtonView: View {
 				ZStack(alignment: .leading) {
 					Image(systemName: "hourglass.bottomhalf.fill")
 						.position(x: Screen.width * 0.55 * 0.2, y: 25)
-					Text("Continuar")
+					Text(NSLocalizedString("main.resume", comment: ""))
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: Screen.width * 0.55 * 0.35)
 				}
@@ -234,7 +234,7 @@ struct PlayButtonView: View {
 				ZStack(alignment: .leading) {
 					Image(systemName: "gamecontroller.fill")
 						.position(x: Screen.width * 0.55 * 0.2, y: 25)
-					Text("Novo jogo")
+					Text(NSLocalizedString("main.new", comment: ""))
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: Screen.width * 0.55 * 0.35)
 				}
