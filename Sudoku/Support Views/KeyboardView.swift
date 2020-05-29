@@ -42,7 +42,7 @@ struct KeyboardView: View {
 							.resizable()
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
-						Text("Anular")
+						Text("keyboard.undo")
 							.font(.custom("CaviarDreams-Bold",
 										  size: Screen.cellWidth / 2))
 					}
@@ -52,7 +52,7 @@ struct KeyboardView: View {
 			Spacer()
 			Button(
 				action: {
-					self.execute(value: 0, alertText: Alerts.remove)
+					self.execute(value: 0, alertText: "alert.default.remove")
 				},
 				label: {
 					VStack {
@@ -61,7 +61,7 @@ struct KeyboardView: View {
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
 							.foregroundColor(Colors.EraserPink)
-						Text("Apagar")
+						Text("keyboard.delete")
 							.foregroundColor(Colors.MatteBlack)
 							.font(.custom("CaviarDreams-Bold",
 										  size: Screen.cellWidth / 2))
@@ -82,7 +82,7 @@ struct KeyboardView: View {
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
 							.foregroundColor(Color.green)
-						Text("Solve")
+						Text("keyboard.solve")
 							.foregroundColor(Colors.MatteBlack)
 							.font(.custom("CaviarDreams-Bold",
 										  size: Screen.cellWidth / 2))
@@ -104,7 +104,7 @@ struct KeyboardView: View {
 					Spacer()
 					Button(
 						action: {
-							self.execute(value: i, alertText: Alerts.overwrite)
+							self.execute(value: i, alertText: "alert.default.overwrite")
 						},
 						label: {
 							Text("\(i)")

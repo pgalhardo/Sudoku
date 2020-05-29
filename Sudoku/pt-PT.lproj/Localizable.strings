@@ -21,3 +21,21 @@
 "settings.used.descript" = "Ocultar números que já não estão disponíveis para serem colocados";
 "settings.timer" = "Temporizador";
 "settings.text.size" = "Tamanho do texto";
+
+"alert.progress.title" = "O progresso atual será perdido!";
+"alert.progress.continue" = "Continuar?";
+"alert.progress.yes" = "Sim";
+"alert.progress.no" = "Não";
+"alert.default.remove" = "Impossível remover valor pré-definido";
+"alert.default.overwrite" = "Impossível sobrescrever valor pré-definido";
+
+"game.errors: %lld" = "Erros: %lld / 3";
+
+"banners.congrats.title" = "Parabéns!";
+"banners.congrats.stats: %lld" = "Terminado com %lld erros";
+"banners.pause.title" = "Em pausa";
+"banners.pause.stats: %lld" = "%lld%% completo";
+
+"keyboard.undo" = "Desfazer";
+"keyboard.delete" = "Apagar";
+"keyboard.solve" = "Resolver";

@@ -13,7 +13,7 @@ struct StrategiesView: View {
 	
     var body: some View {
 		VStack(spacing: 0) {
-			GenericTopBarView(title: "Estratégias", destination: Pages.home)
+			GenericTopBarView(title: "main.strategies", destination: Pages.home)
 			Spacer()
 		}
     }

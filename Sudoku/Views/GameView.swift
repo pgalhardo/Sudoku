@@ -26,9 +26,9 @@ struct GameView: View {
 				GridView(_isPaused: $_isPaused)
 				
 				VStack {
-					Text("Em pausa")
+					Text("banners.pause.title")
 						.font(.custom("CaviarDreams-Bold", size: 50))
-					Text(String(format: "%02d%% completo", _grid.completion()))
+					Text("banners.pause.stats: \(_grid.completion())")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 				}
 					.foregroundColor(.black)
@@ -37,9 +37,9 @@ struct GameView: View {
 					.animation(.spring())
 							
 				VStack {
-					Text("Parabéns!")
+					Text("banners.congrats.title")
 						.font(.custom("CaviarDreams-Bold", size: 50))
-					Text(String(format: "Terminado com %d erros", _grid.getErrorCount()))
+					Text("banners.congrats.stats: \(_grid.getErrorCount())")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 					
 					Button(
@@ -74,7 +74,7 @@ struct GameView: View {
 					.opacity(exit() ? 1 : 0)
 					.animation(.spring())
 				
-				Text(_alertText)
+				Text(LocalizedStringKey(_alertText))
 					.font(.custom("CaviarDreams-Bold", size: 15))
 					.padding()
 					.background(Colors.LightBlue)
@@ -91,7 +91,7 @@ struct GameView: View {
 			}
 			
 			Spacer()
-			Text(String(format: "Erros: %d / 3", _grid.getErrorCount()))
+			Text("game.errors: \(_grid.getErrorCount())")
 				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
 				.blur(radius: _isPaused || exit() ? 5 : 0)
 				.animation(.spring())
@@ -139,7 +139,7 @@ struct GameTopBarView: View {
 							.resizable()
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
-						Text(NSLocalizedString("main.back", comment: ""))
+						Text("main.back")
 							.font(.custom("CaviarDreams-Bold", size: 15))
 					}
 				)

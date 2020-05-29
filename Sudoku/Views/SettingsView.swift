@@ -14,39 +14,38 @@ struct SettingsView: View {
 	
     var body: some View {
 		VStack(spacing: 0) {
-			GenericTopBarView(title: NSLocalizedString("main.settings", comment: ""),
-							  destination: Pages.home)
+			GenericTopBarView(title: "main.settings", destination: Pages.home)
 		
 			Section {
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._highlightAreas) {
-						Text(NSLocalizedString("settings.areas", comment: ""))
+						Text("settings.areas")
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 					
-					Text(NSLocalizedString("settings.areas.descript", comment: ""))
+					Text("settings.areas.descript")
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
 				
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._highlightSimilar) {
-						Text(NSLocalizedString("settings.twins", comment: ""))
+						Text("settings.twins")
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 				
-					Text(NSLocalizedString("settings.twins.descript", comment: ""))
+					Text("settings.twins.descript")
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
 				
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._hideUsed) {
-						Text(NSLocalizedString("settings.used", comment: ""))
+						Text("settings.used")
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 				
-					Text(NSLocalizedString("settings.used.descript", comment: ""))
+					Text("settings.used.descript")
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
@@ -57,7 +56,7 @@ struct SettingsView: View {
 			
 			VStack(alignment: .leading) {
 				Toggle(isOn: $_settings._enableTimer) {
-					Text(NSLocalizedString("settings.timer", comment: ""))
+					Text("settings.timer")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 				}
 			}
@@ -66,7 +65,7 @@ struct SettingsView: View {
 				.padding(.trailing)
 			
 			HStack {
-				Text(NSLocalizedString("settings.text.size", comment: ""))
+				Text("settings.text.size")
 					.font(.custom("CaviarDreams-Bold", size: 20))
 				
 				Spacer()
