@@ -37,30 +37,29 @@ struct GridView: View {
 						self._grid.cellAt(
 							row: row,
 							col: col
-						).render(fontSize: self._settings._fontSize)
-							
-							.frame(
-								width: Screen.cellWidth,
-								height: Screen.cellWidth
+						)
+						.render(fontSize: self._settings._fontSize)
+						.frame(
+							width: Screen.cellWidth,
+							height: Screen.cellWidth
+						)
+						.border(Color.black, width: 1)
+						.padding(.all, 0)
+						.background(
+							self._grid.cellAt(
+								row: row,
+								col: col
+							).getColor()
+						)
+						.onTapGesture {
+							self._grid.objectWillChange.send()
+							self._grid.setActive(
+								row: row,
+								col: col,
+								areas: self._settings._highlightAreas,
+								similar: self._settings._highlightSimilar
 							)
-							.border(Color.black, width: 1)
-							.padding(.all, 0)
-							.background(
-								self._grid.cellAt(
-									row: row,
-									col: col
-								).getColor()
-							)
-							
-							.onTapGesture {
-								self._grid.objectWillChange.send()
-								self._grid.setActive(
-									row: row,
-									col: col,
-									areas: self._settings._highlightAreas,
-									similar: self._settings._highlightSimilar
-								)
-							}
+						}
 					}
 				}
 			}

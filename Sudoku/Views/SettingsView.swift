@@ -14,38 +14,38 @@ struct SettingsView: View {
 	
     var body: some View {
 		VStack(spacing: 0) {
-			GenericTopBarView(title: "Definições", destination: Pages.home)
+			GenericTopBarView(title: "main.settings", destination: Pages.home)
 		
 			Section {
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._highlightAreas) {
-						Text("Destacar áreas")
+						Text("settings.areas")
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 					
-					Text("Destacar a coluna e fila da célula selecionada")
+					Text("settings.areas.descript")
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
 				
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._highlightSimilar) {
-						Text("Destacar números idênticos")
+						Text("settings.twins")
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 				
-					Text("Destacar os números iguais aos da célula selecionada")
+					Text("settings.twins.descript")
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
 				
 				VStack(alignment: .leading) {
 					Toggle(isOn: $_settings._hideUsed) {
-						Text("Ocultar números usados")
+						Text("settings.used")
 							.font(.custom("CaviarDreams-Bold", size: 20))
 					}
 				
-					Text("Oculta os números que já não estão disponíveis para serem colocados")
+					Text("settings.used.descript")
 						.font(.custom("CaviarDreams-Bold", size: 12))
 						.foregroundColor(Color.gray)
 				}
@@ -56,7 +56,7 @@ struct SettingsView: View {
 			
 			VStack(alignment: .leading) {
 				Toggle(isOn: $_settings._enableTimer) {
-					Text("Temporizador")
+					Text("settings.timer")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 				}
 			}
@@ -65,7 +65,7 @@ struct SettingsView: View {
 				.padding(.trailing)
 			
 			HStack {
-				Text("Tamanho do texto:")
+				Text("settings.text.size")
 					.font(.custom("CaviarDreams-Bold", size: 20))
 				
 				Spacer()

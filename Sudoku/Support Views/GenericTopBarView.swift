@@ -21,7 +21,7 @@ struct GenericTopBarView: View {
 	
 	var body: some View {
 		ZStack {
-			Text(_title)
+			Text(LocalizedStringKey(_title))
 				.font(.custom("CaviarDreams-Bold", size: 20))
 			
 			HStack {
@@ -36,7 +36,7 @@ struct GenericTopBarView: View {
 							.resizable()
 							.frame(width: Screen.cellWidth / 2,
 								   height: Screen.cellWidth / 2)
-						Text("Voltar")
+						Text("main.back")
 							.font(.custom("CaviarDreams-Bold", size: 15))
 
 					}

@@ -30,17 +30,17 @@ struct MenuView: View {
 					}
 					PlayButtonView(_displayWarning: $_displayWarning)
 						.modifier(DefaultButton())
-					HomeButtonView(label: "Estatísticas",
+					HomeButtonView(label: "main.stats",
 								   imageName: "chart.bar.fill",
 								   imageColor: Color.white,
 								   page: Pages.statistics)
 						.modifier(DefaultButton())
-					HomeButtonView(label: "Estratégias",
+					HomeButtonView(label: "main.strategies",
 								   imageName: "lightbulb.fill",
 								   imageColor: Color.white,
 								   page: Pages.strategies)
 						.modifier(DefaultButton())
-					HomeButtonView(label: "Definições",
+					HomeButtonView(label: "main.settings",
 								   imageName: "gear",
 								   imageColor: Color.white,
 								   page: Pages.settings)
@@ -58,7 +58,7 @@ struct MenuView: View {
 				VStack {
 					Spacer()
 					
-					Text("O progresso atual será perdido!")
+					Text("alert.progress.title")
 						.font(.custom("CaviarDreams-Bold", size: 15))
 						.lineLimit(nil)
 						.padding(.leading)
@@ -66,7 +66,7 @@ struct MenuView: View {
 				
 					Spacer()
 					
-					Text("Continuar?")
+					Text("alert.progress.continue")
 						.font(.custom("CaviarDreams-Bold", size: 15))
 						.padding(.leading)
 						.padding(.trailing)
@@ -82,7 +82,7 @@ struct MenuView: View {
 							label: {
 								Image(systemName: "xmark.circle.fill")
 									.foregroundColor(Color.red)
-								Text("Não")
+								Text("alert.progress.no")
 									.font(.custom("CaviarDreams-Bold", size: 20))
 							}
 						)
@@ -102,7 +102,7 @@ struct MenuView: View {
 							label: {
 								Image(systemName: "checkmark.circle.fill")
 									.foregroundColor(Color.green)
-								Text("Sim")
+								Text("alert.progress.yes")
 									.font(.custom("CaviarDreams-Bold", size: 20))
 							}
 						)
@@ -163,7 +163,7 @@ struct HomeButtonView: View {
 					Image(systemName: _imageName)
 						.position(x: Screen.width * 0.55 * 0.2, y: 25)
 						.foregroundColor(_imageColor)
-					Text(_label)
+					Text(LocalizedStringKey(_label))
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: Screen.width * 0.55 * 0.35)
 				}
@@ -190,7 +190,7 @@ struct ContinueButtonView: View {
 				ZStack(alignment: .leading) {
 					Image(systemName: "hourglass.bottomhalf.fill")
 						.position(x: Screen.width * 0.55 * 0.2, y: 25)
-					Text("Continuar")
+					Text("main.resume")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: Screen.width * 0.55 * 0.35)
 				}
@@ -234,7 +234,7 @@ struct PlayButtonView: View {
 				ZStack(alignment: .leading) {
 					Image(systemName: "gamecontroller.fill")
 						.position(x: Screen.width * 0.55 * 0.2, y: 25)
-					Text("Novo jogo")
+					Text("main.new")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: Screen.width * 0.55 * 0.35)
 				}

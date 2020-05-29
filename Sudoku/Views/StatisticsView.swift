@@ -13,7 +13,7 @@ struct StatisticsView: View {
 	
     var body: some View {
 		VStack(spacing: 0) {
-			GenericTopBarView(title: "Estatísticas", destination: Pages.home)
+			GenericTopBarView(title: "main.stats", destination: Pages.home)
 			Spacer()
 		}
     }
