@@ -6,7 +6,7 @@ A Sudoku for iOS built with SwiftUI. SwiftUI also allows easy iPadOS and macOS d
 
 # Screenshots
 
-![Welcome](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/welcome.jpeg)
-![Settings](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/settings.jpeg)
-![Play](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/play.jpeg)
-![Congratulations](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/congrats.jpeg)
+![Welcome](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/welcome.png)
+![Settings](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/settings.png)
+![Play](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/play.png)
+![Congratulations](https://web.tecnico.ulisboa.pt/~ist189522/sudoku-img/congrats.png)

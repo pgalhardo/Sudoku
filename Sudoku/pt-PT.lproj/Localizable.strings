@@ -39,3 +39,5 @@
 "keyboard.undo" = "Desfazer";
 "keyboard.delete" = "Apagar";
 "keyboard.solve" = "Resolver";
+
+"button.leave" = "Sair";

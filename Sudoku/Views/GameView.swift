@@ -55,7 +55,7 @@ struct GameView: View {
 						label: {
 							HStack {
 								Spacer()
-								Text("Sair")
+								Text("button.leave")
 									.font(.custom("CaviarDreams-Bold", size: 20))
 								Spacer()
 							}
