@@ -30,7 +30,8 @@ class ViewRouter: ObservableObject {
 
 struct RootView: View {
 	var _settings: Settings = Settings()
-	var _grid: Grid = Grid(puzzle: Puzzles.hard)
+	//var _grid: Grid = Grid(puzzle: Puzzles.hard)
+	var _grid: Grid = Grid()
 	@EnvironmentObject var _viewRouter: ViewRouter
 	
 	var body: some View {

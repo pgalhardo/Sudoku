@@ -10,23 +10,28 @@ import Foundation
 import SwiftUI
 
 class Grid: ObservableObject {
-	private var _active: [Int]?
-	private var _colored: [[Int]] = [[Int]]()
-	private var _errorCount: Int = 0
+	private var active: [Int]?
+	private var colored: [[Int]] = [[Int]]()
+	private var errorCount: Int = 0
 	
-	@Published private var _cells: [[Cell]] = [[Cell]]()
-	@Published private var _numberFrequency: [Int] = Array(repeating: 0,
+	@Published private var grid: [[Int]] = [[Int]]()
+	@Published private var color: [[Color]] = [[Color]]()
+	@Published private var inputType: [[Int]] = [[Int]]()
+	@Published private var numberFrequency: [Int] = Array(repeating: 0,
 														   count: 9)
-	@Published private var _filled: Double = 0
-	
 	init() {
-		for i in (0 ..< 9) {
-			_cells.append([])
-			for _ in (0 ..< 9) {
-				_cells[i].append(Cell(value: 0))
-			}
-		}
-		self.fill()
+		self.grid = Array(
+			repeating:Array(repeating: UNDEFINED, count: 9),
+			count: 9
+		)
+		self.color = Array(
+			repeating: Array(repeating: Color.white, count: 9),
+			count: 9
+		)
+		self.inputType = Array(
+			repeating: Array(repeating: InputType.user, count: 9),
+			count: 9
+		)
 	}
 	
 	init(puzzle: String) {
@@ -38,21 +43,32 @@ class Grid: ObservableObject {
 	==========================================================================*/
 	
 	func reset() {
-		_active = nil
-		_colored = [[Int]]()
-		_cells = [[Cell]]()
-		_numberFrequency = Array(repeating: 0, count: 9)
-		_filled = 0
+		self.active = nil
+		self.colored = [[Int]]()
+		self.numberFrequency = Array(repeating: 0, count: 9)
+		
+		self.grid = Array(
+			repeating: Array(repeating: UNDEFINED, count: 9),
+			count: 9
+		)
+		self.color = Array(
+			repeating: Array(repeating: Color.white, count: 9),
+			count: 9
+		)
+		self.inputType = Array(
+			repeating: Array(repeating: InputType.user, count: 9),
+			count: 9
+		)
 	}
 		
 	func load(puzzle: String) {
 		var str = puzzle, user = false, count = 0
 		
 		reset()
-		for _ in (0 ..< 9) { _cells.append([]) }
 		
 		while str != "" {
 			let row = count / 9
+			let col = count % 9
 			let char = str[0]
 			str.remove(at: str.startIndex)
 			
@@ -60,16 +76,16 @@ class Grid: ObservableObject {
 				guard let value = Int(char)
 				else { self.reset(); return }
 				
+				self.grid[row][col] = value
+
 				user == true
-				? _cells[row].append(Cell(value: value,
-										inputType: InputType.user))
-				: _cells[row].append(Cell(value: value))
-				
+					? (self.inputType[row][col] = InputType.user)
+					: (self.inputType[row][col] = InputType.system)
+								
 				user = false
 				count += 1
 				if (value > 0) {
-					_numberFrequency[value - 1] += 1
-					_filled += 1
+					numberFrequency[value - 1] += 1
 				}
 			}
 			else if char == "u" {
@@ -83,23 +99,23 @@ class Grid: ObservableObject {
 		
 		for row in (0 ..< 9) {
 			for col in (0 ..< 9) {
-				if (_cells[row][col].getInputType() == InputType.user) {
+				if (self.inputType[row][col] == InputType.user) {
 					str.append("u")
 				}
-				str.append(String(_cells[row][col].getValue()))
+				str.append(String(grid[row][col]))
 			}
 		}
 		return str
 	}
 	
 	func getNumberFrequency() -> [Int] {
-		return _numberFrequency
+		return self.numberFrequency
 	}
 	
 	func isFull() -> Bool {
 		for row in (0 ..< 9) {
 			for col in (0 ..< 9) {
-				if _cells[row][col].getValue() == 0 {
+				if self.grid[row][col] == UNDEFINED {
 					return false
 				}
 			}
@@ -108,65 +124,81 @@ class Grid: ObservableObject {
 	}
 	
 	func completion() -> Int {
-		return Int(_filled / 81 * 100)
+		var filled = 0
+		for row in (0 ..< 9) {
+			for col in (0 ..< 9) {
+				if grid[row][col] != UNDEFINED {
+					filled += 1
+				}
+			}
+		}
+		return filled * 100 / 81
 	}
 	
 	func getErrorCount() -> Int {
-		return _errorCount
+		return self.errorCount
 	}
 			
 	/*==========================================================================
 		Single cell actions
 	==========================================================================*/
 	
-	func cellAt(row: Int, col: Int) -> Cell {
-		return _cells[row][col]
+	func valueAt(row: Int, col: Int) -> Int {
+		return grid[row][col]
+	}
+	
+	func colorAt(row: Int, col: Int) -> Color {
+		return color[row][col]
 	}
 	
 	@discardableResult func setValue(row: Int, col: Int, value: Int) -> Bool {
-		let cell = _cells[row][col]
-		
-		if cell.getInputType() == InputType.system {
-			// consider throwing custom set exception
+				
+		if inputType[row][col] == InputType.system {
 			return false
+		} else if grid[row][col] == value {
+			return true
+		} else if !possible(number: value, row: row, col: col) {
+			inputType[row][col] = InputType.error
+		} else {
+			inputType[row][col] = InputType.user
+			
+			if grid[row][col] > 0 {
+				numberFrequency[grid[row][col] - 1] -= 1
+			}
+			
+			if value > 0 {
+				numberFrequency[value - 1] += 1
+			}
 		}
-		else if cell.getValue() != 0 {
-			_numberFrequency[cell.getValue() - 1] -= 1
-			_filled -= 1
-		}
-		
-		if value > 0 {
-			_numberFrequency[value - 1] += 1
-			_filled += 1
-		}
-		cell.setValue(value: value)
+				
+		grid[row][col] = value
 		return true
 	}
 	
 	func getActive() -> [Int]? {
-		return _active
+		return active
 	}
 		
 	func setActive(row: Int, col: Int, areas: Bool, similar: Bool) {
-		let previous = _active
-		_active = [row, col]
+		let previous = active
+		active = [row, col]
 		
-		for i in (0 ..< _colored.count) {
-			toggleColor(cell: _colored[i])
+		for i in (0 ..< colored.count) {
+			toggleColor(cell: colored[i])
 		}
-		_colored.removeAll()
+		colored.removeAll()
 		
-		if previous == _active {
-			_active = nil
+		if previous == active {
+			active = nil
 		}
 		else {
-			toggleColor(cell: _active)
+			toggleColor(cell: active)
 			
 			if areas {
-				highlightRow(cell: _active)
-				highlightCol(cell: _active)
+				highlightRow(cell: active)
+				highlightCol(cell: active)
 			}
-			if similar && _cells[row][col].getValue() != 0 {
+			if similar && grid[row][col] != UNDEFINED {
 				highlightSimilar(row: row, col: col)
 			}
 		}
@@ -176,46 +208,38 @@ class Grid: ObservableObject {
 		if cell == nil { return }
 
 		let row = cell![0], col = cell![1]
-		if _cells[row][col].getColor() == Color.white {
-			_cells[row][col].setColor(color: Colors.ActiveBlue)
-			_colored.append([row, col])
+		if color[row][col] == Color.white {
+			color[row][col] = Colors.ActiveBlue
+			colored.append([row, col])
 		}
 		else {
-			_cells[row][col].setColor(color: Color.white)
+			color[row][col] = Color.white
 		}
 	}
-				
+					
 	/*==========================================================================
 		Groups of cells
 	==========================================================================*/
 	
-	func getRow(row: Int) -> [Cell] {
-		return _cells[row]
-	}
-	
-	func getCol(col: Int) -> [Cell] {
-		return _cells.map { $0[col] }
-	}
-
 	func getSquare(row: Int, col: Int) -> [[Int]] {
 		// this points to upper left corner
 		let row = (row / 3) * 3, col = (col / 3) * 3
 		var square = [[Int]]()
 		
 		for i in (row ..< row + 3) {
-			square.append([_cells[i][col].getValue(),
-						   _cells[i][col + 1].getValue(),
-						   _cells[i][col + 2].getValue()])
+			square.append([grid[i][col],
+						   grid[i][col + 1],
+						   grid[i][col + 2]])
 		}
 		return square
 	}
 		
 	func numberInRow(number: Int, row: Int) -> Bool {
-		return _cells[row].filter { $0.getValue() == number }.count > 0
+		return grid[row].filter { $0 == number }.count > 0
 	}
 		
 	func numberInCol(number: Int, col: Int) -> Bool {
-		return _cells.filter { $0[col].getValue() == number }.count > 0
+		return grid.filter { $0[col] == number }.count > 0
 	}
 
 	func numberInSquare(number: Int, row: Int, col: Int) -> Bool {
@@ -225,14 +249,14 @@ class Grid: ObservableObject {
 			|| square[1].contains(number)
 			|| square[2].contains(number))
 	}
-		
+	
 	func highlightRow(cell: [Int]?) {
 		let row = cell![0], col = cell![1]
 		
 		for i in (0 ..< 9) {
 			if i == col { continue }
-			_cells[row][i].setColor(color: Colors.LightBlue)
-			_colored.append([row, i])
+			color[row][i] = Colors.LightBlue
+			colored.append([row, i])
 		}
 	}
 	
@@ -241,13 +265,13 @@ class Grid: ObservableObject {
 		
 		for i in (0 ..< 9) {
 			if i == row { continue }
-			_cells[i][col].setColor(color: Colors.LightBlue)
-			_colored.append([i, col])
+			color[i][col] = Colors.LightBlue
+			colored.append([i, col])
 		}
 	}
 	
 	func highlightSimilar(row: Int, col: Int) {
-		let value = _cells[row][col].getValue()
+		let value = grid[row][col]
 		var found = 0
 		
 		for i in (0 ..< 9) {
@@ -256,15 +280,45 @@ class Grid: ObservableObject {
 			for j in (0 ..< 9) {
 				if j == col { continue }
 				
-				if _cells[i][j].getValue() == value {
-					_cells[i][j].setColor(color: Colors.LightBlue)
-					_colored.append([i, j])
+				if grid[i][j] == value {
+					color[i][j] = Colors.LightBlue
+					colored.append([i, j])
 					found += 1
 				}
 				
-				if found == _numberFrequency[value - 1] { return }
+				if found == numberFrequency[value - 1] { return }
 			}
 		}
+	}
+	
+	func possible(number: Int, row: Int, col: Int) -> Bool {
+		return !numberInRow(number: number, row: row)
+			&& !numberInCol(number: number, col: col)
+			&& !numberInSquare(number: number, row: row, col: col)
+	}
+	
+	func render(row: Int, col:Int, fontSize: Int) -> Text {
+		
+		let value = grid[row][col]
+		let type = inputType[row][col]
+		
+		if value == UNDEFINED { return Text(" ") }
+		
+		if type == InputType.system {
+			return Text("\(value)")
+						.font(.custom("CaviarDreams-Bold",
+									  size: CGFloat(fontSize)))
+						.foregroundColor(Colors.MatteBlack)
+		} else if type == InputType.user {
+			return Text("\(value)")
+						.font(.custom("CaviarDreams-Bold",
+									  size: CGFloat(fontSize)))
+						.foregroundColor(Colors.DeepBlue)
+		}
+		return Text("\(value)")
+					.font(.custom("CaviarDreams-Bold",
+								  size: CGFloat(fontSize)))
+					.foregroundColor(Color.red)
 	}
 	
 	/*==========================================================================
@@ -276,41 +330,67 @@ class Grid: ObservableObject {
 		without breaking any of the Sudoku rules, we must first check
 		for its presence on the same row, column and square.
 	*/
+	func generate() {
+		fill()
+		removeNumbers()
+	}
+	
 	@discardableResult func fill() -> Bool {
 		var row = 0, col = 0
-		var numbers: [Int] = [1,2,3,4,5,6,7,8,9]
+		var numbers: [Int] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 		
 		for i in (0 ..< 81) {
 			row = i / 9
 			col = i % 9
 			
-			if _cells[row][col].getValue() == 0 {
+			if grid[row][col] == UNDEFINED {
 				numbers = numbers.shuffled()
 				
 				for number in numbers {
-					if !numberInRow(number: number, row: row)
-						&& !numberInCol(number: number, col: col)
-						&& !numberInSquare(number: number, row: row, col: col) {
+					if possible(number: number, row: row, col: col) {
 					
-						_cells[row][col].setValue(value: number)
-						_numberFrequency[number - 1] += 1
+						grid[row][col] = number
+						inputType[row][col] = InputType.system
+						numberFrequency[number - 1] += 1
+						
 						if isFull() {
 							return true
 						}
-						else {
-							if fill() {
+						else if fill() {
 								return true
-							}
 						}
 					}
 				}
 				break
 			}
 		}
-		_cells[row][col].setValue(value: 0)
+		grid[row][col] = UNDEFINED
 		return false
 	}
 	
+	func removeNumbers() {
+		var pos = Array(0 ..< 81)
+		pos = pos.shuffled()
+		
+		while pos.count > 0 {
+			let nextpos = pos.removeFirst()
+			let row = nextpos / 9
+			let col = nextpos % 9
+			
+			let prev = self.grid
+			
+			grid[row][col] = UNDEFINED
+			let solvable = solve()
+			
+			grid = prev
+						
+			if (!solvable) { continue }
+			
+			inputType[row][col] = InputType.user
+			grid[row][col] = UNDEFINED
+		}
+	}
+		
 	/*==========================================================================
 		Solver
 	==========================================================================*/
@@ -318,35 +398,20 @@ class Grid: ObservableObject {
 	func solve() -> Bool {
 		while !isFull() {
 			objectWillChange.send()
-			let possibles = updatePossibles()
-			if checkSolved() > 0 { continue }
-			if hiddenSingles(possibles: possibles) == 0 {
-				print("Unsolvable with current techniques.")
-				return false
-			}
+			let possibles = getPossibles()
+			
+			if      nakedSingles(possibles: possibles)  > 0 { continue }
+			else if hiddenSingles(possibles: possibles) > 0 { continue }
+			
+			// Unsolvable with current techniques.
+			return false
 		}
 		return true
 	}
 	
-	func checkSolved() -> Int {
-		var solved = 0
-		
-		for row in (0 ..< 9) {
-			for col in (0 ..< 9) {
-				let possibles = _cells[row][col].getPossibles()
-				if possibles.count == 1 {
-					solved += 1
-					setValue(row: row, col: col, value: possibles[0])
-				}
-			}
-		}
-		return solved
-	}
-		
-	func updatePossibles() -> [[[Int]]] {
+	func getPossibles() -> [[[Int]]] {
 		func possibles_aux(row: Int, col: Int) -> [Int] {
-			let cell = _cells[row][col]
-			if cell.getValue() != 0 { return [] }
+			if grid[row][col] != UNDEFINED { return [] }
 			
 			var possibles = [Int]()
 			for number in (1 ... 9) {
@@ -357,7 +422,6 @@ class Grid: ObservableObject {
 					possibles.append(number)
 				}
 			}
-			cell.setPossibles(possibles: possibles)
 			return possibles
 		}
 		
@@ -375,7 +439,25 @@ class Grid: ObservableObject {
 	/*==========================================================================
 		Basic solving tests : solve route
 		---------------------------------
-		#1 - Hidden Singles
+		#1 - Naked Singles
+	==========================================================================*/
+	
+	func nakedSingles(possibles: [[[Int]]]) -> Int {
+		var solved = 0
+		
+		for row in (0 ..< 9) {
+			for col in (0 ..< 9) {
+				if possibles[row][col].count == 1 {
+					solved += 1
+					grid[row][col] = possibles[row][col][0]
+				}
+			}
+		}
+		return solved
+	}
+	
+	/*==========================================================================
+		#2 - Hidden Singles
 	==========================================================================*/
 	
 	func hiddenSingles(possibles: [[[Int]]]) -> Int {
@@ -386,8 +468,9 @@ class Grid: ObservableObject {
 		for row in (0 ..< 9) {
 			for value in (1 ... 9) {
 				if uniqueRow(row: row,
-						  value: value,
-						  possibles: possibles[row]) {
+							 value: value,
+							 possibles: possibles[row]
+					) {
 					found += 1
 				}
 			}
@@ -397,8 +480,9 @@ class Grid: ObservableObject {
 		for col in (0 ..< 9) {
 			for value in (1 ... 9) {
 				if uniqueCol(col: col,
-						  value: value,
-						  possibles: possibles.map { $0[col] }) {
+							 value: value,
+							 possibles: possibles.map { $0[col] }
+					) {
 					found += 1
 				}
 			}
@@ -410,9 +494,10 @@ class Grid: ObservableObject {
 			for col in delim {
 				for value in (1 ... 9) {
 					if uniqueSquare(row: row,
-								 col: col,
-								 value: value,
-								 possibles: possibles) {
+									col: col,
+									value: value,
+									possibles: possibles
+						) {
 						found += 1
 					}
 				}

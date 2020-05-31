@@ -95,7 +95,8 @@ struct MenuView: View {
 															  forKey: "savedBoard")
 									UserDefaults.standard.set(nil,
 															  forKey: "time")
-									self._grid.load(puzzle: Puzzles.hard)
+									self._grid.reset()
+									self._grid.generate()
 									self._viewRouter.setCurrentPage(page: Pages.game)
 								}
 							},
@@ -225,7 +226,8 @@ struct PlayButtonView: View {
 												  forKey: "savedBoard")
 						UserDefaults.standard.set(nil,
 												  forKey: "time")
-						self._grid.load(puzzle: Puzzles.hard)
+						self._grid.reset()
+						self._grid.generate()
 						self._viewRouter.setCurrentPage(page: Pages.game)
 					}
 				}

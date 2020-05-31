@@ -9,6 +9,8 @@
 import Foundation
 import SwiftUI
 
+let UNDEFINED = 0
+
 struct Screen {
 	static let lineThickness: CGFloat = 2
 	static let size: CGRect = UIScreen.main.bounds
@@ -28,7 +30,7 @@ struct Pages {
 struct InputType {
 	static let system: Int = 0
 	static let user: Int = 1
-	static let wrong: Int = 2
+	static let error: Int = 2
 }
 
 struct Colors {

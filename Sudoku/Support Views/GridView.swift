@@ -34,11 +34,11 @@ struct GridView: View {
 			ForEach(0 ..< 9) { row in
 				HStack(spacing: -1) {
 					ForEach(0 ..< 9) { col in
-						self._grid.cellAt(
+						self._grid.render(
 							row: row,
-							col: col
+							col:col,
+							fontSize: self._settings._fontSize
 						)
-						.render(fontSize: self._settings._fontSize)
 						.frame(
 							width: Screen.cellWidth,
 							height: Screen.cellWidth
@@ -46,10 +46,10 @@ struct GridView: View {
 						.border(Color.black, width: 1)
 						.padding(.all, 0)
 						.background(
-							self._grid.cellAt(
+							self._grid.colorAt(
 								row: row,
 								col: col
-							).getColor()
+							)
 						)
 						.onTapGesture {
 							self._grid.objectWillChange.send()
