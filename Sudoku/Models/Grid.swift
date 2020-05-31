@@ -17,8 +17,7 @@ class Grid: ObservableObject {
 	@Published private var grid: [[Int]] = [[Int]]()
 	@Published private var color: [[Color]] = [[Color]]()
 	@Published private var inputType: [[Int]] = [[Int]]()
-	@Published private var numberFrequency: [Int] = Array(repeating: 0,
-														   count: 9)
+	@Published private var numberFrequency: [Int] = [Int]()
 	init() {
 		self.grid = Array(
 			repeating:Array(repeating: UNDEFINED, count: 9),
@@ -32,6 +31,7 @@ class Grid: ObservableObject {
 			repeating: Array(repeating: InputType.user, count: 9),
 			count: 9
 		)
+		self.numberFrequency = Array(repeating: 0, count: 9)
 	}
 	
 	init(puzzle: String) {
@@ -333,6 +333,7 @@ class Grid: ObservableObject {
 	func generate() {
 		fill()
 		removeNumbers()
+		computeTokenFrequency()
 	}
 	
 	@discardableResult func fill() -> Bool {
@@ -351,7 +352,6 @@ class Grid: ObservableObject {
 					
 						grid[row][col] = number
 						inputType[row][col] = InputType.system
-						numberFrequency[number - 1] += 1
 						
 						if isFull() {
 							return true
@@ -390,6 +390,16 @@ class Grid: ObservableObject {
 			grid[row][col] = UNDEFINED
 		}
 	}
+	
+	func computeTokenFrequency() {
+		for row in grid {
+			for val in row {
+				if val != UNDEFINED {
+					numberFrequency[val - 1] += 1
+				}
+			}
+		}
+	}
 		
 	/*==========================================================================
 		Solver
@@ -401,7 +411,7 @@ class Grid: ObservableObject {
 			let possibles = getPossibles()
 			
 			if      nakedSingles(possibles: possibles)  > 0 { continue }
-			else if hiddenSingles(possibles: possibles) > 0 { continue }
+			//else if hiddenSingles(possibles: possibles) > 0 { continue }
 			
 			// Unsolvable with current techniques.
 			return false

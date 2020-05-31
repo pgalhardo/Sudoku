@@ -69,27 +69,6 @@ struct KeyboardView: View {
 				}
 			)
 			Spacer()
-			Button(
-				action: {
-					if !self._grid.solve() {
-						self.displayError(alertText: "Puzzle sem solução")
-					}
-				},
-				label: {
-					VStack {
-						Image(systemName: "checkmark.circle.fill")
-							.resizable()
-							.frame(width: Screen.cellWidth / 2,
-								   height: Screen.cellWidth / 2)
-							.foregroundColor(Color.green)
-						Text("keyboard.solve")
-							.foregroundColor(Colors.MatteBlack)
-							.font(.custom("CaviarDreams-Bold",
-										  size: Screen.cellWidth / 2))
-					}
-				}
-			)
-			Spacer()
 		}
 			.padding(.top)
 			.padding(.bottom)
