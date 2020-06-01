@@ -402,6 +402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=50 -Xfrontend -warn-long-function-bodies=50";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pedro.Sudoku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;

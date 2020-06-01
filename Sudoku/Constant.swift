@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-let UNDEFINED = 0
+let UNDEFINED: Int = 0
 
 struct Screen {
 	static let lineThickness: CGFloat = 2
@@ -20,39 +20,33 @@ struct Screen {
 }
 
 struct Pages {
-	static let home: Int = 0
-	static let game: Int = 1
-	static let settings: Int = 2
+	static let home:       Int = 0
+	static let game:       Int = 1
+	static let settings:   Int = 2
 	static let statistics: Int = 3
 	static let strategies: Int = 4
 }
 
 struct InputType {
 	static let system: Int = 0
-	static let user: Int = 1
-	static let error: Int = 2
+	static let user:   Int = 1
+	static let error:  Int = 2
 }
 
 struct Colors {
-	static let DeepBlue: Color = Color(red: 45 / 255,
-								green: 75 / 255,
-								blue: 142 / 255)
+	static let DeepBlue:   Color = Color(red: 45 / 255,
+										 green: 75 / 255,
+										 blue: 142 / 255)
 	static let ActiveBlue: Color = Color(red: 178 / 255,
-								green: 210 / 255,
-								blue: 256 / 255)
-	static let LightBlue: Color = Color(red: 218 / 255,
-								green: 225 / 255,
-								blue: 231 / 255)
+										 green: 210 / 255,
+										 blue: 256 / 255)
+	static let LightBlue:  Color = Color(red: 218 / 255,
+										 green: 225 / 255,
+										 blue: 231 / 255)
 	static let MatteBlack: Color = Color(red: 27 / 255,
-								green: 27 / 255,
-								blue: 27 / 255)
+										 green: 27 / 255,
+										 blue: 27 / 255)
 	static let EraserPink: Color = Color(red: 180 / 255,
-								green: 110 / 255,
-								blue: 110 / 255)
-}
-
-struct Puzzles {
-	static let easy: String = "000105000140000670080002400063070010900000003010090520007200080026000035000409000"
-	static let moderate: String = "720096003000205000080004020000000060106503807040000000030800090000702000200430018"
-	static let hard: String = "000000000000003085001020000000507000004000100090000000500000073002010000000040009"
+										 green: 110 / 255,
+										 blue: 110 / 255)
 }
