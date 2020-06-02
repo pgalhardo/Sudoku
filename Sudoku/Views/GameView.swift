@@ -11,24 +11,24 @@ import SwiftUI
 
 struct GameView: View {
 	@State var _isPaused: Bool = false
-	@State var _displayAlert: Bool = false
-	@State var _alertText: String = ""
-	
-	@EnvironmentObject var _viewRouter: ViewRouter
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _settings: Settings
+	@State var displayAlert: Bool = false
+	@State var alertText: String = ""
+
+	@EnvironmentObject var viewRouter: ViewRouter
+	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var settings: Settings
 		
 	var body: some View {
 		VStack {
 			GameTopBarView(isPaused: $_isPaused)
-			
+
 			ZStack {
-				GridView(_isPaused: $_isPaused)
-				
+				GridView(isPaused: $_isPaused)
+
 				VStack {
 					Text("banners.pause.title")
 						.font(.custom("CaviarDreams-Bold", size: 50))
-					Text("banners.pause.stats: \(_grid.completion())")
+					Text("banners.pause.stats: \(self.grid.completion())")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 				}
 					.foregroundColor(.black)
@@ -39,9 +39,9 @@ struct GameView: View {
 				VStack {
 					Text("banners.congrats.title")
 						.font(.custom("CaviarDreams-Bold", size: 50))
-					Text("banners.congrats.stats: \(_grid.getErrorCount())")
+					Text("banners.congrats.stats: \(self.grid.getErrorCount())")
 						.font(.custom("CaviarDreams-Bold", size: 20))
-					
+
 					Button(
 						action: {
 							withAnimation(.easeIn) {
@@ -49,7 +49,7 @@ struct GameView: View {
 														  forKey: "savedBoard")
 								UserDefaults.standard.set(nil,
 														  forKey: "time")
-								self._viewRouter.setCurrentPage(page: Pages.home)
+								self.viewRouter.setCurrentPage(page: Pages.home)
 							}
 						},
 						label: {
@@ -71,10 +71,10 @@ struct GameView: View {
 						.padding(.top, 20)
 				}
 					.shadow(radius: 10)
-					.opacity(exit() ? 1 : 0)
+					.opacity(self.grid.full() ? 1 : 0)
 					.animation(.spring())
 				
-				Text(LocalizedStringKey(_alertText))
+				Text(LocalizedStringKey(alertText))
 					.font(.custom("CaviarDreams-Bold", size: 15))
 					.padding()
 					.background(Colors.LightBlue)
@@ -82,82 +82,82 @@ struct GameView: View {
 					.overlay(RoundedRectangle(cornerRadius: 20)
 					.stroke(Colors.MatteBlack, lineWidth: 2))
 					.shadow(radius: 10)
-					.blur(radius: _displayAlert ? 0 : 50)
-					.opacity(_displayAlert ? 1 : 0)
+					.blur(radius: displayAlert ? 0 : 50)
+					.opacity(displayAlert ? 1 : 0)
 					.animation(.spring())
 					.onTapGesture {
-						self._displayAlert = false
+						self.displayAlert = false
 					}
 			}
-			
+
 			Spacer()
-			Text("game.errors: \(_grid.getErrorCount())")
+			Text("game.errors: \(grid.getErrorCount())")
 				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
-				.blur(radius: _isPaused || exit() ? 5 : 0)
+				.blur(radius: _isPaused || self.grid.full() ? 5 : 0)
 				.animation(.spring())
 			
 			Spacer()
-			KeyboardView(_isPaused: $_isPaused,
-						 _displayAlert: $_displayAlert,
-						 _alertText: $_alertText)
+			KeyboardView(isPaused: $_isPaused,
+						 displayAlert: $displayAlert,
+						 alertText: $alertText)
 			Spacer()
 		}
-	}
-	
-	func exit() -> Bool {
-		return _grid.completion() == 100
 	}
 }
 
 struct GameTopBarView: View {
-	private var _timerView: TimerView!
-	
+	private var timerView: TimerView!
+
 	@Binding var isPaused: Bool
 	
-	@EnvironmentObject var _viewRouter: ViewRouter
-	@EnvironmentObject var _settings: Settings
-	@EnvironmentObject var _grid: Grid
+	@EnvironmentObject var viewRouter: ViewRouter
+	@EnvironmentObject var settings: Settings
+	@EnvironmentObject var grid: Grid
 		
 	init(isPaused: Binding<Bool>) {
 		_isPaused = isPaused
-		_timerView = TimerView(isPaused: isPaused)
+		self.timerView = TimerView(isPaused: isPaused)
 	}
 	
+	private let labelSize: CGFloat = 15.0
+	private let backButtonSize: CGFloat = Screen.cellWidth / 2
+	private let pauseButtonSize: CGFloat = Screen.cellWidth / 3
+
 	var body: some View {
 		ZStack {
 			HStack {
 				Button(
 					action: {
 						withAnimation(.easeIn) {
-							UserDefaults.standard.set(self._grid.store(),
+							UserDefaults.standard.set(self.grid.toString(),
 													  forKey: "savedBoard")
-							self._viewRouter.setCurrentPage(page: Pages.home)
+							self.viewRouter.setCurrentPage(page: Pages.home)
 						}
 					},
 					label: {
 						Image(systemName: "return")
 							.resizable()
-							.frame(width: Screen.cellWidth / 2,
-								   height: Screen.cellWidth / 2)
+							.frame(width: backButtonSize,
+								   height: backButtonSize)
 						Text("main.back")
-							.font(.custom("CaviarDreams-Bold", size: 15))
+							.font(.custom("CaviarDreams-Bold", size: labelSize))
 					}
 				)
 					.foregroundColor(Colors.MatteBlack)
 				Spacer()
 			}
-				.disabled(exit())
-				.opacity(exit() ? 0 : 1)
-			
-			if (_settings._enableTimer == true) {
+				.disabled(grid.full())
+				.opacity(opacity())
+
+			if self.settings.enableTimer == true {
 				HStack {
 					Spacer()
-					_timerView
+					self.timerView
 					Spacer()
 				}
 			}
 			
-			if (_settings._enableTimer == true) {
+			if self.settings.enableTimer == true {
 				HStack {
 					Spacer()
 					Button(
@@ -167,18 +167,16 @@ struct GameTopBarView: View {
 							}
 						},
 						label: {
-							Image(systemName: self.isPaused
-								? "play.fill"
-								: "pause")
+							Image(systemName: self.pauseIconName())
 								.resizable()
-								.frame(width: Screen.cellWidth / 3,
-									   height: Screen.cellWidth / 3)
+								.frame(width: self.pauseButtonSize,
+									   height: self.pauseButtonSize)
 						}
 					)
 						.foregroundColor(Colors.MatteBlack)
 				}
-					.disabled(exit())
-					.opacity(exit() ? 0 : 1)
+					.disabled(self.grid.full())
+					.opacity(self.opacity())
 			}
 		}
 			.padding(.top)
@@ -186,7 +184,11 @@ struct GameTopBarView: View {
 			.padding(.trailing)
 	}
 	
-	func exit() -> Bool {
-		return _grid.completion() == 100
+	func opacity() -> Double {
+		return grid.full() ? 0.0 : 1.0
+	}
+
+	func pauseIconName() -> String {
+		return self.isPaused ? "play.fill" : "pause"
 	}
 }

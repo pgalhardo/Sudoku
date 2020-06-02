@@ -10,26 +10,28 @@ import Foundation
 import SwiftUI
 
 struct KeyboardView: View {
-	@State var _task = DispatchWorkItem { }
-	
-	@Binding var _isPaused: Bool
-	@Binding var _displayAlert: Bool
-	@Binding var _alertText: String
-	
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _settings: Settings
+	@State var task: DispatchWorkItem = DispatchWorkItem { }
+
+	@Binding var isPaused: Bool
+	@Binding var displayAlert: Bool
+	@Binding var alertText: String
+
+	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var settings: Settings
 	
 	var body: some View {
 		VStack {
 			optionsRow
 			numbersRow
 		}
-			.blur(radius: _isPaused || exit() ? 5 : 0)
-			.opacity(_isPaused || exit() ? 0.7 : 1)
-			.disabled(_isPaused || exit())
+			.blur(radius: isPaused || grid.full() ? 5 : 0)
+			.opacity(isPaused || grid.full() ? 0.7 : 1)
+			.disabled(isPaused || grid.full())
 			.animation(.spring())
 	}
-	
+
+	let buttonSize: CGFloat = Screen.cellWidth / 2
+
 	var optionsRow: some View {
 		HStack {
 			Spacer()
@@ -40,11 +42,11 @@ struct KeyboardView: View {
 					VStack {
 						Image(systemName: "gobackward")
 							.resizable()
-							.frame(width: Screen.cellWidth / 2,
-								   height: Screen.cellWidth / 2)
+							.frame(width: buttonSize,
+								   height: buttonSize)
 						Text("keyboard.undo")
 							.font(.custom("CaviarDreams-Bold",
-										  size: Screen.cellWidth / 2))
+										  size: buttonSize))
 					}
 						.foregroundColor(Colors.MatteBlack)
 				}
@@ -58,13 +60,13 @@ struct KeyboardView: View {
 					VStack {
 						Image(systemName: "xmark.circle")
 							.resizable()
-							.frame(width: Screen.cellWidth / 2,
-								   height: Screen.cellWidth / 2)
+							.frame(width: buttonSize,
+								   height: buttonSize)
 							.foregroundColor(Colors.EraserPink)
 						Text("keyboard.delete")
 							.foregroundColor(Colors.MatteBlack)
 							.font(.custom("CaviarDreams-Bold",
-										  size: Screen.cellWidth / 2))
+										  size: buttonSize))
 					}
 				}
 			)
@@ -73,20 +75,19 @@ struct KeyboardView: View {
 			.padding(.top)
 			.padding(.bottom)
 	}
-	
+
 	var numbersRow: some View {
 		HStack {
-			ForEach(1 ..< 10) { i in
-				if (!self._settings._hideUsed
-					|| (self._grid.getNumberFrequency()[i - 1] < 9
-						&& self._settings._hideUsed)) {
+			ForEach(1 ..< 10) { number in
+				if self.displayNumber(number: number) {
 					Spacer()
 					Button(
 						action: {
-							self.execute(value: i, alertText: "alert.default.overwrite")
+							self.execute(value: number,
+										 alertText: "alert.default.overwrite")
 						},
 						label: {
-							Text("\(i)")
+							Text("\(number)")
 								.foregroundColor(Colors.MatteBlack)
 								.font(.custom("CaviarDreams-Bold",
 											  size: Screen.cellWidth))
@@ -99,41 +100,46 @@ struct KeyboardView: View {
 			.padding(.top)
 			.padding(.bottom)
 	}
-	
+
 	func execute(value: Int, alertText: String) {
-		guard let active = self._grid.getActive()
-		else { return }
+		guard let active: [Int] = self.grid.getActive()
+			else {
+				return
+		}
 		
-		if self._grid.setValue(row: active[0],
-							   col: active[1],
-							   value: value) == false {
+		if self.grid.setValue(row: active[0],
+							  col: active[1],
+							  value: value) == false {
 			displayError(alertText: alertText)
 		} else {
-			self._grid.objectWillChange.send()
+			self.grid.objectWillChange.send()
 		}
 	}
-	
+
 	func displayError(alertText: String) {
 		// setup delayed action
-		self._task.cancel()
-		self._task = DispatchWorkItem {
-			self._displayAlert = false
+		self.task.cancel()
+		self.task = DispatchWorkItem {
+			self.displayAlert = false
 		}
-		
+
 		// display error message
-		self._alertText = alertText
-		self._displayAlert = true
+		self.alertText = alertText
+		self.displayAlert = true
 		DispatchQueue.main.asyncAfter(
 			deadline: DispatchTime.now() + 2,
-			execute: self._task
+			execute: self.task
 		)
-		
+
 		// haptic feedback
-		let generator = UINotificationFeedbackGenerator()
+		let generator: UINotificationFeedbackGenerator
+			= UINotificationFeedbackGenerator()
 		generator.notificationOccurred(.error)
 	}
-	
-	func exit() -> Bool {
-		return _grid.completion() == 100
+
+	func displayNumber(number: Int) -> Bool {
+		return !self.settings.hideUsed
+				|| (self.grid.getNumberFrequency()[number - 1] < 9
+					&& self.settings.hideUsed)
 	}
 }

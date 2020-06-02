@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct GridView: View {
-	@Binding var _isPaused: Bool
+	@Binding var isPaused: Bool
 
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _settings: Settings
-	@EnvironmentObject var _viewRouter: ViewRouter
+	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var settings: Settings
+	@EnvironmentObject var viewRouter: ViewRouter
+
+	private let frameSize: CGFloat = Screen.cellWidth * 9
 	
 	var body: some View {
 		ZStack {
@@ -21,11 +23,11 @@ struct GridView: View {
 				structure
 				overlayLines
 			}
-				.disabled(_isPaused || exit())
-				.opacity(_isPaused || exit() ? 0 : 1)
+				.disabled(isPaused || grid.full())
+				.opacity(isPaused || grid.full() ? 0 : 1)
 		}
-			.frame(width: Screen.cellWidth * 9,
-				   height: Screen.cellWidth * 9,
+			.frame(width: self.frameSize,
+				   height: self.frameSize,
 				   alignment: .center)
 	}
 	
@@ -34,10 +36,10 @@ struct GridView: View {
 			ForEach(0 ..< 9) { row in
 				HStack(spacing: -1) {
 					ForEach(0 ..< 9) { col in
-						self._grid.render(
+						self.grid.render(
 							row: row,
-							col:col,
-							fontSize: self._settings._fontSize
+							col: col,
+							fontSize: self.fontSize()
 						)
 						.frame(
 							width: Screen.cellWidth,
@@ -46,18 +48,18 @@ struct GridView: View {
 						.border(Color.black, width: 1)
 						.padding(.all, 0)
 						.background(
-							self._grid.colorAt(
+							self.grid.colorAt(
 								row: row,
 								col: col
 							)
 						)
 						.onTapGesture {
-							self._grid.objectWillChange.send()
-							self._grid.setActive(
+							self.grid.objectWillChange.send()
+							self.grid.setActive(
 								row: row,
 								col: col,
-								areas: self._settings._highlightAreas,
-								similar: self._settings._highlightSimilar
+								areas: self.settings.highlightAreas,
+								similar: self.settings.highlightSimilar
 							)
 						}
 					}
@@ -69,15 +71,17 @@ struct GridView: View {
 	private var overlayLines: some View {
 		GeometryReader { geometry in
 			Path { path in
-				let hlines = 2
-				let vlines = 2
-				for index in 1 ... vlines {
-					let vpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+				let factor: CGFloat = Screen.cellWidth * 3
+				let lines: [CGFloat] = [1, 2]
+				
+				for i: CGFloat in lines {
+					let vpos: CGFloat = i * factor
 					path.move(to: CGPoint(x: vpos, y: 4))
 					path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
 				}
-				for index in 1 ... hlines {
-					let hpos: CGFloat = CGFloat(index) * Screen.cellWidth * 3
+
+				for i: CGFloat in lines {
+					let hpos: CGFloat = i * factor
 					path.move(to: CGPoint(x: 4, y: hpos))
 					path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
 				}
@@ -85,8 +89,9 @@ struct GridView: View {
 				.stroke(lineWidth: Screen.lineThickness)
 		}
 	}
-		
-	func exit() -> Bool {
-		return _grid.completion() == 100
+	
+	func fontSize() -> CGFloat {
+		let size: Float = self.settings.fontSize
+		return CGFloat(size as Float)
 	}
 }

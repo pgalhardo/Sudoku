@@ -9,26 +9,30 @@
 import SwiftUI
 
 struct MenuView: View {
-	@State private var _displayWarning: Bool = false
+	@State private var displayWarning: Bool = false
+
+	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var viewRouter: ViewRouter
 	
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _viewRouter: ViewRouter
-		
+	private let popupWidth: CGFloat = Screen.width * 0.65
+	private let popupHeight: CGFloat = Screen.height * 0.35
+	private let popupPadding: CGFloat = Screen.height * 0.10
+
 	var body: some View {
 		ZStack {
 			VStack {
 				Spacer()
-				
+
 				Text("Sudoku")
 					.font(.custom("CaviarDreams-Bold", size: 80))
 					.foregroundColor(Colors.MatteBlack)
 					.shadow(radius: 10)
-				
+
 				Group {
-					if (activeBoard()) {
+					if activeBoard() {
 						ContinueButtonView()
 					}
-					PlayButtonView(_displayWarning: $_displayWarning)
+					PlayButtonView(displayWarning: $displayWarning)
 						.modifier(DefaultButton())
 					HomeButtonView(label: "main.stats",
 								   imageName: "chart.bar.fill",
@@ -46,37 +50,37 @@ struct MenuView: View {
 								   page: Pages.settings)
 						.modifier(DefaultButton())
 				}
-					.opacity(_displayWarning ? 0 : 1)
-				
+					.opacity(self.groupOpacity())
+
 				Spacer()
 			}
 				.shadow(radius: 5)
-			
+
 			VStack {
 				Spacer()
-				
+
 				VStack {
 					Spacer()
-					
+
 					Text("alert.progress.title")
 						.font(.custom("CaviarDreams-Bold", size: 15))
 						.lineLimit(nil)
 						.padding(.leading)
 						.padding(.trailing)
-				
+
 					Spacer()
-					
+
 					Text("alert.progress.continue")
 						.font(.custom("CaviarDreams-Bold", size: 15))
 						.padding(.leading)
 						.padding(.trailing)
-					
+
 					HStack {
 						Spacer()
 						Button(
 							action: {
 								withAnimation {
-									self._displayWarning = false
+									self.displayWarning = false
 								}
 							},
 							label: {
@@ -86,7 +90,7 @@ struct MenuView: View {
 									.font(.custom("CaviarDreams-Bold", size: 20))
 							}
 						)
-						
+
 						Spacer()
 						Button(
 							action: {
@@ -95,9 +99,9 @@ struct MenuView: View {
 															  forKey: "savedBoard")
 									UserDefaults.standard.set(nil,
 															  forKey: "time")
-									self._grid.reset()
-									self._grid.generate()
-									self._viewRouter.setCurrentPage(page: Pages.game)
+									self.grid.reset()
+									self.grid.generate()
+									self.viewRouter.setCurrentPage(page: Pages.game)
 								}
 							},
 							label: {
@@ -107,66 +111,79 @@ struct MenuView: View {
 									.font(.custom("CaviarDreams-Bold", size: 20))
 							}
 						)
-						
 						Spacer()
 					}
-					
 					Spacer()
 				}
 					.frame(
-						width: Screen.width * 0.65,
-						height: Screen.height * 0.35
+						width: popupWidth,
+						height: popupHeight
 					)
 					.background(Colors.MatteBlack)
 					.foregroundColor(Color.white)
 					.cornerRadius(40)
 					.shadow(radius: 10)
-					.blur(radius: _displayWarning ? 0 : 50)
-					.opacity(_displayWarning ? 1 : 0)
+					.blur(radius: popupBlur())
+					.opacity(popupOpacity())
 					.animation(.spring())
-					
+
 				Spacer()
 			}
-				.padding(.top, Screen.height * 0.10)
+				.padding(.top, popupPadding)
 		}
 	}
-	
+
 	func activeBoard() -> Bool {
-		let board = UserDefaults.standard.string(forKey: "savedBoard")
-		return board != nil
+		return UserDefaults.standard.string(forKey: "savedBoard") != nil
+	}
+	
+	func groupOpacity() -> Double {
+		return self.displayWarning ? 0 : 1
+	}
+	
+	func popupOpacity() -> Double {
+		return self.displayWarning ? 1 : 0
+	}
+	
+	func popupBlur() -> CGFloat {
+		return self.displayWarning ? 0 : 50
 	}
 }
 
 struct HomeButtonView: View {
-	private var _label: String!
-	private var _imageName: String!
-	private var _imageColor: Color!
-	private var _page: Int!
-	
-	@EnvironmentObject var _viewRouter: ViewRouter
-	
+	private let label: String!
+	private let imageName: String!
+	private let imageColor: Color!
+	private let page: Int!
+
+	@EnvironmentObject var viewRouter: ViewRouter
+
 	init (label: String, imageName: String, imageColor: Color, page: Int) {
-		_label = label
-		_imageName = imageName
-		_imageColor = imageColor
-		_page = page
+		self.label = label
+		self.imageName = imageName
+		self.imageColor = imageColor
+		self.page = page
 	}
 	
+	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
+	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
+
 	var body: some View {
 		Button(
 			action: {
 				withAnimation {
-					self._viewRouter.setCurrentPage(page: self._page)
+					self.viewRouter.setCurrentPage(page: self.page)
 				}
 			},
 			label: {
 				ZStack(alignment: .leading) {
-					Image(systemName: _imageName)
-						.position(x: Screen.width * 0.55 * 0.2, y: 25)
-						.foregroundColor(_imageColor)
-					Text(LocalizedStringKey(_label))
+					Image(systemName: self.imageName)
+						.position(x: self.iconPosition[0],
+								  y: self.iconPosition[1])
+						.foregroundColor(self.imageColor)
+					Text(LocalizedStringKey(self.label))
 						.font(.custom("CaviarDreams-Bold", size: 20))
-						.offset(x: Screen.width * 0.55 * 0.35)
+						.offset(x: self.labelOffset)
 				}
 			}
 		)
@@ -174,31 +191,37 @@ struct HomeButtonView: View {
 }
 
 struct ContinueButtonView: View {
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _viewRouter: ViewRouter
-		
+	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var viewRouter: ViewRouter
+	
+	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
+	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
+	private let frameSize: [CGFloat] = [Screen.width * 0.55, 50]
+
 	var body: some View {
 		Button(
 			action: {
 				withAnimation {
-					if let board = UserDefaults.standard.string(forKey: "savedBoard") {
-						self._grid.load(puzzle: board)
+					if let board: String = UserDefaults.standard.string(forKey: "savedBoard") {
+						self.grid.reset()
+						self.grid.load(puzzle: board)
+						self.viewRouter.setCurrentPage(page: Pages.game)
 					}
-					self._viewRouter.setCurrentPage(page: Pages.game)
 				}
 			},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: "hourglass.bottomhalf.fill")
-						.position(x: Screen.width * 0.55 * 0.2, y: 25)
+						.position(x: self.iconPosition[0],
+								  y: self.iconPosition[1])
 					Text("main.resume")
 						.font(.custom("CaviarDreams-Bold", size: 20))
-						.offset(x: Screen.width * 0.55 * 0.35)
+						.offset(x: self.labelOffset)
 				}
 			}
 		)
-			.frame(width: Screen.width * 0.55,
-				   height: 50,
+			.frame(width: self.frameSize[0],
+				   height: self.frameSize[1],
 				   alignment: .leading)
 			.background(Colors.LightBlue)
 			.cornerRadius(40)
@@ -209,51 +232,55 @@ struct ContinueButtonView: View {
 }
 
 struct PlayButtonView: View {
-	@Binding var _displayWarning: Bool
+	@Binding var displayWarning: Bool
+
+	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var viewRouter: ViewRouter
 	
-	@EnvironmentObject var _grid: Grid
-	@EnvironmentObject var _viewRouter: ViewRouter
-		
+	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
+	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
+	
 	var body: some View {
 		Button(
 			action: {
 				withAnimation {
-					if (self.activeBoard()) {
-						self._displayWarning = true
-					}
-					else {
+					if self.activeBoard() {
+						self.displayWarning = true
+					} else {
 						UserDefaults.standard.set(nil,
 												  forKey: "savedBoard")
 						UserDefaults.standard.set(nil,
 												  forKey: "time")
-						self._grid.reset()
-						self._grid.generate()
-						self._viewRouter.setCurrentPage(page: Pages.game)
+						self.grid.reset()
+						self.grid.generate()
+						self.viewRouter.setCurrentPage(page: Pages.game)
 					}
 				}
 			},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: "gamecontroller.fill")
-						.position(x: Screen.width * 0.55 * 0.2, y: 25)
+						.position(x: self.iconPosition[0],
+								  y: self.iconPosition[1])
 					Text("main.new")
 						.font(.custom("CaviarDreams-Bold", size: 20))
-						.offset(x: Screen.width * 0.55 * 0.35)
+						.offset(x: self.labelOffset)
 				}
 			}
 		)
 	}
-	
+
 	func activeBoard() -> Bool {
-		let board = UserDefaults.standard.string(forKey: "savedBoard")
-		return board != nil
+		return UserDefaults.standard.string(forKey: "savedBoard") != nil
 	}
 }
 
 struct DefaultButton: ViewModifier {
+	private let buttonWidth: CGFloat = Screen.width * 0.55
+	
     func body(content: Content) -> some View {
         content
-            .frame(width: Screen.width * 0.55,
+            .frame(width: buttonWidth,
 				   height: 50,
 				   alignment: .leading)
 			.background(Colors.MatteBlack)

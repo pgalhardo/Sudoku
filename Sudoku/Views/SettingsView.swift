@@ -9,110 +9,136 @@
 import SwiftUI
 
 struct SettingsView: View {
-	@EnvironmentObject var _settings: Settings
+	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var _viewRouter: ViewRouter
+	
+	private let incrButtonSize: CGFloat = Screen.cellWidth / 2
 	
     var body: some View {
 		VStack(spacing: 0) {
 			GenericTopBarView(title: "main.settings", destination: Pages.home)
 		
-			Section {
-				VStack(alignment: .leading) {
-					Toggle(isOn: $_settings._highlightAreas) {
-						Text("settings.areas")
-							.font(.custom("CaviarDreams-Bold", size: 20))
-					}
-					
-					Text("settings.areas.descript")
-						.font(.custom("CaviarDreams-Bold", size: 12))
-						.foregroundColor(Color.gray)
-				}
-				
-				VStack(alignment: .leading) {
-					Toggle(isOn: $_settings._highlightSimilar) {
-						Text("settings.twins")
-							.font(.custom("CaviarDreams-Bold", size: 20))
-					}
-				
-					Text("settings.twins.descript")
-						.font(.custom("CaviarDreams-Bold", size: 12))
-						.foregroundColor(Color.gray)
-				}
-				
-				VStack(alignment: .leading) {
-					Toggle(isOn: $_settings._hideUsed) {
-						Text("settings.used")
-							.font(.custom("CaviarDreams-Bold", size: 20))
-					}
-				
-					Text("settings.used.descript")
-						.font(.custom("CaviarDreams-Bold", size: 12))
-						.foregroundColor(Color.gray)
-				}
-			}
-				.padding(.top)
-				.padding(.leading)
-				.padding(.trailing)
-			
-			VStack(alignment: .leading) {
-				Toggle(isOn: $_settings._enableTimer) {
-					Text("settings.timer")
-						.font(.custom("CaviarDreams-Bold", size: 20))
-				}
-			}
-				.padding(.top, 60)
-				.padding(.leading)
-				.padding(.trailing)
-			
-			HStack {
-				Text("settings.text.size")
-					.font(.custom("CaviarDreams-Bold", size: 20))
-				
-				Spacer()
-				Button(
-					action: {
-						if self._settings._fontSize > Int(Screen.cellWidth * 0.5) {
-							self._settings._fontSize -= 1
-						}
-					},
-					label: {
-						Text("-")
-							.font(.custom("CaviarDreams-Bold", size: 20))
-							.frame(width: Screen.cellWidth,
-								   height: Screen.cellWidth / 2)
-							.background(Colors.MatteBlack)
-							.foregroundColor(.white)
-							.cornerRadius(5)
-					}
-				)
-				Spacer()
-				Text(String(format: "%02d", Int(_settings._fontSize)))
-					.font(.custom("CaviarDreams-Bold", size: 20))
-				Spacer()
-				Button(
-					action: {
-						if self._settings._fontSize < Int(Screen.cellWidth * 0.9) {
-							self._settings._fontSize += 1
-						}
-					},
-					label: {
-						Text("+")
-							.font(.custom("CaviarDreams-Bold", size: 20))
-							.frame(width: Screen.cellWidth,
-								   height: Screen.cellWidth / 2)
-							.background(Colors.MatteBlack)
-							.foregroundColor(.white)
-							.cornerRadius(5)
-					}
-				)
-			}
-				.padding(.top, 60)
-				.padding(.leading)
-				.padding(.trailing)
+			self.general
+			self.timer
+			self.fontSize
 			
 			Spacer()
 		}
     }
+	
+	var general: some View {
+		Section {
+			VStack(alignment: .leading) {
+				Toggle(isOn: $settings.highlightAreas) {
+					Text("settings.areas")
+						.font(.custom("CaviarDreams-Bold", size: 20))
+				}
+				
+				Text("settings.areas.descript")
+					.font(.custom("CaviarDreams-Bold", size: 12))
+					.foregroundColor(Color.gray)
+			}
+			
+			VStack(alignment: .leading) {
+				Toggle(isOn: $settings.highlightSimilar) {
+					Text("settings.twins")
+						.font(.custom("CaviarDreams-Bold", size: 20))
+				}
+			
+				Text("settings.twins.descript")
+					.font(.custom("CaviarDreams-Bold", size: 12))
+					.foregroundColor(Color.gray)
+			}
+			
+			VStack(alignment: .leading) {
+				Toggle(isOn: $settings.hideUsed) {
+					Text("settings.used")
+						.font(.custom("CaviarDreams-Bold", size: 20))
+				}
+			
+				Text("settings.used.descript")
+					.font(.custom("CaviarDreams-Bold", size: 12))
+					.foregroundColor(Color.gray)
+			}
+		}
+			.padding(.top)
+			.padding(.leading)
+			.padding(.trailing)
+	}
+	
+	var timer: some View {
+		VStack(alignment: .leading) {
+			Toggle(isOn: $settings.enableTimer) {
+				Text("settings.timer")
+					.font(.custom("CaviarDreams-Bold", size: 20))
+			}
+		}
+			.padding(.top, 60)
+			.padding(.leading)
+			.padding(.trailing)
+	}
+	
+	var fontSize: some View {
+		HStack {
+			Text("settings.text.size")
+				.font(.custom("CaviarDreams-Bold", size: 20))
+			
+			Spacer()
+			Button(
+				action: {
+					if self.canDecrement() {
+						self.settings.fontSize -= 1
+					}
+				},
+				label: {
+					Text("-")
+						.font(.custom("CaviarDreams-Bold", size: 20))
+						.frame(width: self.incrButtonSize,
+							   height: self.incrButtonSize)
+						.background(Colors.MatteBlack)
+						.foregroundColor(.white)
+						.cornerRadius(5)
+				}
+			)
+			Spacer()
+			Text(String(format: "%02.0f", self.settings.fontSize))
+				.font(.custom("CaviarDreams-Bold", size: 20))
+			Spacer()
+			Button(
+				action: {
+					if self.canIncrement() {
+						self.settings.fontSize += 1
+					}
+				},
+				label: {
+					Text("+")
+						.font(.custom("CaviarDreams-Bold", size: 20))
+						.frame(width: self.incrButtonSize,
+							   height: self.incrButtonSize)
+						.background(Colors.MatteBlack)
+						.foregroundColor(.white)
+						.cornerRadius(5)
+				}
+			)
+		}
+			.padding(.top, 60)
+			.padding(.leading)
+			.padding(.trailing)
+	}
+		
+	func canIncrement() -> Bool {
+		let factor: Float = 0.9
+		let size: Float = self.settings.fontSize
+		let max: Float = Float(Screen.cellWidth) * factor
+		return size < max
+	}
+	
+	func canDecrement() -> Bool {
+		let factor: Float = 0.5
+		let size: Float = self.settings.fontSize
+		let min: Float = Float(Screen.cellWidth) * factor
+		return size > min
+	}
 }
 
 struct SettingsView_Previews: PreviewProvider {

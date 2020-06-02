@@ -8,43 +8,43 @@
 
 import Foundation
 
-class Settings: ObservableObject {
-	@Published var _highlightAreas: Bool! {
+final class Settings: ObservableObject {
+	@Published var highlightAreas: Bool! {
 		didSet {
-			UserDefaults.standard.set(_highlightAreas,
+			UserDefaults.standard.set(highlightAreas,
 									  forKey: "highlightAreas")
 		}
 	}
-	@Published var _highlightSimilar: Bool! {
+	@Published var highlightSimilar: Bool! {
 		didSet {
-			UserDefaults.standard.set(_highlightSimilar,
+			UserDefaults.standard.set(highlightSimilar,
 									  forKey: "highlightSimilar")
 		}
 	}
-	@Published var _hideUsed: Bool! {
+	@Published var hideUsed: Bool! {
 		didSet {
-			UserDefaults.standard.set(_hideUsed,
+			UserDefaults.standard.set(hideUsed,
 									  forKey: "highlightUsed")
 		}
 	}
-	@Published var _enableTimer: Bool! {
+	@Published var enableTimer: Bool! {
 		didSet {
-			UserDefaults.standard.set(_enableTimer,
+			UserDefaults.standard.set(enableTimer,
 									  forKey: "enableTimer")
 		}
 	}
-	@Published var _fontSize: Int! {
+	@Published var fontSize: Float! {
 		didSet {
-			UserDefaults.standard.set(_fontSize,
+			UserDefaults.standard.set(fontSize,
 									  forKey: "fontSize")
 		}
 	}
 
 	init() {
-		_highlightAreas = UserDefaults.standard.bool(forKey: "highlightAreas")
-		_highlightSimilar = UserDefaults.standard.bool(forKey: "highlightSimilar")
-		_hideUsed = UserDefaults.standard.bool(forKey: "highlightUsed")
-		_enableTimer = UserDefaults.standard.bool(forKey: "enableTimer")
-		_fontSize = UserDefaults.standard.integer(forKey: "fontSize")
+		highlightAreas = UserDefaults.standard.bool(forKey: "highlightAreas")
+		highlightSimilar = UserDefaults.standard.bool(forKey: "highlightSimilar")
+		hideUsed = UserDefaults.standard.bool(forKey: "highlightUsed")
+		enableTimer = UserDefaults.standard.bool(forKey: "enableTimer")
+		fontSize = UserDefaults.standard.float(forKey: "fontSize")
 	}
 }

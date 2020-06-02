@@ -11,15 +11,15 @@ import SwiftUI
 
 let UNDEFINED: Int = 0
 
-struct Screen {
-	static let lineThickness: CGFloat = 2
+enum Screen {
 	static let size: CGRect = UIScreen.main.bounds
 	static let width: CGFloat = UIScreen.main.bounds.width
 	static let height: CGFloat = UIScreen.main.bounds.height
 	static let cellWidth: CGFloat = UIScreen.main.bounds.size.width * 0.95 / 9
+	static let lineThickness: CGFloat = 2
 }
 
-struct Pages {
+enum Pages {
 	static let home:       Int = 0
 	static let game:       Int = 1
 	static let settings:   Int = 2
@@ -27,13 +27,13 @@ struct Pages {
 	static let strategies: Int = 4
 }
 
-struct InputType {
+enum InputType {
 	static let system: Int = 0
 	static let user:   Int = 1
 	static let error:  Int = 2
 }
 
-struct Colors {
+enum Colors {
 	static let DeepBlue:   Color = Color(red: 45 / 255,
 										 green: 75 / 255,
 										 blue: 142 / 255)

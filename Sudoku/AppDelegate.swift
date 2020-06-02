@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			"highlightSimilar": false,
 			"hideUsed": true,
 			"enableTimer": true,
-			"fontSize": 28
+			"fontSize": 28.0
 		])
 		return true
 	}

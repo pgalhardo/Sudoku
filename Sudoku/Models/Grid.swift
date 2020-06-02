@@ -9,13 +9,12 @@
 import Foundation
 import SwiftUI
 
-class Grid: ObservableObject {
+final class Grid: ObservableObject {
 	private var active: [Int]?
 	private var colored: [[Int]] = [[Int]]()
 	private var solutions: Int = 0
 	private var errorCount: Int = 0
 	
-			   private var solution: [[Int]] = [[Int]]()
 	@Published private var grid: [[Int]] = [[Int]]()
 	@Published private var color: [[Color]] = [[Color]]()
 	@Published private var inputType: [[Int]] = [[Int]]()
@@ -45,7 +44,7 @@ class Grid: ObservableObject {
 		Core functions
 	==========================================================================*/
 	
-	func reset() {
+	func reset() -> Void {
 		self.active = nil
 		self.errorCount = 0
 		self.colored = [[Int]]()
@@ -69,23 +68,26 @@ class Grid: ObservableObject {
 		var str: String = puzzle
 		var count: Int = 0
 		var user: Bool = false
-		
-		reset()
-		
+
 		while !str.isEmpty {
 			let row: Int = count / 9
 			let col: Int = count % 9
 			let char: Character = str.removeFirst()
 			
 			if "0" <= char && char <= "9" {
-				let value: Int = Int(String(char)) ?? 0
+				guard let value: Int = Int(String(char))
+					else {
+						reset()
+						return
+				}
 				
 				self.grid[row][col] = value
-
-				user == true
-					? (self.inputType[row][col] = InputType.user)
-					: (self.inputType[row][col] = InputType.system)
-								
+				if user == true {
+					self.inputType[row][col] = InputType.user
+				} else {
+					self.inputType[row][col] = InputType.system
+				}
+				
 				user = false
 				count += 1
 				if (value > 0) {
@@ -98,11 +100,11 @@ class Grid: ObservableObject {
 		}
 	}
 		
-	func store() -> String {
-		var str = ""
+	func toString() -> String {
+		var str = String()
 		
-		for row in (0 ..< 9) {
-			for col in (0 ..< 9) {
+		for row: Int in (0 ..< 9) {
+			for col: Int in (0 ..< 9) {
 				if (self.inputType[row][col] == InputType.user) {
 					str.append("u")
 				}
@@ -117,8 +119,8 @@ class Grid: ObservableObject {
 	}
 	
 	func full() -> Bool {
-		for row in (0 ..< 9) {
-			for col in (0 ..< 9) {
+		for row: Int in (0 ..< 9) {
+			for col: Int in (0 ..< 9) {
 				if self.grid[row][col] == UNDEFINED {
 					return false
 				}
@@ -128,9 +130,10 @@ class Grid: ObservableObject {
 	}
 	
 	func completion() -> Int {
-		var filled = 0
-		for row in (0 ..< 9) {
-			for col in (0 ..< 9) {
+		var filled: Int = 0
+		
+		for row: Int in (0 ..< 9) {
+			for col: Int in (0 ..< 9) {
 				if grid[row][col] != UNDEFINED {
 					filled += 1
 				}
@@ -184,11 +187,11 @@ class Grid: ObservableObject {
 		return active
 	}
 		
-	func setActive(row: Int, col: Int, areas: Bool, similar: Bool) {
-		let previous = active
+	func setActive(row: Int, col: Int, areas: Bool, similar: Bool) -> Void {
+		let previous: [Int]? = active
 		active = [row, col]
 		
-		for i in (0 ..< colored.count) {
+		for i: Int in (0 ..< colored.count) {
 			toggleColor(cell: colored[i])
 		}
 		colored.removeAll()
@@ -209,10 +212,12 @@ class Grid: ObservableObject {
 		}
 	}
 	
-	func toggleColor(cell: [Int]?) {
+	func toggleColor(cell: [Int]?) -> Void {
 		if cell == nil { return }
 
-		let row = cell![0], col = cell![1]
+		let row: Int = cell![0]
+		let col: Int = cell![1]
+		
 		if color[row][col] == Color.white {
 			color[row][col] = Colors.ActiveBlue
 			colored.append([row, col])
@@ -228,10 +233,11 @@ class Grid: ObservableObject {
 	
 	func getSquare(row: Int, col: Int) -> [[Int]] {
 		// this points to upper left corner
-		let row = (row / 3) * 3, col = (col / 3) * 3
-		var square = [[Int]]()
+		let row: Int = (row / 3) * 3
+		let col: Int = (col / 3) * 3
+		var square: [[Int]] = [[Int]]()
 		
-		for i in (row ..< row + 3) {
+		for i: Int in (row ..< row + 3) {
 			square.append([grid[i][col],
 						   grid[i][col + 1],
 						   grid[i][col + 2]])
@@ -248,41 +254,43 @@ class Grid: ObservableObject {
 	}
 
 	func numberInSquare(number: Int, row: Int, col: Int) -> Bool {
-		let square = getSquare(row: row, col: col)
+		let square: [[Int]] = getSquare(row: row, col: col)
 		
 		return (square[0].contains(number)
 			|| square[1].contains(number)
 			|| square[2].contains(number))
 	}
 	
-	func highlightRow(cell: [Int]?) {
-		let row = cell![0], col = cell![1]
+	func highlightRow(cell: [Int]?) -> Void {
+		let row: Int = cell![0]
+		let col: Int = cell![1]
 		
-		for i in (0 ..< 9) {
+		for i: Int in (0 ..< 9) {
 			if i == col { continue }
 			color[row][i] = Colors.LightBlue
 			colored.append([row, i])
 		}
 	}
 	
-	func highlightCol(cell: [Int]?) {
-		let row = cell![0], col = cell![1]
+	func highlightCol(cell: [Int]?) -> Void {
+		let row: Int = cell![0]
+		let col: Int = cell![1]
 		
-		for i in (0 ..< 9) {
+		for i: Int in (0 ..< 9) {
 			if i == row { continue }
 			color[i][col] = Colors.LightBlue
 			colored.append([i, col])
 		}
 	}
 	
-	func highlightSimilar(row: Int, col: Int) {
-		let value = grid[row][col]
-		var found = 0
+	func highlightSimilar(row: Int, col: Int) -> Void {
+		let value: Int = grid[row][col]
+		var found: Int = 0
 		
-		for i in (0 ..< 9) {
+		for i: Int in (0 ..< 9) {
 			if i == row { continue }
 			
-			for j in (0 ..< 9) {
+			for j: Int in (0 ..< 9) {
 				if j == col { continue }
 				
 				if grid[i][j] == value {
@@ -302,27 +310,27 @@ class Grid: ObservableObject {
 			&& !numberInSquare(number: number, row: row, col: col)
 	}
 	
-	func render(row: Int, col:Int, fontSize: Int) -> Text {
+	func render(row: Int, col: Int, fontSize: CGFloat) -> Text {
 		
-		let value = grid[row][col]
-		let type = inputType[row][col]
-		
+		let value: Int = grid[row][col]
+		let type: Int = inputType[row][col]
+				
 		if value == UNDEFINED { return Text(" ") }
 		
 		if type == InputType.system {
 			return Text("\(value)")
 						.font(.custom("CaviarDreams-Bold",
-									  size: CGFloat(fontSize)))
+									  size: fontSize))
 						.foregroundColor(Colors.MatteBlack)
 		} else if type == InputType.user {
 			return Text("\(value)")
 						.font(.custom("CaviarDreams-Bold",
-									  size: CGFloat(fontSize)))
+									  size: fontSize))
 						.foregroundColor(Colors.DeepBlue)
 		}
 		return Text("\(value)")
 					.font(.custom("CaviarDreams-Bold",
-								  size: CGFloat(fontSize)))
+								  size: fontSize))
 					.foregroundColor(Color.red)
 	}
 	
@@ -335,7 +343,7 @@ class Grid: ObservableObject {
 		without breaking any of the Sudoku rules, we must first check
 		for its presence on the same row, column and square.
 	*/
-	func generate() {
+	func generate() -> Void {
 		fill()
 		randomize()
 		removeNumbers()
@@ -347,7 +355,7 @@ class Grid: ObservableObject {
 		var row: Int = 0
 		var col: Int = 0
 		
-		for i in (0 ..< 81) {
+		for i: Int in (0 ..< 81) {
 			row = i / 9
 			col = i % 9
 			
@@ -381,7 +389,7 @@ class Grid: ObservableObject {
 		var tokens: [String] = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
 		tokens = tokens.shuffled()
 
-		for i in (0 ..< 81) {
+		for i: Int in (0 ..< 81) {
 			let row: Int = i / 9
 			let col: Int = i % 9
 			let int2Token: String = String(Character(UnicodeScalar(grid[row][col])!))
@@ -531,8 +539,8 @@ class Grid: ObservableObject {
 			var found: Int = 0
 			
 			// detect hidden singles in rows
-			for row in (0 ..< 9) {
-				for value in (1 ... 9) {
+			for row: Int in (0 ..< 9) {
+				for value: Int in (1 ... 9) {
 					if uniqueRow(row: row,
 								 value: value,
 								 possibles: possibles[row]
@@ -578,8 +586,7 @@ class Grid: ObservableObject {
 			if nakedSingles(possibles: possibles) > 0 { continue }
 			else if hiddenSingles(possibles: possibles) > 0 { continue }
 
-			solution = grid
-			return
+			break
 		}
 	}
 
@@ -600,11 +607,7 @@ class Grid: ObservableObject {
 				// Solution found. We must check if it is the only one (so far).
 				solutions += 1
 				if solutions > 1 {
-					solution = Array(repeating: Array(repeating: UNDEFINED, count: 9), count: 9)
 					return false
-				}
-				else {
-					solution = grid
 				}
 			}
 			else {
@@ -690,22 +693,5 @@ class Grid: ObservableObject {
 		return square[0].contains(token)
 			|| square[1].contains(token)
 			|| square[2].contains(token)
-	}
-}
-
-/*
-	Extension to allow usage of: str[i]
-*/
-extension String {
-	subscript (i: Int) -> String {
-		return self[i ..< i + 1]
-	}
-
-	subscript (r: Range<Int>) -> String {
-		let range = Range(uncheckedBounds: (lower: max(0, min(count, r.lowerBound)),
-											upper: min(count, max(0, r.upperBound))))
-		let start = index(startIndex, offsetBy: range.lowerBound)
-		let end = index(start, offsetBy: range.upperBound - range.lowerBound)
-		return String(self[start ..< end])
 	}
 }

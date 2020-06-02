@@ -9,33 +9,35 @@
 import SwiftUI
 
 struct GenericTopBarView: View {
-	private var _title: String!
-	private var _destination: Int!
+	private var title: String!
+	private var destination: Int!
+
+	@EnvironmentObject var viewRouter: ViewRouter
 	
-	@EnvironmentObject var _viewRouter: ViewRouter
+	private let frameSize: CGFloat = Screen.cellWidth / 2
 	
 	init(title: String, destination: Int) {
-		_title = title
-		_destination = destination
+		self.title = title
+		self.destination = destination
 	}
 	
 	var body: some View {
 		ZStack {
-			Text(LocalizedStringKey(_title))
+			Text(LocalizedStringKey(title))
 				.font(.custom("CaviarDreams-Bold", size: 20))
 			
 			HStack {
 				Button(
 					action: {
 						withAnimation(.easeIn) {
-							self._viewRouter.setCurrentPage(page: self._destination)
+							self.viewRouter.setCurrentPage(page: self.destination)
 						}
 					},
 					label: {
 						Image(systemName: "return")
 							.resizable()
-							.frame(width: Screen.cellWidth / 2,
-								   height: Screen.cellWidth / 2)
+							.frame(width: self.frameSize,
+								   height: self.frameSize)
 						Text("main.back")
 							.font(.custom("CaviarDreams-Bold", size: 15))
 
