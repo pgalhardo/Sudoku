@@ -75,11 +75,8 @@ final class Grid: ObservableObject {
 			let char: Character = str.removeFirst()
 			
 			if "0" <= char && char <= "9" {
-				guard let value: Int = Int(String(char))
-					else {
-						reset()
-						return
-				}
+				let char2String: String = String(char)
+				let value: Int = Int(char2String) ?? 0
 				
 				self.grid[row][col] = value
 				if user == true {
@@ -96,6 +93,33 @@ final class Grid: ObservableObject {
 			}
 			else if char == "u" {
 				user = true
+			}
+		}
+	}
+	
+	func loadFromSeed() -> Void {
+		let randPuzzle: Int = Int.random(in: 0 ..< Puzzles.easy.count)
+		
+		var str: String = Puzzles.easy[randPuzzle]
+		var count: Int = 0
+
+		while !str.isEmpty {
+			let row: Int = count / 9
+			let col: Int = count % 9
+			let char: Character = str.removeFirst()
+			
+			if "0" <= char && char <= "9" {
+				let char2String: String = String(char)
+				let value: Int = Int(char2String) ?? 0
+				
+				self.grid[row][col] = value
+				if value != UNDEFINED {
+					self.inputType[row][col] = InputType.system
+				} else {
+					self.inputType[row][col] = InputType.user
+				}
+				
+				count += 1
 			}
 		}
 	}
@@ -162,12 +186,20 @@ final class Grid: ObservableObject {
 				
 		if inputType[row][col] == InputType.system {
 			return false
-		} else if grid[row][col] == value {
+		}
+		
+		else if grid[row][col] == value {
 			return true
-		} else if !possible(number: value, row: row, col: col) {
+		}
+		
+		else if value != UNDEFINED
+			&& !possible(number: value, row: row, col: col) {
+			
 			inputType[row][col] = InputType.error
 			errorCount += 1
-		} else {
+		}
+		
+		else {
 			inputType[row][col] = InputType.user
 			
 			if grid[row][col] > 0 {
@@ -344,9 +376,12 @@ final class Grid: ObservableObject {
 		for its presence on the same row, column and square.
 	*/
 	func generate() -> Void {
-		fill()
-		randomize()
-		removeNumbers()
+		//fill()
+		//randomize()
+		//removeNumbers()
+		
+		loadFromSeed()
+		
 		computeTokenFrequency()
 	}
 	
@@ -434,7 +469,7 @@ final class Grid: ObservableObject {
 			}
 		}
 	}
-		
+
 	/*==========================================================================
 		Solver
 	==========================================================================*/

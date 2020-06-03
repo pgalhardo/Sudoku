@@ -12,7 +12,7 @@ struct SettingsView: View {
 	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var _viewRouter: ViewRouter
 	
-	private let incrButtonSize: CGFloat = Screen.cellWidth / 2
+	private let incrButtonHeight: CGFloat = Screen.cellWidth / 2
 	
     var body: some View {
 		VStack(spacing: 0) {
@@ -21,6 +21,7 @@ struct SettingsView: View {
 			self.general
 			self.timer
 			self.fontSize
+			self.eraseBoard
 			
 			Spacer()
 		}
@@ -93,8 +94,8 @@ struct SettingsView: View {
 				label: {
 					Text("-")
 						.font(.custom("CaviarDreams-Bold", size: 20))
-						.frame(width: self.incrButtonSize,
-							   height: self.incrButtonSize)
+						.frame(width: Screen.cellWidth,
+							   height: self.incrButtonHeight)
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(5)
@@ -113,11 +114,40 @@ struct SettingsView: View {
 				label: {
 					Text("+")
 						.font(.custom("CaviarDreams-Bold", size: 20))
-						.frame(width: self.incrButtonSize,
-							   height: self.incrButtonSize)
+						.frame(width: Screen.cellWidth,
+							   height: self.incrButtonHeight)
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(5)
+				}
+			)
+		}
+			.padding(.top, 60)
+			.padding(.leading)
+			.padding(.trailing)
+	}
+	
+	var eraseBoard: some View {
+		HStack {
+			Text("Erase current board")
+				.font(.custom("CaviarDreams-Bold", size: 20))
+			
+			Spacer()
+			Button(
+				action: {
+					UserDefaults.standard.set(nil,
+											  forKey: "savedBoard")
+					UserDefaults.standard.set(nil,
+											  forKey: "time")
+				},
+				label: {
+					Text("Erase")
+						.frame(width: 100,
+							   height: 50)
+						.font(.custom("CaviarDreams-Bold", size: 20))
+						.background(Colors.MatteBlack)
+						.foregroundColor(.white)
+						.cornerRadius(40)
 				}
 			)
 		}

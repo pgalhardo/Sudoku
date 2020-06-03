@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MenuView: View {
 	@State private var displayWarning: Bool = false
+	@State var generating: Bool = false
 
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
@@ -32,7 +33,8 @@ struct MenuView: View {
 					if activeBoard() {
 						ContinueButtonView()
 					}
-					PlayButtonView(displayWarning: $displayWarning)
+					PlayButtonView(displayWarning: $displayWarning,
+								   generating: $generating)
 						.modifier(DefaultButton())
 					HomeButtonView(label: "main.stats",
 								   imageName: "chart.bar.fill",
@@ -55,90 +57,101 @@ struct MenuView: View {
 				Spacer()
 			}
 				.shadow(radius: 5)
-
+			
 			VStack {
 				Spacer()
-
-				VStack {
-					Spacer()
-
-					Text("alert.progress.title")
-						.font(.custom("CaviarDreams-Bold", size: 15))
-						.lineLimit(nil)
-						.padding(.leading)
-						.padding(.trailing)
-
-					Spacer()
-
-					Text("alert.progress.continue")
-						.font(.custom("CaviarDreams-Bold", size: 15))
-						.padding(.leading)
-						.padding(.trailing)
-
-					HStack {
+				
+				ZStack {
+					VStack {
 						Spacer()
-						Button(
-							action: {
-								withAnimation {
-									self.displayWarning = false
-								}
-							},
-							label: {
-								Image(systemName: "xmark.circle.fill")
-									.foregroundColor(Color.red)
-								Text("alert.progress.no")
-									.font(.custom("CaviarDreams-Bold", size: 20))
-							}
-						)
 
-						Spacer()
-						Button(
-							action: {
-								withAnimation {
-									UserDefaults.standard.set(nil,
-															  forKey: "savedBoard")
-									UserDefaults.standard.set(nil,
-															  forKey: "time")
-									self.grid.reset()
-									self.grid.generate()
-									self.viewRouter.setCurrentPage(page: Pages.game)
-								}
-							},
-							label: {
-								Image(systemName: "checkmark.circle.fill")
-									.foregroundColor(Color.green)
-								Text("alert.progress.yes")
-									.font(.custom("CaviarDreams-Bold", size: 20))
+						Group {
+							Text("alert.progress.title")
+								.font(.custom("CaviarDreams-Bold", size: 15))
+								.lineLimit(nil)
+								.padding(.leading)
+								.padding(.trailing)
+
+							Spacer()
+							
+							Text("alert.progress.continue")
+								.font(.custom("CaviarDreams-Bold", size: 15))
+								.padding(.leading)
+								.padding(.trailing)
+
+							HStack {
+								Spacer()
+								Button(
+									action: {
+										withAnimation {
+											self.displayWarning = false
+										}
+									},
+									label: {
+										Image(systemName: "xmark.circle.fill")
+											.foregroundColor(Color.red)
+										Text("alert.progress.no")
+											.font(.custom("CaviarDreams-Bold", size: 20))
+									}
+								)
+
+								Spacer()
+								Button(
+									action: {
+										withAnimation {
+											UserDefaults.standard.set(nil,
+																	  forKey: "savedBoard")
+											UserDefaults.standard.set(nil,
+																	  forKey: "time")
+											self.generating = true
+											self.execute()
+										}
+									},
+									label: {
+										Image(systemName: "checkmark.circle.fill")
+											.foregroundColor(Color.green)
+										Text("alert.progress.yes")
+											.font(.custom("CaviarDreams-Bold", size: 20))
+									}
+								)
+								Spacer()
 							}
-						)
+						}
+							.opacity(controlsOpacity())
+							.animation(.spring())
+						
 						Spacer()
 					}
-					Spacer()
+						.frame(
+							width: popupWidth,
+							height: popupHeight
+						)
+						.background(Colors.MatteBlack)
+						.foregroundColor(Color.white)
+						.cornerRadius(40)
+						.shadow(radius: 10)
+						.blur(radius: popupBlur())
+						.opacity(popupOpacity())
+						.animation(.spring())
+					
+					
+					ActivityIndicator()
+						.frame(width: 200, height: 200)
+						.foregroundColor(spinnerColor())
+						.opacity(spinnerOpacity())
 				}
-					.frame(
-						width: popupWidth,
-						height: popupHeight
-					)
-					.background(Colors.MatteBlack)
-					.foregroundColor(Color.white)
-					.cornerRadius(40)
-					.shadow(radius: 10)
-					.blur(radius: popupBlur())
-					.opacity(popupOpacity())
-					.animation(.spring())
-
 				Spacer()
 			}
 				.padding(.top, popupPadding)
 		}
 	}
-
+	
 	func activeBoard() -> Bool {
 		return UserDefaults.standard.string(forKey: "savedBoard") != nil
 	}
 	
 	func groupOpacity() -> Double {
-		return self.displayWarning ? 0 : 1
+		return self.displayWarning || self.generating ? 0 : 1
 	}
 	
 	func popupOpacity() -> Double {
@@ -147,6 +160,34 @@ struct MenuView: View {
 	
 	func popupBlur() -> CGFloat {
 		return self.displayWarning ? 0 : 50
+	}
+	
+	func controlsOpacity() -> Double {
+		return self.generating ? 0 : 1
+	}
+	
+	func spinnerOpacity() -> Double {
+		return self.generating ? 1 : 0
+	}
+	
+	func spinnerColor() -> Color {
+		return self.displayWarning ? Colors.LightBlue : Colors.MatteBlack
+	}
+	
+	func execute() -> Void {
+		// setup async action
+		let task: DispatchWorkItem = DispatchWorkItem {
+			self.grid.reset()
+			self.grid.generate()
+			self.generating = false
+			self.viewRouter.setCurrentPage(page: Pages.game)
+		}
+
+		// execute
+		DispatchQueue.main.asyncAfter(
+			deadline: DispatchTime.now() + 2,
+			execute: task
+		)
 	}
 }
 
@@ -233,6 +274,7 @@ struct ContinueButtonView: View {
 
 struct PlayButtonView: View {
 	@Binding var displayWarning: Bool
+	@Binding var generating: Bool
 
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
@@ -251,9 +293,8 @@ struct PlayButtonView: View {
 												  forKey: "savedBoard")
 						UserDefaults.standard.set(nil,
 												  forKey: "time")
-						self.grid.reset()
-						self.grid.generate()
-						self.viewRouter.setCurrentPage(page: Pages.game)
+						self.generating = true
+						self.execute()
 					}
 				}
 			},
@@ -273,6 +314,22 @@ struct PlayButtonView: View {
 	func activeBoard() -> Bool {
 		return UserDefaults.standard.string(forKey: "savedBoard") != nil
 	}
+		
+	func execute() -> Void {
+		// setup async action
+		let task: DispatchWorkItem = DispatchWorkItem {
+			self.grid.reset()
+			self.grid.generate()
+			self.generating = false
+			self.viewRouter.setCurrentPage(page: Pages.game)
+		}
+
+		// execute
+		DispatchQueue.main.asyncAfter(
+			deadline: DispatchTime.now() + 2,
+			execute: task
+		)
+	}
 }
 
 struct DefaultButton: ViewModifier {
@@ -289,4 +346,30 @@ struct DefaultButton: ViewModifier {
 			.foregroundColor(.white)
 			.shadow(radius: 20)
     }
+}
+
+struct ActivityIndicator: View {
+
+  @State private var isAnimating: Bool = false
+
+  var body: some View {
+    GeometryReader { (geometry: GeometryProxy) in
+      ForEach(0..<5) { index in
+        Group {
+          Circle()
+            .frame(width: geometry.size.width / 5, height: geometry.size.height / 5)
+            .scaleEffect(!self.isAnimating ? 1 - CGFloat(index) / 5 : 0.2 + CGFloat(index) / 5)
+            .offset(y: geometry.size.width / 10 - geometry.size.height / 2)
+          }.frame(width: geometry.size.width, height: geometry.size.height)
+            .rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
+            .animation(Animation
+              .timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
+              .repeatForever(autoreverses: false))
+        }
+      }
+    .aspectRatio(1, contentMode: .fit)
+    .onAppear {
+        self.isAnimating = true
+    }
+  }
 }

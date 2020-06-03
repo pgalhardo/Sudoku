@@ -34,7 +34,7 @@ struct GenericTopBarView: View {
 						}
 					},
 					label: {
-						Image(systemName: "return")
+						Image(systemName: "arrow.left")
 							.resizable()
 							.frame(width: self.frameSize,
 								   height: self.frameSize)

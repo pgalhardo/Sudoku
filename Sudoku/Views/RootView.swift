@@ -26,16 +26,21 @@ class ViewRouter: ObservableObject {
 	func setCurrentPage(page: Int) {
 		self.currentPage = page
 	}
+	
+	func currentlyAt(page: Int) -> Bool {
+		return self.currentPage == page
+	}
 }
 
 struct RootView: View {
 	private var settings: Settings = Settings()
 	private var grid: Grid = Grid()
+	
 	@EnvironmentObject var viewRouter: ViewRouter
 	
 	var body: some View {
 		VStack {
-			if viewRouter.getCurrentPage() == Pages.home {
+			if viewRouter.currentlyAt(page: Pages.home) {
 				MenuView()
 					.environmentObject(grid)
 					.transition(AnyTransition.asymmetric(
@@ -45,18 +50,18 @@ struct RootView: View {
 							with: .move(edge: .trailing))
 						)
 					)
-			} else if viewRouter.getCurrentPage() == Pages.game {
+			} else if viewRouter.currentlyAt(page: Pages.game) {
 				GameView()
 					.transition(.slideAndFadeIn)
 					.environmentObject(grid)
 					.environmentObject(settings)
-			} else if viewRouter.getCurrentPage() == Pages.statistics {
+			} else if viewRouter.currentlyAt(page: Pages.statistics) {
 				StatisticsView()
 					.transition(.slideAndFadeIn)
-			} else if viewRouter.getCurrentPage() == Pages.strategies {
+			} else if viewRouter.currentlyAt(page: Pages.strategies) {
 				StrategiesView()
 					.transition(.slideAndFadeIn)
-			} else if viewRouter.getCurrentPage() == Pages.settings {
+			} else if viewRouter.currentlyAt(page: Pages.settings) {
 				SettingsView()
 					.transition(.slideAndFadeIn)
 					.environmentObject(settings)

@@ -12,7 +12,7 @@ import SwiftUI
 struct GameView: View {
 	@State var _isPaused: Bool = false
 	@State var displayAlert: Bool = false
-	@State var alertText: String = ""
+	@State var alertText: String = String()
 
 	@EnvironmentObject var viewRouter: ViewRouter
 	@EnvironmentObject var grid: Grid
@@ -135,7 +135,7 @@ struct GameTopBarView: View {
 						}
 					},
 					label: {
-						Image(systemName: "return")
+						Image(systemName: "arrow.left")
 							.resizable()
 							.frame(width: backButtonSize,
 								   height: backButtonSize)

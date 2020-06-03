@@ -15,6 +15,7 @@
 		681A72C423661BB8002B9053 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 681A72C323661BB8002B9053 /* Preview Assets.xcassets */; };
 		681A72C723661BB8002B9053 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681A72C523661BB8002B9053 /* LaunchScreen.storyboard */; };
 		681A72CF23662961002B9053 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A72CE23662961002B9053 /* GridView.swift */; };
+		681E989724874F4C002C682C /* Seeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681E989624874F4C002C682C /* Seeds.swift */; };
 		683A3D8C2368F77A00135D55 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8B2368F77A00135D55 /* Grid.swift */; };
 		683A3D8E2369012200135D55 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8D2369012200135D55 /* GameView.swift */; };
 		683A3D90236916CF00135D55 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A3D8F236916CF00135D55 /* RootView.swift */; };
@@ -41,6 +42,7 @@
 		681A72C623661BB8002B9053 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		681A72C823661BB8002B9053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		681A72CE23662961002B9053 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
+		681E989624874F4C002C682C /* Seeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seeds.swift; sourceTree = "<group>"; };
 		683A3D8B2368F77A00135D55 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		683A3D8D2369012200135D55 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		683A3D8F236916CF00135D55 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				683A3D932369246D00135D55 /* Sudoku.entitlements */,
 				681A72BA23661BB7002B9053 /* AppDelegate.swift */,
 				680CD04C2368B3F900D734A1 /* Constant.swift */,
+				681E989624874F4C002C682C /* Seeds.swift */,
 				681A72BC23661BB7002B9053 /* SceneDelegate.swift */,
 				683A3D9123691BCF00135D55 /* Models */,
 				683A3D9223691BE200135D55 /* Views */,
@@ -165,7 +168,7 @@
 				681A72B323661BB7002B9053 /* Sources */,
 				681A72B423661BB7002B9053 /* Frameworks */,
 				681A72B523661BB7002B9053 /* Resources */,
-				68B7CDAC2485F6BC0069D2E7 /* ShellScript */,
+				68B7CDAC2485F6BC0069D2E7 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -227,7 +230,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		68B7CDAC2485F6BC0069D2E7 /* ShellScript */ = {
+		68B7CDAC2485F6BC0069D2E7 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -236,6 +239,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -266,6 +270,7 @@
 				684EC5F7236A4FFF009EE48C /* KeyboardView.swift in Sources */,
 				680CD04D2368B3F900D734A1 /* Constant.swift in Sources */,
 				68FDA2B7236E30D1003F954C /* SettingsView.swift in Sources */,
+				681E989724874F4C002C682C /* Seeds.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=100 -Xfrontend -warn-long-function-bodies=100";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pedro.Sudoku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
