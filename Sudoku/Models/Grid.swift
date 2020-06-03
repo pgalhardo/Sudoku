@@ -36,12 +36,8 @@ final class Grid: ObservableObject {
 		self.numberFrequency = Array(repeating: 0, count: 9)
 	}
 	
-	init(puzzle: String) {
-		self.load(puzzle: puzzle)
-	}
-	
 	/*==========================================================================
-	Core functions
+		Core functions
 	==========================================================================*/
 	
 	func reset() -> Void {
@@ -183,7 +179,7 @@ final class Grid: ObservableObject {
 	}
 	
 	/*==========================================================================
-	Single cell actions
+		Single cell actions
 	==========================================================================*/
 	
 	func valueAt(row: Int, col: Int) -> Int {
@@ -272,7 +268,7 @@ final class Grid: ObservableObject {
 	}
 	
 	/*==========================================================================
-	Groups of cells
+		Groups of cells
 	==========================================================================*/
 	
 	func getSquare(row: Int, col: Int) -> [[Int]] {
@@ -379,98 +375,15 @@ final class Grid: ObservableObject {
 	}
 	
 	/*==========================================================================
-	Generator
+		Generator
 	==========================================================================*/
-	
-	/*
-	Approach: in order to place a given number in a given cell of the grid
-	without breaking any of the Sudoku rules, we must first check
-	for its presence on the same row, column and square.
-	*/
+
 	func generate() -> Void {
-		//fill()
-		//randomize()
-		//removeNumbers()
-		
 		loadFromSeed()
+		//randomize()
 		self.errorCount = 0
 		
 		computeTokenFrequency()
-	}
-	
-	@discardableResult func fill() -> Bool {
-		var tokens: [String] = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
-		var row: Int = 0
-		var col: Int = 0
-		
-		for i: Int in (0 ..< 81) {
-			row = i / 9
-			col = i % 9
-			
-			if grid[row][col] == UNDEFINED {
-				tokens = tokens.shuffled()
-				
-				for token in tokens {
-					let token2Int: Int = Int(Unicode.Scalar(token)!.value)
-					
-					if possible(number: token2Int, row: row, col: col) {
-						
-						grid[row][col] = token2Int
-						inputType[row][col] = InputType.system
-						
-						if full() {
-							return true
-						}
-						else if fill() {
-							return true
-						}
-					}
-				}
-				break
-			}
-		}
-		grid[row][col] = UNDEFINED
-		return false
-	}
-	
-	func randomize() -> Void {
-		var tokens: [String] = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
-		tokens = tokens.shuffled()
-		
-		for i: Int in (0 ..< 81) {
-			let row: Int = i / 9
-			let col: Int = i % 9
-			let int2Token: String = String(Character(UnicodeScalar(grid[row][col])!))
-			grid[row][col] = tokens.firstIndex(of: int2Token)! + 1
-		}
-	}
-	
-	func removeNumbers() -> Void {
-		// Make a list of all 81 cell positions and shuffle it randomly.
-		var pos: [Int] = Array(0 ..< 81)
-		pos = pos.shuffled()
-		
-		// As long as the list is not empty,
-		// take the next position from the list
-		// and remove the number from the related cell.
-		
-		while pos.count > 0 {
-			let nextpos: Int = pos.removeFirst()
-			let row: Int = nextpos / 9
-			let col: Int = nextpos % 9
-			
-			let prev: [[Int]] = grid
-			
-			grid[row][col] = UNDEFINED
-			let solutions: Int = solve()
-			
-			grid = prev
-			
-			if (solutions != 1) { continue }
-			
-			self.inputType[row][col] = InputType.user
-			grid[row][col] = UNDEFINED
-		}
 	}
 	
 	func computeTokenFrequency() -> Void {
@@ -484,7 +397,7 @@ final class Grid: ObservableObject {
 	}
 	
 	/*==========================================================================
-	Solver
+		Solver
 	==========================================================================*/
 	
 	func solve() -> Int {
