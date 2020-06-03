@@ -39,7 +39,7 @@ final class Settings: ObservableObject {
 									  forKey: "fontSize")
 		}
 	}
-
+	
 	init() {
 		highlightAreas = UserDefaults.standard.bool(forKey: "highlightAreas")
 		highlightSimilar = UserDefaults.standard.bool(forKey: "highlightSimilar")

@@ -9,18 +9,18 @@
 import SwiftUI
 
 struct StrategiesView: View {
-    @EnvironmentObject var _viewRouter: ViewRouter
+	@EnvironmentObject var _viewRouter: ViewRouter
 	
-    var body: some View {
+	var body: some View {
 		VStack(spacing: 0) {
 			GenericTopBarView(title: "main.strategies", destination: Pages.home)
 			Spacer()
 		}
-    }
+	}
 }
 
 struct StrategiesView_Previews: PreviewProvider {
-    static var previews: some View {
-        StrategiesView()
-    }
+	static var previews: some View {
+		StrategiesView()
+	}
 }

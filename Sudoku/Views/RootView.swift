@@ -12,12 +12,12 @@ import SwiftUI
 
 class ViewRouter: ObservableObject {
 	let objectWillChange = PassthroughSubject<ViewRouter, Never>()
-    
+	
 	var currentPage: Int = Pages.home {
-        didSet {
-            objectWillChange.send(self)
-        }
-    }
+		didSet {
+			objectWillChange.send(self)
+		}
+	}
 	
 	func getCurrentPage() -> Int {
 		return self.currentPage
@@ -49,7 +49,7 @@ struct RootView: View {
 						removal: AnyTransition.opacity.combined(
 							with: .move(edge: .trailing))
 						)
-					)
+				)
 			} else if viewRouter.currentlyAt(page: Pages.game) {
 				GameView()
 					.transition(.slideAndFadeIn)
@@ -73,22 +73,22 @@ struct RootView: View {
 }
 
 extension AnyTransition {
-    static var slideAndFadeIn: AnyTransition {
-        AnyTransition.asymmetric(
+	static var slideAndFadeIn: AnyTransition {
+		AnyTransition.asymmetric(
 			insertion: AnyTransition.opacity.combined(
 				with: .move(edge: .trailing)),
 			removal: AnyTransition.opacity.combined(
 				with: .move(edge: .leading)
 			)
 		)
-    }
+	}
 }
 
 extension UIView {
-    func asImage(rect: CGRect) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(bounds: rect)
-        return renderer.image { rendererContext in
-            layer.render(in: rendererContext.cgContext)
-        }
-    }
+	func asImage(rect: CGRect) -> UIImage {
+		let renderer = UIGraphicsImageRenderer(bounds: rect)
+		return renderer.image { rendererContext in
+			layer.render(in: rendererContext.cgContext)
+		}
+	}
 }

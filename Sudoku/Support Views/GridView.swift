@@ -13,7 +13,7 @@ struct GridView: View {
 	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var viewRouter: ViewRouter
 	@EnvironmentObject var pauseHolder: PauseHolder
-
+	
 	private let frameSize: CGFloat = Screen.cellWidth * 9
 	
 	var body: some View {
@@ -22,12 +22,12 @@ struct GridView: View {
 				structure
 				overlayLines
 			}
-				.disabled(self.isPaused() || grid.full())
-				.opacity(self.isPaused() || grid.full() ? 0 : 1)
+			.disabled(self.isPaused() || grid.full())
+			.opacity(self.isPaused() || grid.full() ? 0 : 1)
 		}
-			.frame(width: self.frameSize,
-				   height: self.frameSize,
-				   alignment: .center)
+		.frame(width: self.frameSize,
+			   height: self.frameSize,
+			   alignment: .center)
 	}
 	
 	private var structure: some View {
@@ -40,26 +40,26 @@ struct GridView: View {
 							col: col,
 							fontSize: self.fontSize()
 						)
-						.frame(
-							width: Screen.cellWidth,
-							height: Screen.cellWidth
+							.frame(
+								width: Screen.cellWidth,
+								height: Screen.cellWidth
 						)
-						.border(Color.black, width: 1)
-						.padding(.all, 0)
-						.background(
-							self.grid.colorAt(
-								row: row,
-								col: col
-							)
+							.border(Color.black, width: 1)
+							.padding(.all, 0)
+							.background(
+								self.grid.colorAt(
+									row: row,
+									col: col
+								)
 						)
-						.onTapGesture {
-							self.grid.objectWillChange.send()
-							self.grid.setActive(
-								row: row,
-								col: col,
-								areas: self.settings.highlightAreas,
-								similar: self.settings.highlightSimilar
-							)
+							.onTapGesture {
+								self.grid.objectWillChange.send()
+								self.grid.setActive(
+									row: row,
+									col: col,
+									areas: self.settings.highlightAreas,
+									similar: self.settings.highlightSimilar
+								)
 						}
 					}
 				}
@@ -78,14 +78,14 @@ struct GridView: View {
 					path.move(to: CGPoint(x: vpos, y: 4))
 					path.addLine(to: CGPoint(x: vpos, y: geometry.size.height - 4))
 				}
-
+				
 				for i: CGFloat in lines {
 					let hpos: CGFloat = i * factor
 					path.move(to: CGPoint(x: 4, y: hpos))
 					path.addLine(to: CGPoint(x: geometry.size.width - 4, y: hpos))
 				}
 			}
-				.stroke(lineWidth: Screen.lineThickness)
+			.stroke(lineWidth: Screen.lineThickness)
 		}
 	}
 	

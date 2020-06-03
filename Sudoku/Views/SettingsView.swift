@@ -14,10 +14,10 @@ struct SettingsView: View {
 	
 	private let incrButtonHeight: CGFloat = Screen.cellWidth / 2
 	
-    var body: some View {
+	var body: some View {
 		VStack(spacing: 0) {
 			GenericTopBarView(title: "main.settings", destination: Pages.home)
-		
+			
 			self.general
 			self.timer
 			self.fontSize
@@ -25,7 +25,7 @@ struct SettingsView: View {
 			
 			Spacer()
 		}
-    }
+	}
 	
 	var general: some View {
 		Section {
@@ -45,7 +45,7 @@ struct SettingsView: View {
 					Text("settings.twins")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 				}
-			
+				
 				Text("settings.twins.descript")
 					.font(.custom("CaviarDreams-Bold", size: 12))
 					.foregroundColor(Color.gray)
@@ -56,15 +56,15 @@ struct SettingsView: View {
 					Text("settings.used")
 						.font(.custom("CaviarDreams-Bold", size: 20))
 				}
-			
+				
 				Text("settings.used.descript")
 					.font(.custom("CaviarDreams-Bold", size: 12))
 					.foregroundColor(Color.gray)
 			}
 		}
-			.padding(.top)
-			.padding(.leading)
-			.padding(.trailing)
+		.padding(.top)
+		.padding(.leading)
+		.padding(.trailing)
 	}
 	
 	var timer: some View {
@@ -74,9 +74,9 @@ struct SettingsView: View {
 					.font(.custom("CaviarDreams-Bold", size: 20))
 			}
 		}
-			.padding(.top, 60)
-			.padding(.leading)
-			.padding(.trailing)
+		.padding(.top, 60)
+		.padding(.leading)
+		.padding(.trailing)
 	}
 	
 	var fontSize: some View {
@@ -90,7 +90,7 @@ struct SettingsView: View {
 					if self.canDecrement() {
 						self.settings.fontSize -= 1
 					}
-				},
+			},
 				label: {
 					Text("-")
 						.font(.custom("CaviarDreams-Bold", size: 20))
@@ -99,7 +99,7 @@ struct SettingsView: View {
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(5)
-				}
+			}
 			)
 			Spacer()
 			Text(String(format: "%02.0f", self.settings.fontSize))
@@ -110,7 +110,7 @@ struct SettingsView: View {
 					if self.canIncrement() {
 						self.settings.fontSize += 1
 					}
-				},
+			},
 				label: {
 					Text("+")
 						.font(.custom("CaviarDreams-Bold", size: 20))
@@ -119,12 +119,12 @@ struct SettingsView: View {
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(5)
-				}
+			}
 			)
 		}
-			.padding(.top, 60)
-			.padding(.leading)
-			.padding(.trailing)
+		.padding(.top, 60)
+		.padding(.leading)
+		.padding(.trailing)
 	}
 	
 	var eraseBoard: some View {
@@ -139,7 +139,7 @@ struct SettingsView: View {
 											  forKey: "savedBoard")
 					UserDefaults.standard.set(nil,
 											  forKey: "time")
-				},
+			},
 				label: {
 					Text("Erase")
 						.frame(width: 100,
@@ -148,14 +148,14 @@ struct SettingsView: View {
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(40)
-				}
+			}
 			)
 		}
-			.padding(.top, 60)
-			.padding(.leading)
-			.padding(.trailing)
+		.padding(.top, 60)
+		.padding(.leading)
+		.padding(.trailing)
 	}
-		
+	
 	func canIncrement() -> Bool {
 		let factor: Float = 0.9
 		let size: Float = self.settings.fontSize
@@ -172,7 +172,7 @@ struct SettingsView: View {
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
+	static var previews: some View {
+		SettingsView()
+	}
 }

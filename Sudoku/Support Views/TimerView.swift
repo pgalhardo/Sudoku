@@ -8,14 +8,13 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
 struct TimerView : View {
 	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var pauseHolder: PauseHolder
 	@EnvironmentObject var timerHolder: TimerHolder
-		
+	
 	private let labelSize: CGFloat = Screen.cellWidth / 2
 	
     var body: some View {

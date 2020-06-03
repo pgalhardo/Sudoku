@@ -11,7 +11,7 @@ import SwiftUI
 struct GenericTopBarView: View {
 	private var title: String!
 	private var destination: Int!
-
+	
 	@EnvironmentObject var viewRouter: ViewRouter
 	
 	private let frameSize: CGFloat = Screen.cellWidth / 2
@@ -32,7 +32,7 @@ struct GenericTopBarView: View {
 						withAnimation(.easeIn) {
 							self.viewRouter.setCurrentPage(page: self.destination)
 						}
-					},
+				},
 					label: {
 						Image(systemName: "arrow.left")
 							.resizable()
@@ -40,15 +40,15 @@ struct GenericTopBarView: View {
 								   height: self.frameSize)
 						Text("main.back")
 							.font(.custom("CaviarDreams-Bold", size: 15))
-
-					}
+						
+				}
 				)
 					.foregroundColor(Colors.MatteBlack)
 				Spacer()
 			}
 		}
-			.padding(.top)
-			.padding(.leading)
-			.padding(.trailing)
+		.padding(.top)
+		.padding(.leading)
+		.padding(.trailing)
 	}
 }

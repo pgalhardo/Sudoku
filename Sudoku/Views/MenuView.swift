@@ -11,24 +11,24 @@ import SwiftUI
 struct MenuView: View {
 	@State private var displayWarning: Bool = false
 	@State private var generating: Bool = false
-
+	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
 	
 	private let popupWidth: CGFloat = Screen.width * 0.65
 	private let popupHeight: CGFloat = Screen.height * 0.35
 	private let popupPadding: CGFloat = Screen.height * 0.10
-
+	
 	var body: some View {
 		ZStack {
 			VStack {
 				Spacer()
-
+				
 				Text("Sudoku")
 					.font(.custom("CaviarDreams-Bold", size: 80))
 					.foregroundColor(Colors.MatteBlack)
 					.shadow(radius: 10)
-
+				
 				Group {
 					if activeBoard() {
 						ContinueButtonView()
@@ -52,11 +52,11 @@ struct MenuView: View {
 								   page: Pages.settings)
 						.modifier(DefaultButton())
 				}
-					.opacity(self.groupOpacity())
-
+				.opacity(self.groupOpacity())
+				
 				Spacer()
 			}
-				.shadow(radius: 5)
+			.shadow(radius: 5)
 			
 			VStack {
 				Spacer()
@@ -64,21 +64,21 @@ struct MenuView: View {
 				ZStack {
 					VStack {
 						Spacer()
-
+						
 						Group {
 							Text("alert.progress.title")
 								.font(.custom("CaviarDreams-Bold", size: 15))
 								.lineLimit(nil)
 								.padding(.leading)
 								.padding(.trailing)
-
+							
 							Spacer()
 							
 							Text("alert.progress.continue")
 								.font(.custom("CaviarDreams-Bold", size: 15))
 								.padding(.leading)
 								.padding(.trailing)
-
+							
 							HStack {
 								Spacer()
 								Button(
@@ -86,15 +86,15 @@ struct MenuView: View {
 										withAnimation {
 											self.displayWarning = false
 										}
-									},
+								},
 									label: {
 										Image(systemName: "xmark.circle.fill")
 											.foregroundColor(Color.red)
 										Text("alert.progress.no")
 											.font(.custom("CaviarDreams-Bold", size: 20))
-									}
+								}
 								)
-
+								
 								Spacer()
 								Button(
 									action: {
@@ -106,26 +106,26 @@ struct MenuView: View {
 											self.generating = true
 											self.execute()
 										}
-									},
+								},
 									label: {
 										Image(systemName: "checkmark.circle.fill")
 											.foregroundColor(Color.green)
 										Text("alert.progress.yes")
 											.font(.custom("CaviarDreams-Bold", size: 20))
-									}
+								}
 								)
 								Spacer()
 							}
 						}
-							.opacity(controlsOpacity())
-							.animation(.spring())
+						.opacity(controlsOpacity())
+						.animation(.spring())
 						
 						Spacer()
 					}
-						.frame(
-							width: popupWidth,
-							height: popupHeight
-						)
+					.frame(
+						width: popupWidth,
+						height: popupHeight
+					)
 						.background(Colors.MatteBlack)
 						.foregroundColor(Color.white)
 						.cornerRadius(40)
@@ -142,7 +142,7 @@ struct MenuView: View {
 				}
 				Spacer()
 			}
-				.padding(.top, popupPadding)
+			.padding(.top, popupPadding)
 		}
 	}
 	
@@ -182,7 +182,7 @@ struct MenuView: View {
 			self.generating = false
 			self.viewRouter.setCurrentPage(page: Pages.game)
 		}
-
+		
 		// execute
 		DispatchQueue.main.asyncAfter(
 			deadline: DispatchTime.now() + 2,
@@ -196,9 +196,9 @@ struct HomeButtonView: View {
 	private let imageName: String!
 	private let imageColor: Color!
 	private let page: Int!
-
+	
 	@EnvironmentObject var viewRouter: ViewRouter
-
+	
 	init (label: String, imageName: String, imageColor: Color, page: Int) {
 		self.label = label
 		self.imageName = imageName
@@ -208,14 +208,14 @@ struct HomeButtonView: View {
 	
 	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
 	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
-
+	
 	var body: some View {
 		Button(
 			action: {
 				withAnimation {
 					self.viewRouter.setCurrentPage(page: self.page)
 				}
-			},
+		},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: self.imageName)
@@ -226,7 +226,7 @@ struct HomeButtonView: View {
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: self.labelOffset)
 				}
-			}
+		}
 		)
 	}
 }
@@ -238,7 +238,7 @@ struct ContinueButtonView: View {
 	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
 	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
 	private let frameSize: [CGFloat] = [Screen.width * 0.55, 50]
-
+	
 	var body: some View {
 		Button(
 			action: {
@@ -249,7 +249,7 @@ struct ContinueButtonView: View {
 						self.viewRouter.setCurrentPage(page: Pages.game)
 					}
 				}
-			},
+		},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: "hourglass.bottomhalf.fill")
@@ -259,7 +259,7 @@ struct ContinueButtonView: View {
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: self.labelOffset)
 				}
-			}
+		}
 		)
 			.frame(width: self.frameSize[0],
 				   height: self.frameSize[1],
@@ -275,7 +275,7 @@ struct ContinueButtonView: View {
 struct PlayButtonView: View {
 	@Binding var displayWarning: Bool
 	@Binding var generating: Bool
-
+	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
 	
@@ -297,7 +297,7 @@ struct PlayButtonView: View {
 						self.execute()
 					}
 				}
-			},
+		},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: "gamecontroller.fill")
@@ -307,14 +307,14 @@ struct PlayButtonView: View {
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: self.labelOffset)
 				}
-			}
+		}
 		)
 	}
-
+	
 	func activeBoard() -> Bool {
 		return UserDefaults.standard.string(forKey: "savedBoard") != nil
 	}
-		
+	
 	func execute() -> Void {
 		// setup async action
 		let task: DispatchWorkItem = DispatchWorkItem {
@@ -323,7 +323,7 @@ struct PlayButtonView: View {
 			self.generating = false
 			self.viewRouter.setCurrentPage(page: Pages.game)
 		}
-
+		
 		// execute
 		DispatchQueue.main.asyncAfter(
 			deadline: DispatchTime.now() + 2,
@@ -335,9 +335,9 @@ struct PlayButtonView: View {
 struct DefaultButton: ViewModifier {
 	private let buttonWidth: CGFloat = Screen.width * 0.55
 	
-    func body(content: Content) -> some View {
-        content
-            .frame(width: buttonWidth,
+	func body(content: Content) -> some View {
+		content
+			.frame(width: buttonWidth,
 				   height: 50,
 				   alignment: .leading)
 			.background(Colors.MatteBlack)
@@ -345,31 +345,31 @@ struct DefaultButton: ViewModifier {
 			.padding(.all, 7)
 			.foregroundColor(.white)
 			.shadow(radius: 20)
-    }
+	}
 }
 
 struct ActivityIndicator: View {
-
-  @State private var isAnimating: Bool = false
-
-  var body: some View {
-    GeometryReader { (geometry: GeometryProxy) in
-      ForEach(0..<5) { index in
-        Group {
-          Circle()
-            .frame(width: geometry.size.width / 5, height: geometry.size.height / 5)
-            .scaleEffect(!self.isAnimating ? 1 - CGFloat(index) / 5 : 0.2 + CGFloat(index) / 5)
-            .offset(y: geometry.size.width / 10 - geometry.size.height / 2)
-          }.frame(width: geometry.size.width, height: geometry.size.height)
-            .rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
-            .animation(Animation
-              .timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
-              .repeatForever(autoreverses: false))
-        }
-      }
-    .aspectRatio(1, contentMode: .fit)
-    .onAppear {
-        self.isAnimating = true
-    }
-  }
+	
+	@State private var isAnimating: Bool = false
+	
+	var body: some View {
+		GeometryReader { (geometry: GeometryProxy) in
+			ForEach(0 ..< 5) { index in
+				Group {
+					Circle()
+						.frame(width: geometry.size.width / 5, height: geometry.size.height / 5)
+						.scaleEffect(!self.isAnimating ? 1 - CGFloat(index) / 5 : 0.2 + CGFloat(index) / 5)
+						.offset(y: geometry.size.width / 10 - geometry.size.height / 2)
+				}.frame(width: geometry.size.width, height: geometry.size.height)
+					.rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
+					.animation(Animation
+						.timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
+						.repeatForever(autoreverses: false))
+			}
+		}
+		.aspectRatio(1, contentMode: .fit)
+		.onAppear {
+			self.isAnimating = true
+		}
+	}
 }

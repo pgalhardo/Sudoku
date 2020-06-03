@@ -24,9 +24,9 @@ struct KeyboardView: View {
 			optionsRow
 			numbersRow
 		}
-		.blur(radius: self.isPaused() || grid.full() ? 5 : 0)
-			.opacity(self.isPaused() || grid.full() ? 0.7 : 1)
-			.disabled(self.isPaused() || grid.full())
+			.blur(radius: self.blurRadius())
+			.opacity(self.opacity())
+			.disabled(self.disabled())
 			.animation(.spring())
 	}
 
@@ -145,5 +145,17 @@ struct KeyboardView: View {
 	
 	func isPaused() -> Bool {
 		return self.pauseHolder.isPaused()
+	}
+	
+	func blurRadius() -> CGFloat {
+		return self.isPaused() || self.grid.full() ? 5 : 0
+	}
+	
+	func opacity() -> Double {
+		return self.isPaused() || self.grid.full() ? 0.7 : 1
+	}
+	
+	func disabled() -> Bool {
+		return self.isPaused() || self.grid.full()
 	}
 }

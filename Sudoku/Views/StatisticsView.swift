@@ -10,17 +10,17 @@ import SwiftUI
 
 struct StatisticsView: View {
 	@EnvironmentObject var _viewRouter: ViewRouter
-		
-    var body: some View {
+	
+	var body: some View {
 		VStack(spacing: 0) {
 			GenericTopBarView(title: "main.stats", destination: Pages.home)
 			Spacer()
 		}
-    }
+	}
 }
 
 struct StatisticsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
+	static var previews: some View {
+		SettingsView()
+	}
 }
