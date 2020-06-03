@@ -8,58 +8,85 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 struct TimerView : View {
-	@State var time: Int
-	@Binding var isPaused: Bool
-
-	@EnvironmentObject var grid: Grid
-
-    private let timer = Timer.publish(every: 1,
-									  on: .main,
-									  in: .common).autoconnect()
 	
+	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var pauseHolder: PauseHolder
+	@EnvironmentObject var timerHolder: TimerHolder
+		
 	private let labelSize: CGFloat = Screen.cellWidth / 2
-
-	init(isPaused: Binding<Bool>) {
-		_isPaused = isPaused
-
-		if UserDefaults.standard.object(forKey: "time") != nil {
-			_time = State(initialValue: UserDefaults.standard.integer(forKey: "time"))
-		} else {
-			_time = State(initialValue: 0)
-		}
-	}
-
+	
     var body: some View {
 		Text(String(format: "%@%02d:%02d", arguments: [self.hours(),
 													   self.min(),
 													   self.sec()]))
 			.font(.custom("CaviarDreams-Bold", size: self.labelSize))
-			.onReceive(self.timer) { _ in
-				if !self.isPaused && !self.exit() {
-					self.time += 1
-					UserDefaults.standard.set(self.time, forKey: "time")
-				}
-            }
+			.onAppear {
+			  self.timerHolder.start()
+			}
     }
 
 	func sec() -> Int {
-		return self.time % 60
+		return self.timerHolder.count % 60
 	}
 
 	func min () -> Int {
-		return (self.time / 60) % 60
+		return (self.timerHolder.count / 60) % 60
 	}
 
 	func hours() -> String {
-		if self.time >= 3600 {
-			return String(format: "%02d:", (self.time / 3600))
+		if self.timerHolder.count >= 3600 {
+			return String(format: "%02d:", (self.timerHolder.count / 3600))
 		}
-		return String("")
+		return String()
 	}
+}
 
-	func exit() -> Bool {
-		return grid.full()
+class TimerHolder : ObservableObject {
+	private var timer : Timer!
+	
+	@Published var count = 0
+	
+	init() {
+		if UserDefaults.standard.object(forKey: "time") != nil {
+			let value: Int = UserDefaults.standard.integer(forKey: "time")
+			self.count = value
+		}
+	}
+	
+	func start() -> Void {
+		self.timer?.invalidate()
+		self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {
+			_ in
+			self.count += 1
+		}
+	}
+	
+	func stop() -> Void {
+		self.timer?.invalidate()
+		self.storeCounterValue()
+	}
+	
+	func reset() -> Void {
+		self.count = 0
+	}
+	
+	func storeCounterValue() -> Void {
+		UserDefaults.standard.set(self.count, forKey: "time")
+	}
+}
+
+class PauseHolder : ObservableObject {
+	
+	@Published var paused: Bool = false
+	
+	func toggle() -> Void {
+		self.paused.toggle()
+	}
+	
+	func isPaused() -> Bool {
+		return paused
 	}
 }

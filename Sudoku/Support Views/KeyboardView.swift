@@ -10,23 +10,23 @@ import Foundation
 import SwiftUI
 
 struct KeyboardView: View {
-	@State var task: DispatchWorkItem = DispatchWorkItem { }
+	@State private var task: DispatchWorkItem = DispatchWorkItem { }
 
-	@Binding var isPaused: Bool
 	@Binding var displayAlert: Bool
 	@Binding var alertText: String
 
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var settings: Settings
+	@EnvironmentObject var pauseHolder: PauseHolder
 	
 	var body: some View {
 		VStack {
 			optionsRow
 			numbersRow
 		}
-			.blur(radius: isPaused || grid.full() ? 5 : 0)
-			.opacity(isPaused || grid.full() ? 0.7 : 1)
-			.disabled(isPaused || grid.full())
+		.blur(radius: self.isPaused() || grid.full() ? 5 : 0)
+			.opacity(self.isPaused() || grid.full() ? 0.7 : 1)
+			.disabled(self.isPaused() || grid.full())
 			.animation(.spring())
 	}
 
@@ -141,5 +141,9 @@ struct KeyboardView: View {
 		return !self.settings.hideUsed
 				|| (self.grid.getNumberFrequency()[number - 1] < 9
 					&& self.settings.hideUsed)
+	}
+	
+	func isPaused() -> Bool {
+		return self.pauseHolder.isPaused()
 	}
 }

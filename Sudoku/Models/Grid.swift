@@ -46,7 +46,7 @@ final class Grid: ObservableObject {
 	
 	func reset() -> Void {
 		self.active = nil
-		self.errorCount = 0
+		//self.errorCount = 0
 		self.colored = [[Int]]()
 		self.numberFrequency = Array(repeating: 0, count: 9)
 		
@@ -68,6 +68,7 @@ final class Grid: ObservableObject {
 		var str: String = puzzle
 		var count: Int = 0
 		var user: Bool = false
+		var error: Bool = false
 
 		while !str.isEmpty {
 			let row: Int = count / 9
@@ -79,20 +80,27 @@ final class Grid: ObservableObject {
 				let value: Int = Int(char2String) ?? 0
 				
 				self.grid[row][col] = value
+				
 				if user == true {
 					self.inputType[row][col] = InputType.user
+				} else if error == true {
+					self.inputType[row][col] = InputType.error
 				} else {
 					self.inputType[row][col] = InputType.system
 				}
 				
 				user = false
+				error = false
 				count += 1
 				if (value > 0) {
 					numberFrequency[value - 1] += 1
 				}
 			}
+				
 			else if char == "u" {
 				user = true
+			} else if char == "e" {
+				error = true
 			}
 		}
 	}
@@ -131,6 +139,10 @@ final class Grid: ObservableObject {
 			for col: Int in (0 ..< 9) {
 				if (self.inputType[row][col] == InputType.user) {
 					str.append("u")
+				}
+				
+				else if (self.inputType[row][col] == InputType.error) {
+					str.append("e")
 				}
 				str.append(String(grid[row][col]))
 			}
@@ -381,6 +393,7 @@ final class Grid: ObservableObject {
 		//removeNumbers()
 		
 		loadFromSeed()
+		self.errorCount = 0
 		
 		computeTokenFrequency()
 	}
@@ -544,7 +557,9 @@ final class Grid: ObservableObject {
 				return count == 1
 			}
 			
-			func uniqueSquare(row: Int, col: Int, value: Int, possibles: [[[Int]]]) -> Bool {
+			func uniqueSquare(row: Int, col: Int, value: Int,
+							  possibles: [[[Int]]]) -> Bool {
+				
 				var square: [[Int]] = [[Int]]()
 				for i in (row ..< row + 3) {
 					for j in (col ..< col + 3) {

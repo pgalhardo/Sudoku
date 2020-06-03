@@ -10,20 +10,25 @@ import Foundation
 import SwiftUI
 
 struct GameView: View {
-	@State var _isPaused: Bool = false
-	@State var displayAlert: Bool = false
-	@State var alertText: String = String()
+	
+	@State private var displayAlert: Bool = false
+	@State private var alertText: String = String()
 
-	@EnvironmentObject var viewRouter: ViewRouter
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var settings: Settings
+	@EnvironmentObject var viewRouter: ViewRouter
+	@EnvironmentObject var pauseHolder: PauseHolder
+	@EnvironmentObject var timerHolder: TimerHolder
 		
 	var body: some View {
 		VStack {
-			GameTopBarView(isPaused: $_isPaused)
+			GameTopBarView()
+				.environmentObject(pauseHolder)
+				.environmentObject(timerHolder)
 
 			ZStack {
-				GridView(isPaused: $_isPaused)
+				GridView()
+					.environmentObject(pauseHolder)
 
 				VStack {
 					Text("banners.pause.title")
@@ -33,7 +38,7 @@ struct GameView: View {
 				}
 					.foregroundColor(.black)
 					.shadow(radius: 10)
-					.opacity(_isPaused ? 1 : 0)
+					.opacity(pauseHolder.isPaused() ? 1 : 0)
 					.animation(.spring())
 							
 				VStack {
@@ -93,32 +98,26 @@ struct GameView: View {
 			Spacer()
 			Text("game.errors: \(grid.getErrorCount())")
 				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 2))
-				.blur(radius: _isPaused || self.grid.full() ? 5 : 0)
+				.blur(radius: self.pauseHolder.isPaused() || self.grid.full() ? 5 : 0)
 				.animation(.spring())
 			
 			Spacer()
-			KeyboardView(isPaused: $_isPaused,
-						 displayAlert: $displayAlert,
+			KeyboardView(displayAlert: $displayAlert,
 						 alertText: $alertText)
+				.environmentObject(pauseHolder)
 			Spacer()
 		}
 	}
 }
 
 struct GameTopBarView: View {
-	private var timerView: TimerView!
-
-	@Binding var isPaused: Bool
 	
-	@EnvironmentObject var viewRouter: ViewRouter
-	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var grid: Grid
+	@EnvironmentObject var settings: Settings
+	@EnvironmentObject var viewRouter: ViewRouter
+	@EnvironmentObject var pauseHolder: PauseHolder
+	@EnvironmentObject var timerHolder: TimerHolder
 		
-	init(isPaused: Binding<Bool>) {
-		_isPaused = isPaused
-		self.timerView = TimerView(isPaused: isPaused)
-	}
-	
 	private let labelSize: CGFloat = 15.0
 	private let backButtonSize: CGFloat = Screen.cellWidth / 2
 	private let pauseButtonSize: CGFloat = Screen.cellWidth / 3
@@ -131,6 +130,7 @@ struct GameTopBarView: View {
 						withAnimation(.easeIn) {
 							UserDefaults.standard.set(self.grid.toString(),
 													  forKey: "savedBoard")
+							self.timerHolder.storeCounterValue()
 							self.viewRouter.setCurrentPage(page: Pages.home)
 						}
 					},
@@ -152,7 +152,9 @@ struct GameTopBarView: View {
 			if self.settings.enableTimer == true {
 				HStack {
 					Spacer()
-					self.timerView
+					TimerView()
+						.environmentObject(pauseHolder)
+						.environmentObject(timerHolder)
 					Spacer()
 				}
 			}
@@ -163,7 +165,13 @@ struct GameTopBarView: View {
 					Button(
 						action: {
 							withAnimation {
-								self.isPaused.toggle()
+								self.pauseHolder.toggle()
+								
+								if self.pauseHolder.isPaused() {
+									self.timerHolder.stop()
+								} else {
+									self.timerHolder.start()
+								}
 							}
 						},
 						label: {
@@ -189,6 +197,6 @@ struct GameTopBarView: View {
 	}
 
 	func pauseIconName() -> String {
-		return self.isPaused ? "play.fill" : "pause"
+		return self.pauseHolder.paused ? "play.fill" : "pause"
 	}
 }

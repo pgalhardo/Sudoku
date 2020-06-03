@@ -9,11 +9,10 @@
 import SwiftUI
 
 struct GridView: View {
-	@Binding var isPaused: Bool
-
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var viewRouter: ViewRouter
+	@EnvironmentObject var pauseHolder: PauseHolder
 
 	private let frameSize: CGFloat = Screen.cellWidth * 9
 	
@@ -23,8 +22,8 @@ struct GridView: View {
 				structure
 				overlayLines
 			}
-				.disabled(isPaused || grid.full())
-				.opacity(isPaused || grid.full() ? 0 : 1)
+				.disabled(self.isPaused() || grid.full())
+				.opacity(self.isPaused() || grid.full() ? 0 : 1)
 		}
 			.frame(width: self.frameSize,
 				   height: self.frameSize,
@@ -93,5 +92,9 @@ struct GridView: View {
 	func fontSize() -> CGFloat {
 		let size: Float = self.settings.fontSize
 		return CGFloat(size as Float)
+	}
+	
+	func isPaused() -> Bool {
+		return self.pauseHolder.isPaused()
 	}
 }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MenuView: View {
 	@State private var displayWarning: Bool = false
-	@State var generating: Bool = false
+	@State private var generating: Bool = false
 
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter

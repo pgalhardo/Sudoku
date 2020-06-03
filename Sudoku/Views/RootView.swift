@@ -23,7 +23,7 @@ class ViewRouter: ObservableObject {
 		return self.currentPage
 	}
 	
-	func setCurrentPage(page: Int) {
+	func setCurrentPage(page: Int) -> Void {
 		self.currentPage = page
 	}
 	
@@ -33,8 +33,8 @@ class ViewRouter: ObservableObject {
 }
 
 struct RootView: View {
-	private var settings: Settings = Settings()
 	private var grid: Grid = Grid()
+	private var settings: Settings = Settings()
 	
 	@EnvironmentObject var viewRouter: ViewRouter
 	
@@ -55,6 +55,8 @@ struct RootView: View {
 					.transition(.slideAndFadeIn)
 					.environmentObject(grid)
 					.environmentObject(settings)
+					.environmentObject(PauseHolder())
+					.environmentObject(TimerHolder())
 			} else if viewRouter.currentlyAt(page: Pages.statistics) {
 				StatisticsView()
 					.transition(.slideAndFadeIn)
