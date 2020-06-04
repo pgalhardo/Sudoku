@@ -16,6 +16,8 @@ final class Grid: ObservableObject {
 	private var errorCount: Int = 0
 	
 	@Published private var grid: [[Int]] = [[Int]]()
+	@Published private var solution: [[Int]] = [[Int]]()
+	
 	@Published private var color: [[Color]] = [[Color]]()
 	@Published private var inputType: [[Int]] = [[Int]]()
 	@Published private var numberFrequency: [Int] = [Int]()
@@ -42,7 +44,6 @@ final class Grid: ObservableObject {
 	
 	func reset() -> Void {
 		self.active = nil
-		//self.errorCount = 0
 		self.colored = [[Int]]()
 		self.numberFrequency = Array(repeating: 0, count: 9)
 		
@@ -408,7 +409,12 @@ final class Grid: ObservableObject {
 			solutions = 1
 		}
 		else {
+			self.solution = Array(
+				repeating: Array(repeating: UNDEFINED, count: 9),
+				count: 9
+			)
 			backtrack(prev: -1, pos: nextEmptyPos(ref: -1))
+			self.grid = self.solution
 		}
 		
 		return solutions
@@ -570,7 +576,13 @@ final class Grid: ObservableObject {
 				// Solution found. We must check if it is the only one (so far).
 				solutions += 1
 				if solutions > 1 {
+					solution = Array(repeating: Array(repeating: UNDEFINED,
+													  count: 9),
+									 count: 9)
 					return false
+				}
+				else {
+					solution = grid
 				}
 			}
 			else {

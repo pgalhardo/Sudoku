@@ -21,7 +21,7 @@ struct SettingsView: View {
 			self.general
 			self.timer
 			self.fontSize
-			self.eraseBoard
+			//self.eraseBoard
 			
 			Spacer()
 		}

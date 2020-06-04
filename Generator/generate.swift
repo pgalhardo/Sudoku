@@ -174,7 +174,6 @@ func basicTechniques() -> Void {
             
             if count == 1 {
                 grid[row][index] = value
-                // setValue(row: row, col: index, value: value)
             }
             return count == 1
         }
@@ -194,7 +193,6 @@ func basicTechniques() -> Void {
             
             if count == 1 {
                 grid[index][col] = value
-                // setValue(row: index, col: col, value: value)
             }
             return count == 1
         }
@@ -222,7 +220,6 @@ func basicTechniques() -> Void {
 				let rowOffset: Int = index / 3
 				let colOffset: Int = index % 3
                 grid[row + rowOffset][col + colOffset] = value
-                // setValue(row: row + rowOffset, col: col + colOffset, value: value)
             }
             return count == 1
         }
