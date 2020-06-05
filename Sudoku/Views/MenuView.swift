@@ -86,13 +86,13 @@ struct MenuView: View {
 										withAnimation {
 											self.displayWarning = false
 										}
-								},
+									},
 									label: {
 										Image(systemName: "xmark.circle.fill")
 											.foregroundColor(Color.red)
 										Text("alert.progress.no")
 											.font(.custom("CaviarDreams-Bold", size: 20))
-								}
+									}
 								)
 								
 								Spacer()
@@ -106,13 +106,13 @@ struct MenuView: View {
 											self.generating = true
 											self.execute()
 										}
-								},
+									},
 									label: {
 										Image(systemName: "checkmark.circle.fill")
 											.foregroundColor(Color.green)
 										Text("alert.progress.yes")
 											.font(.custom("CaviarDreams-Bold", size: 20))
-								}
+									}
 								)
 								Spacer()
 							}
@@ -175,19 +175,12 @@ struct MenuView: View {
 	}
 	
 	func execute() -> Void {
-		// setup async action
-		let task: DispatchWorkItem = DispatchWorkItem {
+		DispatchQueue.main.async {
 			self.grid.reset()
 			self.grid.generate()
 			self.generating = false
 			self.viewRouter.setCurrentPage(page: Pages.game)
 		}
-		
-		// execute
-		DispatchQueue.main.asyncAfter(
-			deadline: DispatchTime.now() + 2,
-			execute: task
-		)
 	}
 }
 
@@ -316,19 +309,12 @@ struct PlayButtonView: View {
 	}
 	
 	func execute() -> Void {
-		// setup async action
-		let task: DispatchWorkItem = DispatchWorkItem {
+		DispatchQueue.main.async {
 			self.grid.reset()
 			self.grid.generate()
 			self.generating = false
 			self.viewRouter.setCurrentPage(page: Pages.game)
 		}
-		
-		// execute
-		DispatchQueue.main.asyncAfter(
-			deadline: DispatchTime.now() + 2,
-			execute: task
-		)
 	}
 }
 
