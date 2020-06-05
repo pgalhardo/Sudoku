@@ -9,12 +9,43 @@
 import SwiftUI
 
 struct StrategiesView: View {
-	@EnvironmentObject var _viewRouter: ViewRouter
+	@EnvironmentObject var viewRouter: ViewRouter
+	
+	let attrs = [
+		NSAttributedString.Key.foregroundColor: UIColor.red,
+		NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 24)!
+	]
 	
 	var body: some View {
-		VStack(spacing: 0) {
-			GenericTopBarView(title: "main.strategies", destination: Pages.home)
-			Spacer()
+		NavigationView {
+			ScrollView {
+				VStack(spacing: 0) {
+					Text("Soon...")
+						.font(.custom("CaviarDreams-Bold", size: 15))
+					
+					Spacer()
+				}
+			}
+			.navigationBarTitle(Text("main.strategies")) // TODO custom font
+			.navigationBarItems(leading:
+				Button(
+					action: {
+						withAnimation(.easeIn) {
+							self.viewRouter.setCurrentPage(page: Pages.home)
+						}
+					},
+					label: {
+						Image(systemName: "arrow.left")
+							.resizable()
+							.frame(width: Screen.cellWidth / 2,
+								   height: Screen.cellWidth / 2)
+						Text("main.back")
+							.font(.custom("CaviarDreams-Bold", size: 15))
+						
+					}
+				)
+					.foregroundColor(Color(.label))
+			)
 		}
 	}
 }

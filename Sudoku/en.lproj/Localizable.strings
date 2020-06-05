@@ -38,7 +38,8 @@
 
 "keyboard.undo" = "Undo";
 "keyboard.delete" = "Delete";
-"keyboard.solve" = "Solve";
+"keyboard.notes" = "Notes";
+"keyboard.sugestion" = "Sugestion";
 
 "button.leave" = "Leave";
 

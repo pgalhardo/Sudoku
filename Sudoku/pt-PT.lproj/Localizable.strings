@@ -38,6 +38,7 @@
 
 "keyboard.undo" = "Desfazer";
 "keyboard.delete" = "Apagar";
-"keyboard.solve" = "Resolver";
+"keyboard.notes" = "Notas";
+"keyboard.sugestion" = "Sugestão";
 
 "button.leave" = "Sair";

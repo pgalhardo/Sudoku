@@ -21,7 +21,8 @@ struct TimerView : View {
 		Text(String(format: "%@%02d:%02d", arguments: [self.hours(),
 													   self.min(),
 													   self.sec()]))
-			.font(.custom("CaviarDreams-Bold", size: self.labelSize))
+			//.font(.custom("CaviarDreams-Bold", size: self.labelSize))
+			.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 3))
 			.onAppear {
 			  self.timerHolder.start()
 			}

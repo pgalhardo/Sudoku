@@ -26,7 +26,7 @@ struct MenuView: View {
 				
 				Text("Sudoku")
 					.font(.custom("CaviarDreams-Bold", size: 80))
-					.foregroundColor(Colors.MatteBlack)
+					.foregroundColor(Color(.label))
 					.shadow(radius: 10)
 				
 				Group {

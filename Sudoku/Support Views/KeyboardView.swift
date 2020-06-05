@@ -37,34 +37,66 @@ struct KeyboardView: View {
 			Spacer()
 			Button(
 				action: {
+					// TODO
 				},
 				label: {
 					VStack {
 						Image(systemName: "gobackward")
-							.resizable()
-							.frame(width: buttonSize,
-								   height: buttonSize)
+							.frame(width: buttonSize)
+							.foregroundColor(Color(.systemGray))
 						Text("keyboard.undo")
+							.foregroundColor(Color(.label))
 							.font(.custom("CaviarDreams-Bold",
 										  size: buttonSize))
 					}
-						.foregroundColor(Colors.MatteBlack)
 				}
 			)
 			Spacer()
 			Button(
 				action: {
-					self.execute(value: 0, alertText: "alert.default.remove")
+					self.insert(value: 0, alertText: "alert.default.remove")
 				},
 				label: {
 					VStack {
 						Image(systemName: "xmark.circle")
-							.resizable()
-							.frame(width: buttonSize,
-								   height: buttonSize)
-							.foregroundColor(Colors.EraserPink)
+							.frame(width: buttonSize)
+							.foregroundColor(Color(.systemGray))
 						Text("keyboard.delete")
-							.foregroundColor(Colors.MatteBlack)
+							.foregroundColor(Color(.label))
+							.font(.custom("CaviarDreams-Bold",
+										  size: buttonSize))
+					}
+				}
+			)
+			Spacer()
+			Button(
+				action: {
+					// TODO
+				},
+				label: {
+					VStack {
+						Image(systemName: "square.and.pencil")
+							.frame(width: buttonSize)
+							.foregroundColor(Color(.systemGray))
+						Text("keyboard.notes")
+							.foregroundColor(Color(.label))
+							.font(.custom("CaviarDreams-Bold",
+										  size: buttonSize))
+					}
+				}
+			)
+			Spacer()
+			Button(
+				action: {
+					// TODO
+				},
+				label: {
+					VStack {
+						Image(systemName: "lightbulb")
+							.frame(width: buttonSize)
+							.foregroundColor(Color(.systemGray))
+						Text("keyboard.sugestion")
+							.foregroundColor(Color(.label))
 							.font(.custom("CaviarDreams-Bold",
 										  size: buttonSize))
 					}
@@ -83,12 +115,12 @@ struct KeyboardView: View {
 					Spacer()
 					Button(
 						action: {
-							self.execute(value: number,
+							self.insert(value: number,
 										 alertText: "alert.default.overwrite")
 						},
 						label: {
 							Text("\(number)")
-								.foregroundColor(Colors.MatteBlack)
+								.foregroundColor(Color(.label))
 								.font(.custom("CaviarDreams-Bold",
 											  size: Screen.cellWidth))
 						}
@@ -101,7 +133,7 @@ struct KeyboardView: View {
 			.padding(.bottom)
 	}
 
-	func execute(value: Int, alertText: String) {
+	func insert(value: Int, alertText: String) -> Void {
 		guard let active: [Int] = self.grid.getActive()
 			else {
 				return
@@ -116,7 +148,7 @@ struct KeyboardView: View {
 		}
 	}
 
-	func displayError(alertText: String) {
+	func displayError(alertText: String) -> Void {
 		// setup delayed action
 		self.task.cancel()
 		self.task = DispatchWorkItem {

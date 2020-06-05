@@ -43,7 +43,7 @@ struct GenericTopBarView: View {
 						
 				}
 				)
-					.foregroundColor(Colors.MatteBlack)
+					.foregroundColor(Color(.label))
 				Spacer()
 			}
 		}

@@ -10,20 +10,42 @@ import SwiftUI
 
 struct SettingsView: View {
 	@EnvironmentObject var settings: Settings
-	@EnvironmentObject var _viewRouter: ViewRouter
+	@EnvironmentObject var viewRouter: ViewRouter
 	
 	private let incrButtonHeight: CGFloat = Screen.cellWidth / 2
 	
 	var body: some View {
-		VStack(spacing: 0) {
-			GenericTopBarView(title: "main.settings", destination: Pages.home)
-			
-			self.general
-			self.timer
-			self.fontSize
-			//self.eraseBoard
-			
-			Spacer()
+		NavigationView {
+			ScrollView {
+				VStack(spacing: 0) {
+					self.general
+					self.timer
+					self.fontSize
+					//self.eraseBoard
+					
+					Spacer()
+				}
+			}
+			.navigationBarTitle(Text("main.settings")) // TODO custom font
+			.navigationBarItems(leading:
+				Button(
+					action: {
+						withAnimation(.easeIn) {
+							self.viewRouter.setCurrentPage(page: Pages.home)
+						}
+					},
+					label: {
+						Image(systemName: "arrow.left")
+							.resizable()
+							.frame(width: Screen.cellWidth / 2,
+								   height: Screen.cellWidth / 2)
+						Text("main.back")
+							.font(.custom("CaviarDreams-Bold", size: 15))
+						
+					}
+				)
+					.foregroundColor(Color(.label))
+			)
 		}
 	}
 	
@@ -37,7 +59,7 @@ struct SettingsView: View {
 				
 				Text("settings.areas.descript")
 					.font(.custom("CaviarDreams-Bold", size: 12))
-					.foregroundColor(Color.gray)
+					.foregroundColor(Color(.systemGray))
 			}
 			
 			VStack(alignment: .leading) {
@@ -48,7 +70,7 @@ struct SettingsView: View {
 				
 				Text("settings.twins.descript")
 					.font(.custom("CaviarDreams-Bold", size: 12))
-					.foregroundColor(Color.gray)
+					.foregroundColor(Color(.systemGray))
 			}
 			
 			VStack(alignment: .leading) {
@@ -59,7 +81,7 @@ struct SettingsView: View {
 				
 				Text("settings.used.descript")
 					.font(.custom("CaviarDreams-Bold", size: 12))
-					.foregroundColor(Color.gray)
+					.foregroundColor(Color(.systemGray))
 			}
 		}
 		.padding(.top)
