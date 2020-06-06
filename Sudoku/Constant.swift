@@ -37,16 +37,10 @@ enum Colors {
 	static let DeepBlue:   Color = Color(red: 45 / 255,
 										 green: 75 / 255,
 										 blue: 142 / 255)
-	static let ActiveBlue: Color = Color(red: 178 / 255,
-										 green: 210 / 255,
-										 blue: 256 / 255)
-	static let LightBlue:  Color = Color(red: 218 / 255,
-										 green: 225 / 255,
-										 blue: 231 / 255)
+	static let ActiveBlue: Color = Color(UIColor(named: "ActiveBlue")!)
+	static let LightBlue:  Color = Color(UIColor(named: "LightBlue")!)
 	static let MatteBlack: Color = Color(red: 27 / 255,
 										 green: 27 / 255,
 										 blue: 27 / 255)
-	static let EraserPink: Color = Color(red: 180 / 255,
-										 green: 110 / 255,
-										 blue: 110 / 255)
+	static let Golden:     Color = Color(UIColor(named: "Golden")!)
 }

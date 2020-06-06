@@ -9,8 +9,9 @@
 import SwiftUI
 
 struct MenuView: View {
-	@State private var displayWarning: Bool = false
+	
 	@State private var generating: Bool = false
+	@State private var displayWarning: Bool = false
 	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
@@ -33,8 +34,8 @@ struct MenuView: View {
 					if activeBoard() {
 						ContinueButtonView()
 					}
-					PlayButtonView(displayWarning: $displayWarning,
-								   generating: $generating)
+					PlayButtonView(generating: $generating,
+								   displayWarning: $displayWarning)
 						.modifier(DefaultButton())
 					HomeButtonView(label: "main.stats",
 								   imageName: "chart.bar.fill",
@@ -53,7 +54,7 @@ struct MenuView: View {
 						.modifier(DefaultButton())
 				}
 				.opacity(self.groupOpacity())
-				
+								
 				Spacer()
 			}
 			.shadow(radius: 5)
@@ -89,7 +90,7 @@ struct MenuView: View {
 									},
 									label: {
 										Image(systemName: "xmark.circle.fill")
-											.foregroundColor(Color.red)
+											.foregroundColor(Color(.systemRed))
 										Text("alert.progress.no")
 											.font(.custom("CaviarDreams-Bold", size: 20))
 									}
@@ -109,7 +110,7 @@ struct MenuView: View {
 									},
 									label: {
 										Image(systemName: "checkmark.circle.fill")
-											.foregroundColor(Color.green)
+											.foregroundColor(Color(.systemGreen))
 										Text("alert.progress.yes")
 											.font(.custom("CaviarDreams-Bold", size: 20))
 									}
@@ -123,7 +124,7 @@ struct MenuView: View {
 						Spacer()
 					}
 					.frame(
-						width: popupWidth,
+						width:  popupWidth,
 						height: popupHeight
 					)
 						.background(Colors.MatteBlack)
@@ -145,7 +146,7 @@ struct MenuView: View {
 			.padding(.top, popupPadding)
 		}
 	}
-	
+		
 	func activeBoard() -> Bool {
 		return UserDefaults.standard.string(forKey: "savedBoard") != nil
 	}
@@ -185,12 +186,13 @@ struct MenuView: View {
 }
 
 struct HomeButtonView: View {
+	
+	@EnvironmentObject var viewRouter: ViewRouter
+	
+	private let page: Int!
 	private let label: String!
 	private let imageName: String!
 	private let imageColor: Color!
-	private let page: Int!
-	
-	@EnvironmentObject var viewRouter: ViewRouter
 	
 	init (label: String, imageName: String, imageColor: Color, page: Int) {
 		self.label = label
@@ -225,12 +227,13 @@ struct HomeButtonView: View {
 }
 
 struct ContinueButtonView: View {
+	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
 	
+	private let frameSize: [CGFloat] = [Screen.width * 0.55, 50]
 	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
 	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
-	private let frameSize: [CGFloat] = [Screen.width * 0.55, 50]
 	
 	var body: some View {
 		Button(
@@ -242,7 +245,7 @@ struct ContinueButtonView: View {
 						self.viewRouter.setCurrentPage(page: Pages.game)
 					}
 				}
-		},
+			},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: "hourglass.bottomhalf.fill")
@@ -252,22 +255,23 @@ struct ContinueButtonView: View {
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: self.labelOffset)
 				}
-		}
+			}
 		)
 			.frame(width: self.frameSize[0],
 				   height: self.frameSize[1],
 				   alignment: .leading)
 			.background(Colors.LightBlue)
+			.foregroundColor(Color(.label))
 			.cornerRadius(40)
 			.padding(.all, 7)
-			.foregroundColor(Colors.MatteBlack)
 			.shadow(radius: 20)
 	}
 }
 
 struct PlayButtonView: View {
-	@Binding var displayWarning: Bool
+	
 	@Binding var generating: Bool
+	@Binding var displayWarning: Bool
 	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
@@ -290,7 +294,7 @@ struct PlayButtonView: View {
 						self.execute()
 					}
 				}
-		},
+			},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: "gamecontroller.fill")
@@ -300,7 +304,7 @@ struct PlayButtonView: View {
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: self.labelOffset)
 				}
-		}
+			}
 		)
 	}
 	

@@ -9,19 +9,19 @@
 import SwiftUI
 
 struct StatisticsView: View {
+	
 	@EnvironmentObject var viewRouter: ViewRouter
 	
 	var body: some View {
 		NavigationView {
 			ScrollView {
 				VStack(spacing: 0) {
+					Spacer()
 					Text("Soon...")
 						.font(.custom("CaviarDreams-Bold", size: 15))
-					
-					Spacer()
 				}
 			}
-			.navigationBarTitle(Text("main.stats")) // TODO custom font
+			.navigationBarTitle(Text("main.stats"))
 			.navigationBarItems(leading:
 				Button(
 					action: {

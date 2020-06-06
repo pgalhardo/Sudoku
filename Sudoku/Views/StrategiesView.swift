@@ -9,12 +9,8 @@
 import SwiftUI
 
 struct StrategiesView: View {
-	@EnvironmentObject var viewRouter: ViewRouter
 	
-	let attrs = [
-		NSAttributedString.Key.foregroundColor: UIColor.red,
-		NSAttributedString.Key.font: UIFont(name: "Georgia-Bold", size: 24)!
-	]
+	@EnvironmentObject var viewRouter: ViewRouter
 	
 	var body: some View {
 		NavigationView {
@@ -26,7 +22,7 @@ struct StrategiesView: View {
 					Spacer()
 				}
 			}
-			.navigationBarTitle(Text("main.strategies")) // TODO custom font
+			.navigationBarTitle(Text("main.strategies"))
 			.navigationBarItems(leading:
 				Button(
 					action: {

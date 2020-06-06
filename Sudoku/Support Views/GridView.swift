@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct GridView: View {
+	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var viewRouter: ViewRouter
@@ -86,6 +87,7 @@ struct GridView: View {
 				}
 			}
 			.stroke(lineWidth: Screen.lineThickness)
+			.foregroundColor(.black)
 		}
 	}
 	

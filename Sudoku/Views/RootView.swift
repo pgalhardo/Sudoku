@@ -33,10 +33,11 @@ class ViewRouter: ObservableObject {
 }
 
 struct RootView: View {
-	private var grid: Grid = Grid()
-	private var settings: Settings = Settings()
 	
 	@EnvironmentObject var viewRouter: ViewRouter
+	
+	private var grid: Grid = Grid()
+	private var settings: Settings = Settings()
 	
 	init() {
 		// Set custom font for navigationBarTitle in SwiftUI

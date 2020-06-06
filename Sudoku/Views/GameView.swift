@@ -149,7 +149,7 @@ struct GameView: View {
 					.background(Colors.LightBlue)
 					.cornerRadius(20)
 					.overlay(RoundedRectangle(cornerRadius: 20)
-						.stroke(Colors.MatteBlack, lineWidth: 2))
+					.stroke(Color(.systemGray), lineWidth: 2))
 					.shadow(radius: 10)
 					.blur(radius: displayAlert ? 0 : 50)
 					.opacity(displayAlert ? 1 : 0)
@@ -159,11 +159,8 @@ struct GameView: View {
 				}
 			}
 			
-			
-			
 			Spacer()
-			KeyboardView(displayAlert: $displayAlert,
-						 alertText: $alertText)
+			KeyboardView(alertText: $alertText, displayAlert: $displayAlert)
 				.environmentObject(pauseHolder)
 			Spacer()
 		}

@@ -10,14 +10,15 @@ import Foundation
 import SwiftUI
 
 struct KeyboardView: View {
-	@State private var task: DispatchWorkItem = DispatchWorkItem { }
-
-	@Binding var displayAlert: Bool
+	
 	@Binding var alertText: String
+	@Binding var displayAlert: Bool
 
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var pauseHolder: PauseHolder
+	
+	@State private var task: DispatchWorkItem = DispatchWorkItem { }
 	
 	var body: some View {
 		VStack {
@@ -35,6 +36,8 @@ struct KeyboardView: View {
 	var optionsRow: some View {
 		HStack {
 			Spacer()
+			
+			// Undo Button
 			Button(
 				action: {
 					// TODO
@@ -43,7 +46,8 @@ struct KeyboardView: View {
 					VStack {
 						Image(systemName: "gobackward")
 							.frame(width: buttonSize)
-							.foregroundColor(Color(.systemGray))
+							//.foregroundColor(Color(.systemGray))
+							.foregroundColor(Colors.Golden)
 						Text("keyboard.undo")
 							.foregroundColor(Color(.label))
 							.font(.custom("CaviarDreams-Bold",
@@ -52,6 +56,8 @@ struct KeyboardView: View {
 				}
 			)
 			Spacer()
+			
+			// Delete Button
 			Button(
 				action: {
 					self.insert(value: 0, alertText: "alert.default.remove")
@@ -60,7 +66,8 @@ struct KeyboardView: View {
 					VStack {
 						Image(systemName: "xmark.circle")
 							.frame(width: buttonSize)
-							.foregroundColor(Color(.systemGray))
+							//.foregroundColor(Color(.systemGray))
+							.foregroundColor(Colors.Golden)
 						Text("keyboard.delete")
 							.foregroundColor(Color(.label))
 							.font(.custom("CaviarDreams-Bold",
@@ -69,6 +76,8 @@ struct KeyboardView: View {
 				}
 			)
 			Spacer()
+			
+			// Notes Button
 			Button(
 				action: {
 					// TODO
@@ -77,7 +86,8 @@ struct KeyboardView: View {
 					VStack {
 						Image(systemName: "square.and.pencil")
 							.frame(width: buttonSize)
-							.foregroundColor(Color(.systemGray))
+							.foregroundColor(Colors.Golden)
+							//.foregroundColor(Color(.systemGray))
 						Text("keyboard.notes")
 							.foregroundColor(Color(.label))
 							.font(.custom("CaviarDreams-Bold",
@@ -86,6 +96,8 @@ struct KeyboardView: View {
 				}
 			)
 			Spacer()
+			
+			// Sugestion Button
 			Button(
 				action: {
 					// TODO
@@ -94,7 +106,8 @@ struct KeyboardView: View {
 					VStack {
 						Image(systemName: "lightbulb")
 							.frame(width: buttonSize)
-							.foregroundColor(Color(.systemGray))
+							.foregroundColor(Colors.Golden)
+							//.foregroundColor(Color(.systemGray))
 						Text("keyboard.sugestion")
 							.foregroundColor(Color(.label))
 							.font(.custom("CaviarDreams-Bold",

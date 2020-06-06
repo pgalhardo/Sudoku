@@ -10,10 +10,6 @@ import Foundation
 import SwiftUI
 
 final class Grid: ObservableObject {
-	private var active: [Int]?
-	private var colored: [[Int]] = [[Int]]()
-	private var solutions: Int = 0
-	private var errorCount: Int = 0
 	
 	@Published private var grid: [[Int]] = [[Int]]()
 	@Published private var solution: [[Int]] = [[Int]]()
@@ -21,6 +17,11 @@ final class Grid: ObservableObject {
 	@Published private var color: [[Color]] = [[Color]]()
 	@Published private var inputType: [[Int]] = [[Int]]()
 	@Published private var numberFrequency: [Int] = [Int]()
+	
+	private var active: [Int]?
+	private var colored: [[Int]] = [[Int]]()
+	private var solutions: Int = 0
+	private var errorCount: Int = 0
 	
 	init() {
 		self.grid = Array(
@@ -51,8 +52,9 @@ final class Grid: ObservableObject {
 			repeating: Array(repeating: UNDEFINED, count: 9),
 			count: 9
 		)
+		let defaultGridColor: Color = Color(UIColor(named: "GridBackground")!)
 		self.color = Array(
-			repeating: Array(repeating: Color.white, count: 9),
+			repeating: Array(repeating: defaultGridColor, count: 9),
 			count: 9
 		)
 		self.inputType = Array(
@@ -62,10 +64,10 @@ final class Grid: ObservableObject {
 	}
 	
 	func load(puzzle: String) -> Void {
-		var str: String = puzzle
 		var count: Int = 0
 		var user: Bool = false
 		var error: Bool = false
+		var str: String = puzzle
 		
 		while !str.isEmpty {
 			let row: Int = count / 9
@@ -239,8 +241,7 @@ final class Grid: ObservableObject {
 		
 		if previous == active {
 			active = nil
-		}
-		else {
+		} else {
 			toggleColor(cell: active)
 			
 			if areas {
@@ -259,12 +260,13 @@ final class Grid: ObservableObject {
 		let row: Int = cell![0]
 		let col: Int = cell![1]
 		
-		if color[row][col] == Color.white {
+		let defaultGridColor: Color = Color(UIColor(named: "GridBackground")!)
+		
+		if color[row][col] == defaultGridColor {
 			color[row][col] = Colors.ActiveBlue
 			colored.append([row, col])
-		}
-		else {
-			color[row][col] = Color.white
+		} else {
+			color[row][col] = defaultGridColor
 		}
 	}
 	
@@ -362,17 +364,18 @@ final class Grid: ObservableObject {
 			return Text("\(value)")
 				.font(.custom("CaviarDreams-Bold",
 							  size: fontSize))
-				.foregroundColor(Colors.MatteBlack)
+				.foregroundColor(Color(.label))
 		} else if type == InputType.user {
 			return Text("\(value)")
 				.font(.custom("CaviarDreams-Bold",
 							  size: fontSize))
-				.foregroundColor(Colors.DeepBlue)
+				//.foregroundColor(Colors.DeepBlue)
+				.foregroundColor(Colors.Golden)
 		}
 		return Text("\(value)")
 			.font(.custom("CaviarDreams-Bold",
 						  size: fontSize))
-			.foregroundColor(Color.red)
+			.foregroundColor(Color(.systemPink))
 	}
 	
 	/*==========================================================================

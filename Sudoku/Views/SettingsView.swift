@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+	
 	@EnvironmentObject var settings: Settings
 	@EnvironmentObject var viewRouter: ViewRouter
 	
@@ -26,7 +27,7 @@ struct SettingsView: View {
 					Spacer()
 				}
 			}
-			.navigationBarTitle(Text("main.settings")) // TODO custom font
+			.navigationBarTitle(Text("main.settings"))
 			.navigationBarItems(leading:
 				Button(
 					action: {
@@ -112,7 +113,7 @@ struct SettingsView: View {
 					if self.canDecrement() {
 						self.settings.fontSize -= 1
 					}
-			},
+				},
 				label: {
 					Text("-")
 						.font(.custom("CaviarDreams-Bold", size: 20))
@@ -121,7 +122,7 @@ struct SettingsView: View {
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(5)
-			}
+				}
 			)
 			Spacer()
 			Text(String(format: "%02.0f", self.settings.fontSize))
@@ -132,7 +133,7 @@ struct SettingsView: View {
 					if self.canIncrement() {
 						self.settings.fontSize += 1
 					}
-			},
+				},
 				label: {
 					Text("+")
 						.font(.custom("CaviarDreams-Bold", size: 20))
@@ -141,7 +142,7 @@ struct SettingsView: View {
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(5)
-			}
+				}
 			)
 		}
 		.padding(.top, 60)
@@ -161,7 +162,7 @@ struct SettingsView: View {
 											  forKey: "savedBoard")
 					UserDefaults.standard.set(nil,
 											  forKey: "time")
-			},
+				},
 				label: {
 					Text("Erase")
 						.frame(width: 100,
@@ -170,7 +171,7 @@ struct SettingsView: View {
 						.background(Colors.MatteBlack)
 						.foregroundColor(.white)
 						.cornerRadius(40)
-			}
+				}
 			)
 		}
 		.padding(.top, 60)
