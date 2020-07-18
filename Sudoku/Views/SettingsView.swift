@@ -16,40 +16,21 @@ struct SettingsView: View {
 	private let incrButtonHeight: CGFloat = Screen.cellWidth / 2
 	
 	var body: some View {
-		NavigationView {
-			ScrollView {
-				VStack(spacing: 0) {
-					self.general
-					self.timer
-					self.fontSize
-					//self.eraseBoard
-					
-					Spacer()
-				}
+		ScrollView {
+			VStack(spacing: 0) {
+				GenericTopBarView(title: "main.settings",
+								  destination: Pages.home)
+				
+				self.general
+				self.timer
+				self.fontSize
+				self.eraseBoard
+				
+				Spacer()
 			}
-			.navigationBarTitle(Text("main.settings"))
-			.navigationBarItems(leading:
-				Button(
-					action: {
-						withAnimation(.easeIn) {
-							self.viewRouter.setCurrentPage(page: Pages.home)
-						}
-					},
-					label: {
-						Image(systemName: "arrow.left")
-							.resizable()
-							.frame(width: Screen.cellWidth / 2,
-								   height: Screen.cellWidth / 2)
-						Text("main.back")
-							.font(.custom("CaviarDreams-Bold", size: 15))
-						
-					}
-				)
-					.foregroundColor(Color(.label))
-			)
 		}
 	}
-	
+		
 	var general: some View {
 		Section {
 			VStack(alignment: .leading) {
@@ -117,17 +98,20 @@ struct SettingsView: View {
 				label: {
 					Text("-")
 						.font(.custom("CaviarDreams-Bold", size: 20))
-						.frame(width: Screen.cellWidth,
-							   height: self.incrButtonHeight)
-						.background(Colors.MatteBlack)
-						.foregroundColor(.white)
-						.cornerRadius(5)
 				}
 			)
-			Spacer()
+			.frame(width: 40,
+				   height: 40)
+			.background(Colors.MatteBlack)
+			.cornerRadius(40)
+			.padding(.all, 7)
+			.foregroundColor(.white)
+			.shadow(radius: 20)
+			
 			Text(String(format: "%02.0f", self.settings.fontSize))
 				.font(.custom("CaviarDreams-Bold", size: 20))
-			Spacer()
+				.padding(.trailing)
+				.padding(.leading)
 			Button(
 				action: {
 					if self.canIncrement() {
@@ -137,13 +121,15 @@ struct SettingsView: View {
 				label: {
 					Text("+")
 						.font(.custom("CaviarDreams-Bold", size: 20))
-						.frame(width: Screen.cellWidth,
-							   height: self.incrButtonHeight)
-						.background(Colors.MatteBlack)
-						.foregroundColor(.white)
-						.cornerRadius(5)
 				}
 			)
+			.frame(width: 40,
+				   height: 40)
+			.background(Colors.MatteBlack)
+			.cornerRadius(40)
+			.padding(.all, 7)
+			.foregroundColor(.white)
+			.shadow(radius: 20)
 		}
 		.padding(.top, 60)
 		.padding(.leading)
@@ -173,6 +159,7 @@ struct SettingsView: View {
 						.cornerRadius(40)
 				}
 			)
+			.shadow(radius: 20)
 		}
 		.padding(.top, 60)
 		.padding(.leading)

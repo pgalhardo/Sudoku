@@ -22,6 +22,7 @@
 		684849DC248043420067E21B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 684849DE248043420067E21B /* Localizable.strings */; };
 		684EC5F7236A4FFF009EE48C /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EC5F6236A4FFF009EE48C /* KeyboardView.swift */; };
 		684EC5F9236A5E89009EE48C /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684EC5F8236A5E89009EE48C /* TimerView.swift */; };
+		6868C88B248C1C700024CDFF /* GenericTopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6868C88A248C1C700024CDFF /* GenericTopBarView.swift */; };
 		68908C9B236E6B6F00233C69 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68908C9A236E6B6F00233C69 /* StatisticsView.swift */; };
 		68908C9F236E735E00233C69 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68908C9E236E735E00233C69 /* Settings.swift */; };
 		68AED1AA236FCF3F00490E6D /* StrategiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AED1A9236FCF3F00490E6D /* StrategiesView.swift */; };
@@ -50,6 +51,7 @@
 		684849E1248045490067E21B /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		684EC5F6236A4FFF009EE48C /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		684EC5F8236A5E89009EE48C /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		6868C88A248C1C700024CDFF /* GenericTopBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericTopBarView.swift; sourceTree = "<group>"; };
 		68908C9A236E6B6F00233C69 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		68908C9E236E735E00233C69 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		68AED1A9236FCF3F00490E6D /* StrategiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrategiesView.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 		684EC5F5236A4FE4009EE48C /* Support Views */ = {
 			isa = PBXGroup;
 			children = (
+				6868C88A248C1C700024CDFF /* GenericTopBarView.swift */,
 				681A72CE23662961002B9053 /* GridView.swift */,
 				684EC5F6236A4FFF009EE48C /* KeyboardView.swift */,
 				684EC5F8236A5E89009EE48C /* TimerView.swift */,
@@ -182,7 +185,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1110;
-				LastUpgradeCheck = 1110;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Pedro Galhardo";
 				TargetAttributes = {
 					681A72B623661BB7002B9053 = {
@@ -232,6 +235,7 @@
 			files = (
 				681A72BB23661BB7002B9053 /* AppDelegate.swift in Sources */,
 				681A72CF23662961002B9053 /* GridView.swift in Sources */,
+				6868C88B248C1C700024CDFF /* GenericTopBarView.swift in Sources */,
 				681A72BD23661BB7002B9053 /* SceneDelegate.swift in Sources */,
 				68908C9B236E6B6F00233C69 /* StatisticsView.swift in Sources */,
 				684EC5F9236A5E89009EE48C /* TimerView.swift in Sources */,
@@ -298,6 +302,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -360,6 +365,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -407,7 +413,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pedro.Sudoku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -431,7 +437,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pedro.Sudoku;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

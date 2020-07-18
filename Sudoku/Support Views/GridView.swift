@@ -30,7 +30,7 @@ struct GridView: View {
 			   height: self.frameSize,
 			   alignment: .center)
 	}
-	
+
 	private var structure: some View {
 		VStack(spacing: -1) {
 			ForEach(0 ..< 9) { row in
@@ -42,8 +42,8 @@ struct GridView: View {
 							fontSize: self.fontSize()
 						)
 							.frame(
-								width: Screen.cellWidth,
-								height: Screen.cellWidth
+								width: min(Screen.cellWidth, 45),
+								height: min(Screen.cellWidth, 45)
 						)
 							.border(Color.black, width: 1)
 							.padding(.all, 0)

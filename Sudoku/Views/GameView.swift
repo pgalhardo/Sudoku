@@ -25,12 +25,10 @@ struct GameView: View {
 	private let pauseButtonSize: CGFloat = Screen.cellWidth / 3
 	
 	var body: some View {
-		NavigationView {
+		VStack(spacing: 0) {
+			self.topbar
 			self.screen
-				.navigationBarTitle("", displayMode: .inline)
-				.navigationBarItems(leading: self.backButton,
-									trailing: self.pauseButton)
-        }
+		}
 	}
 	
 	private var backButton: some View {
@@ -164,6 +162,30 @@ struct GameView: View {
 				.environmentObject(pauseHolder)
 			Spacer()
 		}
+	}
+	
+	private var topbar: some View {
+		HStack {
+			Button(
+				action: {
+					withAnimation(.easeIn) {
+						self.viewRouter.setCurrentPage(page: 0)
+					}
+			},
+				label: {
+					Image(systemName: "arrow.left")
+					Text("main.back")
+						.font(.custom("CaviarDreams-Bold", size: 15))
+					
+				}
+			)
+				.foregroundColor(Color(.label))
+			Spacer()
+			self.pauseButton
+		}
+		.padding(.top)
+		.padding(.leading)
+		.padding(.trailing)
 	}
 	
 	private var infoBar: some View {

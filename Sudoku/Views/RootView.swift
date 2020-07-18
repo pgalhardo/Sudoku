@@ -39,17 +39,6 @@ struct RootView: View {
 	private var grid: Grid = Grid()
 	private var settings: Settings = Settings()
 	
-	init() {
-		// Set custom font for navigationBarTitle in SwiftUI
-		UINavigationBar.appearance().titleTextAttributes = [
-			.font : UIFont(name: "CaviarDreams-Bold", size: 20)!
-		]
-		
-        UINavigationBar.appearance().largeTitleTextAttributes = [
-			.font : UIFont(name: "CaviarDreams-Bold", size: 40)!
-		]
-    }
-	
 	var body: some View {
 		VStack {
 			if viewRouter.currentlyAt(page: Pages.home) {

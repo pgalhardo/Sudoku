@@ -22,42 +22,60 @@ struct MenuView: View {
 	
 	var body: some View {
 		ZStack {
-			VStack {
-				Spacer()
-				
-				Text("Sudoku")
-					.font(.custom("CaviarDreams-Bold", size: 80))
-					.foregroundColor(Color(.label))
-					.shadow(radius: 10)
-				
-				Group {
-					if activeBoard() {
-						ContinueButtonView()
+			GeometryReader { geometry in
+				if geometry.size.width < geometry.size.height {
+					HStack {
+						Spacer()
+						
+						VStack {
+							Spacer()
+							
+							Text("Sudoku")
+								.font(.custom("CaviarDreams-Bold", size: 80))
+								.foregroundColor(Color(.label))
+								.shadow(radius: 10)
+							
+							if self.activeBoard() {
+								ContinueButtonView(width: geometry.size.width)
+							}
+							self.buttons(width: geometry.size.width)
+											
+							Spacer()
+						}
+						.shadow(radius: 5)
+						
+						Spacer()
 					}
-					PlayButtonView(generating: $generating,
-								   displayWarning: $displayWarning)
-						.modifier(DefaultButton())
-					HomeButtonView(label: "main.stats",
-								   imageName: "chart.bar.fill",
-								   imageColor: Color.white,
-								   page: Pages.statistics)
-						.modifier(DefaultButton())
-					HomeButtonView(label: "main.strategies",
-								   imageName: "lightbulb.fill",
-								   imageColor: Color.white,
-								   page: Pages.strategies)
-						.modifier(DefaultButton())
-					HomeButtonView(label: "main.settings",
-								   imageName: "gear",
-								   imageColor: Color.white,
-								   page: Pages.settings)
-						.modifier(DefaultButton())
-				}
-				.opacity(self.groupOpacity())
+				} else {
+					VStack {
+						Spacer()
+						
+						HStack {
+							Spacer()
+							
+							VStack {
+								Text("Sudoku")
+									.font(.custom("CaviarDreams-Bold", size: 80))
+									.foregroundColor(Color(.label))
+									.shadow(radius: 10)
 								
-				Spacer()
+								if self.activeBoard() {
+									ContinueButtonView(width: geometry.size.width)
+								}
+							}
+							
+							Spacer()
+							
+							self.buttons(width: geometry.size.width)
+											
+							Spacer()
+						}
+						.shadow(radius: 5)
+						
+						Spacer()
+					}
+				}
 			}
-			.shadow(radius: 5)
 			
 			VStack {
 				Spacer()
@@ -146,6 +164,36 @@ struct MenuView: View {
 			.padding(.top, popupPadding)
 		}
 	}
+	
+	func buttons(width: CGFloat) -> some View {
+		VStack {
+			Group {
+				PlayButtonView(width: width,
+							   generating: self.$generating,
+							   displayWarning: self.$displayWarning)
+					.modifier(DefaultButton(width: width))
+				HomeButtonView(label: "main.stats",
+							   imageName: "chart.bar.fill",
+							   imageColor: Color.white,
+							   page: Pages.statistics,
+							   width: width)
+					.modifier(DefaultButton(width: width))
+				HomeButtonView(label: "main.strategies",
+							   imageName: "lightbulb.fill",
+							   imageColor: Color.white,
+							   page: Pages.strategies,
+							   width: width)
+					.modifier(DefaultButton(width: width))
+				HomeButtonView(label: "main.settings",
+							   imageName: "gear",
+							   imageColor: Color.white,
+							   page: Pages.settings,
+							   width: width)
+					.modifier(DefaultButton(width: width))
+			}
+			.opacity(self.groupOpacity())
+		}
+	}
 		
 	func activeBoard() -> Bool {
 		return UserDefaults.standard.string(forKey: "savedBoard") != nil
@@ -193,16 +241,20 @@ struct HomeButtonView: View {
 	private let label: String!
 	private let imageName: String!
 	private let imageColor: Color!
+	private let buttonWidth: CGFloat!
+	private let labelOffset: CGFloat!
+	private let iconPosition: [CGFloat]!
 	
-	init (label: String, imageName: String, imageColor: Color, page: Int) {
+	init (label: String, imageName: String, imageColor: Color, page: Int, width: CGFloat) {
 		self.label = label
 		self.imageName = imageName
 		self.imageColor = imageColor
 		self.page = page
+		
+		self.buttonWidth = min(width * 0.55, 380.0)
+		self.labelOffset = self.buttonWidth * 0.35
+		self.iconPosition = [self.buttonWidth * 0.2, 25]
 	}
-	
-	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
-	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
 	
 	var body: some View {
 		Button(
@@ -210,7 +262,7 @@ struct HomeButtonView: View {
 				withAnimation {
 					self.viewRouter.setCurrentPage(page: self.page)
 				}
-		},
+			},
 			label: {
 				ZStack(alignment: .leading) {
 					Image(systemName: self.imageName)
@@ -221,7 +273,7 @@ struct HomeButtonView: View {
 						.font(.custom("CaviarDreams-Bold", size: 20))
 						.offset(x: self.labelOffset)
 				}
-		}
+			}
 		)
 	}
 }
@@ -231,9 +283,17 @@ struct ContinueButtonView: View {
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
 	
-	private let frameSize: [CGFloat] = [Screen.width * 0.55, 50]
-	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
-	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
+	private var buttonWidth: CGFloat
+	private var frameSize: [CGFloat]
+	private var labelOffset: CGFloat
+	private var iconPosition: [CGFloat]
+	
+	init(width: CGFloat) {
+		self.buttonWidth = min(width * 0.55, 380.0)
+		self.frameSize = [self.buttonWidth, 50]
+		self.labelOffset = self.buttonWidth * 0.35
+		self.iconPosition = [self.buttonWidth * 0.2, 25]
+	}
 	
 	var body: some View {
 		Button(
@@ -276,8 +336,19 @@ struct PlayButtonView: View {
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
 	
-	private let labelOffset: CGFloat = Screen.width * 0.55 * 0.35
-	private let iconPosition: [CGFloat] = [Screen.width * 0.55 * 0.2, 25]
+	private var buttonWidth: CGFloat
+	private var labelOffset: CGFloat
+	private var iconPosition: [CGFloat]
+	
+	init(width: CGFloat,
+		 generating: Binding<Bool>, displayWarning: Binding<Bool>) {
+		
+		self._generating = generating
+		self._displayWarning = displayWarning
+		self.buttonWidth = min(width * 0.55, 380.0)
+		self.labelOffset = self.buttonWidth * 0.35
+		self.iconPosition = [self.buttonWidth * 0.2, 25]
+	}
 	
 	var body: some View {
 		Button(
@@ -323,7 +394,11 @@ struct PlayButtonView: View {
 }
 
 struct DefaultButton: ViewModifier {
-	private let buttonWidth: CGFloat = Screen.width * 0.55
+	private var buttonWidth: CGFloat
+	
+	init(width: CGFloat) {
+		self.buttonWidth = min(width * 0.55, 380.0)
+	}
 	
 	func body(content: Content) -> some View {
 		content
@@ -347,14 +422,17 @@ struct ActivityIndicator: View {
 			ForEach(0 ..< 5) { index in
 				Group {
 					Circle()
-						.frame(width: geometry.size.width / 5, height: geometry.size.height / 5)
-						.scaleEffect(!self.isAnimating ? 1 - CGFloat(index) / 5 : 0.2 + CGFloat(index) / 5)
-						.offset(y: geometry.size.width / 10 - geometry.size.height / 2)
-				}.frame(width: geometry.size.width, height: geometry.size.height)
-					.rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
-					.animation(Animation
-						.timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
-						.repeatForever(autoreverses: false))
+						.frame(width: geometry.size.width / 5,
+							   height: geometry.size.height / 5)
+						.scaleEffect(self.scaleEffect(index: index))
+						.offset(y: self.offset(geometry: geometry))
+				}
+				.frame(width: geometry.size.width, height: geometry.size.height)
+				.rotationEffect(self.rotation())
+				.animation(Animation
+					.timingCurve(0.5, 0.15 + Double(index) / 5, 0.25, 1, duration: 1.5)
+					.repeatForever(autoreverses: false)
+				)
 			}
 		}
 		.aspectRatio(1, contentMode: .fit)
