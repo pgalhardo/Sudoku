@@ -31,54 +31,6 @@ struct GameView: View {
 		}
 	}
 	
-	private var backButton: some View {
-		Button(
-			action: {
-				withAnimation(.easeIn) {
-					UserDefaults.standard.set(self.grid.toString(),
-											  forKey: "savedBoard")
-					self.timerHolder.storeCounterValue()
-					self.viewRouter.setCurrentPage(page: Pages.home)
-				}
-			},
-			label: {
-				Image(systemName: "arrow.left")
-					.resizable()
-					.frame(width: backButtonSize,
-						   height: backButtonSize)
-				Text("main.back")
-					.font(.custom("CaviarDreams-Bold", size: labelSize))
-			}
-		)
-			.foregroundColor(Color(.label))
-	}
-		
-	@ViewBuilder
-	private var pauseButton: some View {
-		if self.settings.enableTimer == true {
-			Button(
-				action: {
-					withAnimation {
-						self.pauseHolder.toggle()
-						
-						if self.pauseHolder.isPaused() {
-							self.timerHolder.stop()
-						} else {
-							self.timerHolder.start()
-						}
-					}
-				},
-				label: {
-					Image(systemName: self.pauseIconName())
-						.resizable()
-						.frame(width: self.pauseButtonSize,
-							   height: self.pauseButtonSize)
-				}
-			)
-				.foregroundColor(Color(.label))
-		}
-	}
-	
 	@ViewBuilder
 	private var screen: some View {
 		VStack(spacing: 0) {
@@ -164,30 +116,6 @@ struct GameView: View {
 		}
 	}
 	
-	private var topbar: some View {
-		HStack {
-			Button(
-				action: {
-					withAnimation(.easeIn) {
-						self.viewRouter.setCurrentPage(page: 0)
-					}
-			},
-				label: {
-					Image(systemName: "arrow.left")
-					Text("main.back")
-						.font(.custom("CaviarDreams-Bold", size: 15))
-					
-				}
-			)
-				.foregroundColor(Color(.label))
-			Spacer()
-			self.pauseButton
-		}
-		.padding(.top)
-		.padding(.leading)
-		.padding(.trailing)
-	}
-	
 	private var infoBar: some View {
 		HStack {
 			Text("game.errors: \(grid.getErrorCount())")
@@ -205,6 +133,62 @@ struct GameView: View {
 		.animation(.spring())
 	}
 	
+	private var topbar: some View {
+		HStack {
+			self.backButton
+			Spacer()
+			self.pauseButton
+		}
+		.padding(.top)
+		.padding(.leading)
+		.padding(.trailing)
+	}
+	
+	private var backButton: some View {
+		Button(
+			action: {
+				withAnimation(.easeIn) {
+					UserDefaults.standard.set(self.grid.toString(),
+											  forKey: "savedBoard")
+					self.timerHolder.storeCounterValue()
+					self.viewRouter.setCurrentPage(page: Pages.home)
+				}
+			},
+			label: {
+				Image(systemName: "arrow.left")
+				Text("main.back")
+					.font(.custom("CaviarDreams-Bold", size: labelSize))
+			}
+		)
+			.foregroundColor(Color(.label))
+	}
+		
+	@ViewBuilder
+	private var pauseButton: some View {
+		if self.settings.enableTimer == true {
+			Button(
+				action: {
+					withAnimation {
+						self.pauseHolder.toggle()
+						
+						if self.pauseHolder.isPaused() {
+							self.timerHolder.stop()
+						} else {
+							self.timerHolder.start()
+						}
+					}
+				},
+				label: {
+					Image(systemName: self.pauseIconName())
+						.resizable()
+						.frame(width: self.pauseButtonSize,
+							   height: self.pauseButtonSize)
+				}
+			)
+				.foregroundColor(Color(.label))
+		}
+	}
+		
 	func opacity() -> Double {
 		return grid.full() ? 0.0 : 1.0
 	}
