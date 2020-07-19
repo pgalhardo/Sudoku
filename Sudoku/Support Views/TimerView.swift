@@ -19,10 +19,10 @@ struct TimerView : View {
 	
     var body: some View {
 		Text(String(format: "%@%02d:%02d", arguments: [self.hours(),
-													   self.min(),
+													   self.minutes(),
 													   self.sec()]))
 			//.font(.custom("CaviarDreams-Bold", size: self.labelSize))
-			.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 3))
+			.font(.custom("CaviarDreams-Bold", size: min(Screen.cellWidth / 3, 15)))
 			.onAppear {
 			  self.timerHolder.start()
 			}
@@ -32,7 +32,7 @@ struct TimerView : View {
 		return self.timerHolder.count % 60
 	}
 
-	func min () -> Int {
+	func minutes () -> Int {
 		return (self.timerHolder.count / 60) % 60
 	}
 

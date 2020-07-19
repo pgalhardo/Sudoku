@@ -15,23 +15,23 @@ struct GridView: View {
 	@EnvironmentObject var viewRouter: ViewRouter
 	@EnvironmentObject var pauseHolder: PauseHolder
 	
-	private let frameSize: CGFloat = Screen.cellWidth * 9
+	private let frameSize: CGFloat = min(Screen.cellWidth, 45) * 9
 	
 	var body: some View {
-		ZStack {
-			Group {
-				structure
-				overlayLines
+		GeometryReader { geometry in
+			ZStack {
+				self.renderStructure(width: min(geometry.size.width, geometry.size.height) * 0.95 / 9)
+				//self.overlayLines
 			}
 			.disabled(self.isPaused() || grid.full())
 			.opacity(self.isPaused() || grid.full() ? 0 : 1)
+			.frame(width: self.frameSize,
+				   height: self.frameSize,
+				   alignment: .center)
 		}
-		.frame(width: self.frameSize,
-			   height: self.frameSize,
-			   alignment: .center)
 	}
-
-	private var structure: some View {
+	
+	private func renderStructure(width: CGFloat) -> some View {
 		VStack(spacing: -1) {
 			ForEach(0 ..< 9) { row in
 				HStack(spacing: -1) {
@@ -42,8 +42,8 @@ struct GridView: View {
 							fontSize: self.fontSize()
 						)
 							.frame(
-								width: min(Screen.cellWidth, 45),
-								height: min(Screen.cellWidth, 45)
+								width: width,
+								height: width
 						)
 							.border(Color.black, width: 1)
 							.padding(.all, 0)
@@ -68,10 +68,10 @@ struct GridView: View {
 		}
 	}
 	
-	private var overlayLines: some View {
+	private func renderOverlayLines(width: CGFloat) -> some View {
 		GeometryReader { geometry in
 			Path { path in
-				let factor: CGFloat = Screen.cellWidth * 3
+				let factor: CGFloat = width * 3
 				let lines: [CGFloat] = [1, 2]
 				
 				for i: CGFloat in lines {

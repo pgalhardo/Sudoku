@@ -29,9 +29,10 @@ struct KeyboardView: View {
 			.opacity(self.opacity())
 			.disabled(self.disabled())
 			.animation(.spring())
+			.frame(maxWidth: 500.0)
 	}
 
-	let buttonSize: CGFloat = Screen.cellWidth / 2
+	let buttonSize: CGFloat = min(Screen.cellWidth / 2, 22.5)
 
 	var optionsRow: some View {
 		HStack {
@@ -135,7 +136,7 @@ struct KeyboardView: View {
 							Text("\(number)")
 								.foregroundColor(Color(.label))
 								.font(.custom("CaviarDreams-Bold",
-											  size: Screen.cellWidth))
+											  size: min(Screen.cellWidth, 45)))
 						}
 					)
 				}

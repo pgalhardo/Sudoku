@@ -21,8 +21,7 @@ struct GameView: View {
 	@EnvironmentObject var timerHolder: TimerHolder
 	
 	private let labelSize: CGFloat = 15.0
-	private let backButtonSize: CGFloat = Screen.cellWidth / 2
-	private let pauseButtonSize: CGFloat = Screen.cellWidth / 3
+	private let pauseButtonSize: CGFloat = min(Screen.cellWidth / 3, 15)
 	
 	var body: some View {
 		VStack(spacing: 0) {
@@ -119,7 +118,7 @@ struct GameView: View {
 	private var infoBar: some View {
 		HStack {
 			Text("game.errors: \(grid.getErrorCount())")
-				.font(.custom("CaviarDreams-Bold", size: Screen.cellWidth / 3))
+				.font(.custom("CaviarDreams-Bold", size: min(Screen.cellWidth / 3, 15)))
 				
 			Spacer()
 			
@@ -129,8 +128,8 @@ struct GameView: View {
 					.environmentObject(timerHolder)
 			}
 		}
-		.blur(radius: self.pauseHolder.isPaused() || self.grid.full() ? 5 : 0)
-		.animation(.spring())
+			.blur(radius: self.pauseHolder.isPaused() || self.grid.full() ? 5 : 0)
+			.animation(.spring())
 	}
 	
 	private var topbar: some View {

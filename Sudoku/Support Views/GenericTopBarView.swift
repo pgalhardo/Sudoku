@@ -34,9 +34,10 @@ struct GenericTopBarView: View {
 						}
 				},
 					label: {
-						Image(systemName: "arrow.left")
+						Image(systemName: "chevron.left")
 						Text("main.back")
 							.font(.custom("CaviarDreams-Bold", size: 15))
+							.padding(.leading)
 						
 					}
 				)
