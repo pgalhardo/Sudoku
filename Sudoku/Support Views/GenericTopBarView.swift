@@ -37,8 +37,6 @@ struct GenericTopBarView: View {
 						Image(systemName: "chevron.left")
 						Text("main.back")
 							.font(.custom("CaviarDreams-Bold", size: 15))
-							.padding(.leading)
-						
 					}
 				)
 					.foregroundColor(Color(.label))
