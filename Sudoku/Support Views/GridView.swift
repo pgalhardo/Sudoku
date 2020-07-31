@@ -17,18 +17,17 @@ struct GridView: View {
 	
 	private let frameSize: CGFloat = min(Screen.cellWidth, 45) * 9
 	
+	@ViewBuilder
 	var body: some View {
-		GeometryReader { geometry in
-			ZStack {
-				self.renderStructure(width: min(geometry.size.width, geometry.size.height) * 0.95 / 9)
-				//self.overlayLines
-			}
-			.disabled(self.isPaused() || grid.full())
-			.opacity(self.isPaused() || grid.full() ? 0 : 1)
-			.frame(width: self.frameSize,
-				   height: self.frameSize,
-				   alignment: .center)
+		ZStack {
+			self.renderStructure(width: frameSize / 9)
+			self.renderOverlayLines(width: frameSize / 9)
 		}
+		.disabled(self.isPaused() || grid.full())
+		.opacity(self.isPaused() || grid.full() ? 0 : 1)
+		.frame(width: frameSize,
+			   height: frameSize,
+			   alignment: .center)
 	}
 	
 	private func renderStructure(width: CGFloat) -> some View {
