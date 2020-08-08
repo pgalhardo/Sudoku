@@ -26,6 +26,8 @@
 		68908C9B236E6B6F00233C69 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68908C9A236E6B6F00233C69 /* StatisticsView.swift */; };
 		68908C9F236E735E00233C69 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68908C9E236E735E00233C69 /* Settings.swift */; };
 		68AED1AA236FCF3F00490E6D /* StrategiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AED1A9236FCF3F00490E6D /* StrategiesView.swift */; };
+		68DA619A24DEBE3000E545A5 /* Sudoku.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68DA619824DEBE3000E545A5 /* Sudoku.xcdatamodeld */; };
+		68DA619C24DEC14C00E545A5 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DA619B24DEC14C00E545A5 /* Record.swift */; };
 		68EA2F21236A1ABB000FBCFC /* CaviarDreams_Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68EA2F20236A1ABB000FBCFC /* CaviarDreams_Bold.ttf */; };
 		68FDA2B7236E30D1003F954C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FDA2B6236E30D1003F954C /* SettingsView.swift */; };
 		68FF20542370AA5C00B433F2 /* CaviarDreams.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68FF20532370AA5C00B433F2 /* CaviarDreams.ttf */; };
@@ -55,6 +57,8 @@
 		68908C9A236E6B6F00233C69 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		68908C9E236E735E00233C69 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		68AED1A9236FCF3F00490E6D /* StrategiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrategiesView.swift; sourceTree = "<group>"; };
+		68DA619924DEBE3000E545A5 /* Record.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Record.xcdatamodel; sourceTree = "<group>"; };
+		68DA619B24DEC14C00E545A5 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		68EA2F20236A1ABB000FBCFC /* CaviarDreams_Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CaviarDreams_Bold.ttf; sourceTree = "<group>"; };
 		68FDA2B6236E30D1003F954C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		68FF20532370AA5C00B433F2 /* CaviarDreams.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CaviarDreams.ttf; sourceTree = "<group>"; };
@@ -128,7 +132,9 @@
 		683A3D9123691BCF00135D55 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				68DA619824DEBE3000E545A5 /* Sudoku.xcdatamodeld */,
 				683A3D8B2368F77A00135D55 /* Grid.swift */,
+				68DA619B24DEC14C00E545A5 /* Record.swift */,
 				68908C9E236E735E00233C69 /* Settings.swift */,
 			);
 			path = Models;
@@ -235,7 +241,9 @@
 			files = (
 				681A72BB23661BB7002B9053 /* AppDelegate.swift in Sources */,
 				681A72CF23662961002B9053 /* GridView.swift in Sources */,
+				68DA619C24DEC14C00E545A5 /* Record.swift in Sources */,
 				6868C88B248C1C700024CDFF /* GenericTopBarView.swift in Sources */,
+				68DA619A24DEBE3000E545A5 /* Sudoku.xcdatamodeld in Sources */,
 				681A72BD23661BB7002B9053 /* SceneDelegate.swift in Sources */,
 				68908C9B236E6B6F00233C69 /* StatisticsView.swift in Sources */,
 				684EC5F9236A5E89009EE48C /* TimerView.swift in Sources */,
@@ -466,6 +474,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		68DA619824DEBE3000E545A5 /* Sudoku.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				68DA619924DEBE3000E545A5 /* Record.xcdatamodel */,
+			);
+			currentVersion = 68DA619924DEBE3000E545A5 /* Record.xcdatamodel */;
+			path = Sudoku.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 681A72AF23661BB7002B9053 /* Project object */;
 }
