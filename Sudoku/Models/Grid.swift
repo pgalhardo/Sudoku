@@ -73,7 +73,7 @@ final class Grid: ObservableObject {
 		)
 	}
 	
-	func load(puzzle: String) -> Void {
+    func load(puzzle: String, difficulty: String) -> Void {
 		var count: Int = 0
 		var user: Bool = false
 		var error: Bool = false
@@ -112,6 +112,8 @@ final class Grid: ObservableObject {
 				error = true
 			}
 		}
+        
+        self.difficulty = difficulty
 	}
 	
 	func loadFromSeed() -> Void {

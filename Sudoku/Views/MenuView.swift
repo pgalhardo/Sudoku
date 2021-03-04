@@ -308,21 +308,17 @@ struct ContinueButtonView: View {
             self.savedTime = 0
         }
         
-        if let difficulty: String = UserDefaults.standard.string(forKey: "savedDifficulty") {
-            self.savedDifficulty = difficulty
-        }
-        else {
-            self.savedDifficulty = ""
-        }
+        self.savedDifficulty = UserDefaults.standard.string(forKey: "savedDifficulty") ?? "NULL"
 	}
 	
 	var body: some View {
 		Button(
 			action: {
 				withAnimation {
-					if let board: String = UserDefaults.standard.string(forKey: "savedBoard") {
+                    if let board: String = UserDefaults.standard.string(forKey: "savedBoard"),
+                       let difficulty: String = UserDefaults.standard.string(forKey: "savedDifficulty") {
 						self.grid.reset()
-						self.grid.load(puzzle: board)
+						self.grid.load(puzzle: board, difficulty: difficulty)
 						self.viewRouter.setCurrentPage(page: Pages.game)
 					}
 				}
@@ -343,8 +339,8 @@ struct ContinueButtonView: View {
                          
                         HStack {
                              Text(String(format: "%@%02d:%02d - %@", arguments: [
-                                            self.hours(), self.minutes(), self.sec(), self.savedDifficulty]
-                             ))
+                                            self.hours(), self.minutes(), self.sec(), self.savedDifficulty
+                             ]))
                                  .font(.custom("CaviarDreams-Bold", size: 14))
                          }
                             .opacity(0.75)

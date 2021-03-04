@@ -151,7 +151,7 @@ struct GameView: View {
 											  forKey: "savedBoard")
                     UserDefaults.standard.set(self.grid.getDifficulty(),
                                               forKey: "savedDifficulty")
-					self.timerHolder.storeCounterValue()
+					self.timerHolder.stop()
 					self.viewRouter.setCurrentPage(page: Pages.home)
 				}
 			},

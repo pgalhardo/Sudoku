@@ -18,14 +18,10 @@ struct TimerView : View {
 	private let labelSize: CGFloat = Screen.cellWidth / 2
 	
     var body: some View {
-		Text(String(format: "%@%02d:%02d", arguments: [self.hours(),
-													   self.minutes(),
-													   self.sec()]))
-			//.font(.custom("CaviarDreams-Bold", size: self.labelSize))
+		Text(String(format: "%@%02d:%02d", arguments: [
+                        self.hours(), self.minutes(),  self.sec()
+        ]))
 			.font(.custom("CaviarDreams-Bold", size: min(Screen.cellWidth / 3, 15)))
-			.onAppear {
-			  self.timerHolder.start()
-			}
     }
 
 	func sec() -> Int {
@@ -54,6 +50,7 @@ class TimerHolder : ObservableObject {
 			let value: Int = UserDefaults.standard.integer(forKey: "time")
 			self.count = value
 		}
+        start()
 	}
 	
 	func start() -> Void {
