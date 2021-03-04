@@ -149,6 +149,8 @@ struct GameView: View {
 				withAnimation(.easeIn) {
 					UserDefaults.standard.set(self.grid.toString(),
 											  forKey: "savedBoard")
+                    UserDefaults.standard.set(self.grid.getDifficulty(),
+                                              forKey: "savedDifficulty")
 					self.timerHolder.storeCounterValue()
 					self.viewRouter.setCurrentPage(page: Pages.home)
 				}

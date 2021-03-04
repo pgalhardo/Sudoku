@@ -229,6 +229,7 @@ struct MenuView: View {
 			self.grid.generate()
 			self.generating = false
 			self.viewRouter.setCurrentPage(page: Pages.game)
+            self.displayWarning = false
 		}
 	}
 }
@@ -284,12 +285,35 @@ struct ContinueButtonView: View {
 	private var frameSize: [CGFloat]
 	private var labelOffset: CGFloat
 	private var iconPosition: [CGFloat]
+    private var savedDifficulty: String
+    private var savedTime: Int
 	
 	init(width: CGFloat) {
 		self.buttonWidth = min(width * 0.55, 350.0)
 		self.frameSize = [self.buttonWidth, 50]
 		self.labelOffset = self.buttonWidth * 0.35
 		self.iconPosition = [self.buttonWidth * 0.2, 25]
+        
+        if UserDefaults.standard.object(forKey: "time") != nil {
+            self.savedTime = UserDefaults.standard.integer(forKey: "time")
+        }
+        else {
+            self.savedTime = 0
+        }
+        
+        if UserDefaults.standard.object(forKey: "time") != nil {
+            self.savedTime = UserDefaults.standard.integer(forKey: "time")
+        }
+        else {
+            self.savedTime = 0
+        }
+        
+        if let difficulty: String = UserDefaults.standard.string(forKey: "savedDifficulty") {
+            self.savedDifficulty = difficulty
+        }
+        else {
+            self.savedDifficulty = ""
+        }
 	}
 	
 	var body: some View {
@@ -304,13 +328,28 @@ struct ContinueButtonView: View {
 				}
 			},
 			label: {
+
 				ZStack(alignment: .leading) {
 					Image(systemName: "hourglass.bottomhalf.fill")
 						.position(x: self.iconPosition[0],
 								  y: self.iconPosition[1])
-					Text("main.resume")
-						.font(.custom("CaviarDreams-Bold", size: 20))
-						.offset(x: self.labelOffset)
+
+                     VStack() {
+                         HStack {
+                             Text("main.resume")
+                                 .font(.custom("CaviarDreams-Bold", size: 17))
+                         }
+                            .offset(x: self.labelOffset)
+                         
+                        HStack {
+                             Text(String(format: "%@%02d:%02d - %@", arguments: [
+                                            self.hours(), self.minutes(), self.sec(), self.savedDifficulty]
+                             ))
+                                 .font(.custom("CaviarDreams-Bold", size: 14))
+                         }
+                            .opacity(0.75)
+                            .offset(x: self.labelOffset)
+                     }
 				}
 			}
 		)
@@ -323,6 +362,21 @@ struct ContinueButtonView: View {
 			.padding(.all, 7)
 			.shadow(radius: 20)
 	}
+    
+    func sec() -> Int {
+        return self.savedTime % 60
+    }
+
+    func minutes () -> Int {
+        return (self.savedTime / 60) % 60
+    }
+
+    func hours() -> String {
+        if self.savedTime >= 3600 {
+            return String(format: "%02d:", (self.savedTime / 3600))
+        }
+        return String()
+    }
 }
 
 struct PlayButtonView: View {

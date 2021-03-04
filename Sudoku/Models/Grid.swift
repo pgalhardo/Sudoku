@@ -10,6 +10,11 @@ import Foundation
 import SwiftUI
 
 final class Grid: ObservableObject {
+    
+    struct CellState {
+        let value: Int
+        let postion: [Int]
+    }
 	
 	@Published private var grid: [[Int]] = [[Int]]()
 	@Published private var solution: [[Int]] = [[Int]]()
@@ -22,6 +27,9 @@ final class Grid: ObservableObject {
 	private var colored: [[Int]] = [[Int]]()
 	private var solutions: Int = 0
 	private var errorCount: Int = 0
+    private var cellBefore: [Int] = [Int]()
+    private var previousState: CellState
+    private var difficulty: String
 	
 	init() {
 		self.grid = Array(
@@ -37,6 +45,8 @@ final class Grid: ObservableObject {
 			count: 9
 		)
 		self.numberFrequency = Array(repeating: 0, count: 9)
+        self.previousState = CellState(value: UNDEFINED, postion: [UNDEFINED, UNDEFINED])
+        self.difficulty = String.init()
 	}
 	
 	/*==========================================================================
@@ -106,6 +116,7 @@ final class Grid: ObservableObject {
 	
 	func loadFromSeed() -> Void {
 		let randPuzzle: Int = Int.random(in: 0 ..< Puzzles.easy.count)
+        self.difficulty = "Easy"
 		
 		var str: String = Puzzles.easy[randPuzzle]
 		var count: Int = 0
@@ -672,4 +683,8 @@ final class Grid: ObservableObject {
 			|| square[1].contains(token)
 			|| square[2].contains(token)
 	}
+    
+    func getDifficulty() -> String {
+        return self.difficulty
+    }
 }
