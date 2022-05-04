@@ -44,6 +44,7 @@ struct RootView: View {
 			if viewRouter.currentlyAt(page: Pages.home) {
 				MenuView()
 					.environmentObject(grid)
+                    .environmentObject(settings)
 					.transition(AnyTransition.asymmetric(
 						insertion: AnyTransition.opacity.combined(
 							with: .move(edge: .leading)),

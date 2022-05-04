@@ -111,7 +111,6 @@ struct SettingsView: View {
 			.foregroundColor(Color(UIColor.systemBackground))
 			.cornerRadius(40)
 			.padding(.all, 7)
-			.shadow(radius: 20)
 			
 			Text(String(format: "%02.0f", self.settings.fontSize))
 				.font(.custom("CaviarDreams-Bold", size: 20))
@@ -134,7 +133,6 @@ struct SettingsView: View {
 			.foregroundColor(Color(UIColor.systemBackground))
 			.cornerRadius(40)
 			.padding(.all, 7)
-			.shadow(radius: 20)
 		}
 		.padding(.top, 60)
 		.padding(.leading)
@@ -143,7 +141,7 @@ struct SettingsView: View {
 	
 	var eraseBoard: some View {
 		HStack {
-			Image(systemName: "trash.circle.fill")
+			Image(systemName: "trash.fill")
 			Text("Erase current board")
 				.font(.custom("CaviarDreams-Bold", size: 20))
 			
@@ -165,7 +163,6 @@ struct SettingsView: View {
 						.cornerRadius(40)
 				}
 			)
-			.shadow(radius: 20)
 		}
 		.padding(.top, 60)
 		.padding(.leading)

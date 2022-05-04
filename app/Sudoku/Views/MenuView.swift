@@ -280,6 +280,7 @@ struct ContinueButtonView: View {
 	
 	@EnvironmentObject var grid: Grid
 	@EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject var settings: Settings
 	
 	private var buttonWidth: CGFloat
 	private var frameSize: [CGFloat]
@@ -337,14 +338,16 @@ struct ContinueButtonView: View {
                          }
                             .offset(x: self.labelOffset)
                          
-                        HStack {
-                             Text(String(format: "%@%02d:%02d - %@", arguments: [
-                                            self.hours(), self.minutes(), self.sec(), self.savedDifficulty
-                             ]))
-                                 .font(.custom("CaviarDreams-Bold", size: 14))
-                         }
-                            .opacity(0.75)
-                            .offset(x: self.labelOffset)
+                        if self.settings.enableTimer == true {
+                            HStack {
+                                 Text(String(format: "%@%02d:%02d - %@", arguments: [
+                                                self.hours(), self.minutes(), self.sec(), self.savedDifficulty
+                                 ]))
+                                     .font(.custom("CaviarDreams-Bold", size: 14))
+                             }
+                                .opacity(0.75)
+                                .offset(x: self.labelOffset)
+                        }
                      }
 				}
 			}

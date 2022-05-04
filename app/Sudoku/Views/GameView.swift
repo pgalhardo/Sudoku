@@ -156,7 +156,7 @@ struct GameView: View {
 				}
 			},
 			label: {
-				Image(systemName: "arrow.left")
+				Image(systemName: "chevron.backward")
 				Text("main.back")
 					.font(.custom("CaviarDreams-Bold", size: labelSize))
 			}
